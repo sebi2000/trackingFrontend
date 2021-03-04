@@ -6,7 +6,7 @@ export default function UserView() {
 
     return(
         <fieldset>
-        <p align="center"> Solvvo LOGO</p>
+        <p> Solvvo LOGO</p>
         <fieldset>
           <div>
             <TextField id="outlined-basic" label="Name" variant="outlined" />
@@ -23,16 +23,15 @@ export default function UserView() {
           <div>
             <TextField id="outlined-basic" label="Company" variant="outlined" />
           </div>
-          <div padding-bottom='20px'>
+          <div >
             <TextField id="outlined-basic" label="Signature" variant="outlined" />
           </div>
-          <div align='right'>
+          <div>
           <Button variant="contained" >
             Next
           </Button>
           </div>
         </fieldset>
-
         </fieldset>
     )
 }
