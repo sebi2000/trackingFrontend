@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
 
 let useStyles = makeStyles((theme) => ({
     paper: {
@@ -41,6 +42,7 @@ let useStyles = makeStyles((theme) => ({
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"
@@ -64,6 +66,10 @@ let useStyles = makeStyles((theme) => ({
               id="password"
               autoComplete="current-password"
             />
+            <Link href="#" variant="body1">
+                Forgot password?
+            </Link>
+
             <Button
               type="submit"
               fullWidth
@@ -73,6 +79,7 @@ let useStyles = makeStyles((theme) => ({
             >
               Sign In
             </Button>
+            
             <Grid container>
               <Grid item>
               </Grid>

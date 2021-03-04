@@ -1,26 +1,19 @@
-<<<<<<< Updated upstream
-import Paper from '@material-ui/core/Paper'
-import UserView from './tablet/UserView'
-
-function Root() {
-    return (
-        <Paper>
-            <UserView />
-        </Paper>
-=======
 import Login from './login/Login'
-import UserView from './userView/UserView'
+import UserView from './tablet/UserView'
+import ResetPass from './resetPass/ResetPass'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import EntriesList from './entriesList/EntriesList'
 
 function Root() {
     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/userView" component={UserView} />
+                <Route exact path="/" component={Login} />
+                <Route exact path="/tablet" component={UserView} />
+                <Route exact path="/resetPass" component={ResetPass}/>
+                <Route exact path="/entriesList" component={EntriesList}/>
             </Switch>
         </BrowserRouter>
->>>>>>> Stashed changes
     )
 }
 
