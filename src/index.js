@@ -1,19 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import  UserView from './components/tablet/UserView';
-import FormAdmin from './components/formAdmin/FormAdmin'
-import reportWebVitals from './reportWebVitals';
+import Login from './components/login/Login'
+import UserView from './components/tablet/UserView'
+import ResetPass from './components/resetPass/ResetPass'
+import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import EntriesList from './components/entriesList/EntriesList'
+
+function Root() {
+    return (
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/" component={Login} />
+                <Route exact path="/tablet" component={UserView} />
+                <Route exact path="/resetPass" component={ResetPass}/>
+                <Route exact path="/entriesList" component={EntriesList}/>
+            </Switch>
+        </BrowserRouter>
+    )
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <UserView/>
-    {/*<FormAdmin/>*/}
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+    <React.StrictMode>
+      <Root/>
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+export default Root;
