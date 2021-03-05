@@ -49,7 +49,7 @@ function EntriesList(){
 
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
-    const [rows, rowsPerPage, setRowsPerPage] = React.useState(1);
+    const [rows, rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -72,7 +72,14 @@ function EntriesList(){
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.ReactDOM.render(
+                    <React.StrictMode>
+                      <UserView/>
+                      {/*<FormAdmin/>*/}
+                      <Root/>
+                    </React.StrictMode>,
+                    document.getElementById('root')
+                  );minWidth }}
                 >
                   {column.label}
                 </TableCell>
