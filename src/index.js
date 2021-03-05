@@ -1,16 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-//import  UserView from './components/tablet/UserView';
-import Root from './components/Root';
-//import FormAdmin from './components/formAdmin/FormAdmin'
+import Login from './components/login/Login'
+import UserView from './components/tablet/UserView'
+import ResetPass from './components/resetPass/ResetPass'
+import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import EntriesList from './components/entriesList/EntriesList'
 
+function Root() {
+    return (
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/" component={Login} />
+                <Route exact path="/tablet" component={UserView} />
+                <Route exact path="/resetPass" component={ResetPass}/>
+                <Route exact path="/entriesList" component={EntriesList}/>
+            </Switch>
+        </BrowserRouter>
+    )
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    {/*<FormAdmin/>*/}
-    <Root/>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+    <React.StrictMode>
+      <Root/>
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
 
+export default Root;
