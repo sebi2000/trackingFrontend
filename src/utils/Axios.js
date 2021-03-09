@@ -1,5 +1,5 @@
 import axios from 'axios'
-import CONSTANTS from './Constants'
+import * as CONSTANTS from './Constants'
 
 export default axios.create ({
     baseURL: CONSTANTS.BACKEND_URL,
