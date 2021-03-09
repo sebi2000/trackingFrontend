@@ -1,13 +1,18 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Logo from '../../assets/weSolvvoLogoMotto.jpeg'
+import {withStyles} from '@material-ui/core/styles'
 
-export default function UserView() {
+const styles = theme=> ({
+  logoContainer:{
+    alignItems: 'center'
+  }
+})
 
+ class UserView extends React.Component {
+   render(){
+    const classes=styles()
     return(
-        <fieldset>
-       <img src={Logo} />
         <fieldset>
           <div>
             <TextField id="outlined-basic" label="Name" variant="outlined" />
@@ -33,6 +38,8 @@ export default function UserView() {
           </Button>
           </div>
         </fieldset>
-        </fieldset>
     )
+  }
 }
+
+export default withStyles(styles)(UserView)

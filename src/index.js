@@ -6,10 +6,12 @@ import ResetPass from './components/resetPass/ResetPass'
 import Register from './components/register/Register'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import EntriesList from './components/entriesList/EntriesList'
+import Header from './components/header/Header'
 
 function Root() {
     return (
         <BrowserRouter>
+        <Header/>
             <Switch>
                 <Route exact path="/" component={Login} />
                 <Route exact path="/register" component={Register} />
