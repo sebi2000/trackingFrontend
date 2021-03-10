@@ -25,41 +25,21 @@ class Register extends React.Component {
         })
     }
 
-    onNameSearchChange = event =>{
-        this.setState({name : event.target.value})
-        console.log(this.state.name)
-    }
-    
-    onSurnameSearchChange = event =>{
-        this.setState({surname : event.target.value})
-        console.log(this.state.surname)
-    }
-
-    onEmailSearchChange = event =>{
-        this.setState({email : event.target.value})
-        console.log(this.state.email)
-    }
-
-    onPhoneSearchChange = event =>{
-        this.setState({phone : event.target.value})
-        console.log(this.state.phone)
-    }
-
-    onPasswordSearchChange = event =>{
-        this.setState({password : event.target.value})
-        console.log(this.state.password)
+    onChange = event =>{
+        this.setState({ [event.target.name] : event.target.value })
+        console.log(this.state)
     }
 
     render() {
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <div /*className={classes.paper}*/>
+                <div>
                     <Typography component="h1" variant="h5">
                         Register
                     </Typography>
 
-                    <form /*className={classes.form}*/ noValidate>
+                    <form noValidate>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -70,7 +50,7 @@ class Register extends React.Component {
                             name="name"
                             autoComplete="name"
                             autoFocus
-                            onChange={ this.onNameSearchChange }
+                            onChange={ this.onChange }
                         />
                         <TextField
                             variant="outlined"
@@ -82,7 +62,7 @@ class Register extends React.Component {
                             type="name"
                             id="surname"
                             autoComplete="name"
-                            onChange={ this.onSurnameSearchChange }
+                            onChange={ this.onChange }
                         />
                         <TextField
                             variant="outlined"
@@ -93,7 +73,7 @@ class Register extends React.Component {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
-                            onChange={ this.onEmailSearchChange }
+                            onChange={ this.onChange }
                         />
                         <TextField
                             variant="outlined"
@@ -104,7 +84,7 @@ class Register extends React.Component {
                             label="Phone Number"
                             id="phone"
                             autoComplete="phone"
-                            onChange={ this.onPhoneSearchChange }
+                            onChange={ this.onChange }
                         />
                         <TextField
                             variant="outlined"
@@ -116,7 +96,7 @@ class Register extends React.Component {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                            onChange={ this.onPasswordSearchChange }
+                            onChange={ this.onChange }
                         />
 
                         <Button
@@ -124,7 +104,6 @@ class Register extends React.Component {
                             variant="contained"
                             color="primary"
                             onClick={ this.handleRegister }
-                        /*className={classes.submit}*/
                         >
                             Register
                         </Button>
