@@ -10,7 +10,7 @@ import Link from '@material-ui/core/Link';
 import axios from '../../utils/Axios.js';
 import CONSTANTS from '../../utils/Constants'
 
-let useStyles = makeStyles((theme) => ({
+  let useStyles = makeStyles((theme) => ({
     paper: {
       marginTop: theme.spacing(8),
       display: 'flex',
@@ -30,7 +30,6 @@ let useStyles = makeStyles((theme) => ({
     },
   }));
 
-   
   class Login extends React.Component {
 
     state = {
@@ -43,9 +42,16 @@ let useStyles = makeStyles((theme) => ({
     }
 
     handleLogin = () => {
-      let user = {email: this.state.email, password : this.state.password}
+        let user = this.state
         axios.post('/auth', user).then(response => {
-        console.log(response.data)
+          const { status, code } = response.data
+          if(status === CONSTANTS.MESSAGES.AUTH_SUCCESS && code === 202)
+            console.log('User has successfully logged in')
+          else if(status === CONSTANTS.MESSAGES.USER_NOT_FOUND && code === 403)
+            console.log('Access forbidden. User was not found!')
+          else if(status === CONSTANTS.MESSAGES.INCORRECT_PASS && code === 403)
+            console.log('Access forbidden. Incorrect password!')
+          else console.log('Unexpected error')
       })
       .catch(err =>{
         console.log(err)
