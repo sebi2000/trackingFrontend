@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from '../../utils/Axios'
+import CONSTANTS from '../../utils/Constants'
 
 class Register extends React.Component {
 
@@ -27,7 +28,6 @@ class Register extends React.Component {
 
     onChange = event =>{
         this.setState({ [event.target.name] : event.target.value })
-        console.log(this.state)
     }
 
     render() {
@@ -36,7 +36,7 @@ class Register extends React.Component {
                 <CssBaseline />
                 <div>
                     <Typography component="h1" variant="h5">
-                        Register
+                        {CONSTANTS.REGISTER}
                     </Typography>
 
                     <form noValidate>
@@ -105,7 +105,7 @@ class Register extends React.Component {
                             color="primary"
                             onClick={ this.handleRegister }
                         >
-                            Register
+                            {CONSTANTS.REGISTER}
                         </Button>
 
                         <Grid container>
