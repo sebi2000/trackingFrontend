@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import Register from '../register/Register'
 
 let useStyles = makeStyles((theme) => ({
     paper: {
@@ -40,7 +41,7 @@ let useStyles = makeStyles((theme) => ({
         {/* <LockOutlinedIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Log in
           </Typography>
           
           <form className={classes.form} noValidate>
@@ -66,12 +67,11 @@ let useStyles = makeStyles((theme) => ({
               id="password"
               autoComplete="current-password"
             />
-            <Link href="#" variant="body1">
-                Forgot password?
+            <Link href="http://localhost:3000/register" variant="body1">
+                Register
             </Link>
 
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
