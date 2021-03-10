@@ -35,21 +35,20 @@ let useStyles = makeStyles((theme) => ({
 
     state = {
         email: "",
-        pass: ""
+        password: ""
     }
     
-    onEmailSearchChange = event =>{
-      this.setState({email: event.target.value})
-    }
-
-    onPasswordSearchChange = event =>{
-      this.setState({pass: event.target.value})
+    onChange = event => {
+      this.setState({ [event.target.name] : event.target.value})
     }
 
     handleLogin = () => {
-      let user = {email: this.state.email, password : this.state.pass}
+      let user = {email: this.state.email, password : this.state.password}
         axios.post('/auth', user).then(response => {
         console.log(response.data)
+      })
+      .catch(err =>{
+        console.log(err)
       })
     }
 
@@ -72,7 +71,7 @@ let useStyles = makeStyles((theme) => ({
                 name="email"
                 autoComplete="email"
                 autoFocus
-                onChange={ this.onEmailSearchChange }
+                onChange={ this.onChange }
               />
               <TextField
                 variant="outlined"
@@ -84,7 +83,7 @@ let useStyles = makeStyles((theme) => ({
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange = { this.onPasswordSearchChange }
+                onChange = { this.onChange }
               />
               <Link href="#" variant="body1">
                   Forgot password?
