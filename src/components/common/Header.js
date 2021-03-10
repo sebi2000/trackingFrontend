@@ -11,8 +11,8 @@ function Header(){
 }
 
 const headerStyle={
-    textAlign:'center',
-    padding:'10px' 
+    display: 'flex',
+    justifyContent: 'center'
 }
 
 export default Header

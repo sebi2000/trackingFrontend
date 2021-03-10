@@ -2,17 +2,13 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {withStyles} from '@material-ui/core/styles'
-
-const styles = theme=> ({
-  logoContainer:{
-    alignItems: 'center'
-  }
-})
+import Header from '../common/Header'
 
  class UserView extends React.Component {
    render(){
-    const classes=styles()
     return(
+      <fieldset>
+      <Header/>
         <fieldset>
           <div>
             <TextField id="outlined-basic" label="Name" variant="outlined" />
@@ -38,8 +34,9 @@ const styles = theme=> ({
           </Button>
           </div>
         </fieldset>
+    </fieldset>
     )
   }
 }
 
-export default withStyles(styles)(UserView)
+export default UserView

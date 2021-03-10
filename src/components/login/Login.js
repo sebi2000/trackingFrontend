@@ -7,8 +7,12 @@ import Typography from '@material-ui/core/Typography';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+<<<<<<< HEAD
 import axios from '../../utils/Axios.js';
 import CONSTANTS from '../../utils/Constants'
+=======
+import Header from '../common/Header'
+>>>>>>> refactor:rename header to common and import Header
 
   let useStyles = makeStyles((theme) => ({
     paper: {
@@ -30,6 +34,7 @@ import CONSTANTS from '../../utils/Constants'
     },
   }));
 
+<<<<<<< HEAD
   class Login extends React.Component {
 
     state = {
@@ -57,6 +62,48 @@ import CONSTANTS from '../../utils/Constants'
         console.log(err)
       })
     }
+=======
+  export default function FormAdmin() {
+    const classes = useStyles();
+  
+    return (
+      <Container component="main" maxWidth="xs">
+            <Header/>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          
+          <form className={classes.form} noValidate>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Link href="#" variant="body1">
+                Forgot password?
+            </Link>
+>>>>>>> refactor:rename header to common and import Header
 
     render(){
       return (
