@@ -7,8 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import {createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import Register from '../register/Register'
 import axios from '../../utils/Axios.js';
+import CONSTANTS from '../../utils/Constants'
 
 let useStyles = makeStyles((theme) => ({
     paper: {
@@ -58,7 +58,7 @@ let useStyles = makeStyles((theme) => ({
           <CssBaseline />
           <div >
             <Typography component="h1" variant="h5">
-              Sign in
+            {CONSTANTS.LOGIN}
             </Typography>
             <form noValidate>
               <TextField  
@@ -85,8 +85,8 @@ let useStyles = makeStyles((theme) => ({
                 autoComplete="current-password"
                 onChange = { this.onChange }
               />
-              <Link href="#" variant="body1">
-                  Forgot password?
+              <Link href='http://localhost:3000/register' variant="body1">
+                  {CONSTANTS.REGISTER}
               </Link>
   
               <Button
@@ -95,7 +95,7 @@ let useStyles = makeStyles((theme) => ({
                 color="primary"
                 onClick={ this.handleLogin }
               >
-                Log In
+                {CONSTANTS.LOGIN}
               </Button>
               
               <Grid container>
