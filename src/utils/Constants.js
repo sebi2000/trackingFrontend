@@ -7,7 +7,11 @@ const CONSTANTS = {
     USER_NOT_FOUND: 'User not found',
     AUTH_SUCCESS: 'Authentication was successful',
     INCORRECT_PASS : 'Incorrect Password'
-  }
+  },
+  CODES: {
+    ACCESS: 202,
+    FORBIDDEN : 403
+}
 }
 export default CONSTANTS
     
