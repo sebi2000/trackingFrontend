@@ -12,7 +12,6 @@ import TableRow from '@material-ui/core/TableRow';
 import {useState} from "react"
 
 
-
 const columns = [
   { id: 'nume', label: 'Nume', minWidth: 170 },
   { id: 'prenume', label: 'Prenume', minWidth: 100 },
