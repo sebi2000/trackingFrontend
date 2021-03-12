@@ -22,7 +22,7 @@ class Signature extends Component {
           >
             Save
           </Button>
-          
+
           <Button
             variant="contained"
             onClick={() => {
@@ -34,7 +34,7 @@ class Signature extends Component {
         </div>
         <CanvasDraw
           ref={canvasDraw => (this.saveableCanvas = canvasDraw)}
-          brushColor={"#ffc600"}
+          brushColor={"#009933"}
           brushRadius={3}
           canvasWidth={400}
           canvasHeight={400}

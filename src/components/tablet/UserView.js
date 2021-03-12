@@ -76,24 +76,21 @@ import Header from '../common/Header'
              onChange={ this.onChange }
              />
           <div >
-            {/*<TextField id="outlined-basic" label="Signature" variant="outlined" />*/}
             <Dialog showDrawing={ showDrawing }/>
+
             <CanvasDraw
               canvasHeight={width}
               canvasWidth={height}
               disabled={true}
               hideGrid={true}
               saveData={data}
-          />
+            />
           </div>
-            <div align='right'>
-             <Button 
-             variant="contained"
-             color="primary"
-             >
-              Next
-             </Button>
-            </div>
+          <div>
+          <Button variant="contained" color="primary">
+            Next
+          </Button>
+          </div>
         </fieldset>
     </fieldset>
     )
