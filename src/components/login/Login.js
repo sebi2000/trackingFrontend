@@ -165,6 +165,7 @@ import Header from '../common/Header'
                 variant="contained"
                 color="primary"
                 onClick={ this.handleLogin }
+                type='submit'
               >
                 {CONSTANTS.LOGIN}
               </Button>

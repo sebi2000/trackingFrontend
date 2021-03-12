@@ -6,6 +6,7 @@ import ResetPass from './components/resetPass/ResetPass'
 import Register from './components/register/Register'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import EntriesList from './components/entriesList/EntriesList'
+//import Demo from './components/signature/index'
 
 
 function Root() {

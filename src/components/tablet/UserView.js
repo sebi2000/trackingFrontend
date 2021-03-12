@@ -1,23 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {withStyles} from '@material-ui/core/styles'
 import Header from '../common/Header'
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
 
  class UserView extends React.Component {
 
   onChange = event => {
     this.setState({ [event.target.name] : event.target.value})
   }
-<<<<<<< HEAD
->>>>>>> chore:small corrections
-=======
->>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
 
    render(){
     return(
@@ -84,18 +75,17 @@ import Header from '../common/Header'
              autoFocus
              onChange={ this.onChange }
              />
-          <TextField 
-             variant="outlined"
-             margin="normal"
-             required
-             fullWidth
-             id="signature"
-             label="Signature"
-             name="signature"
-             autoComplete="signature"
-             autoFocus
-             onChange={ this.onChange }
-             />
+          <div >
+            {/*<TextField id="outlined-basic" label="Signature" variant="outlined" />*/}
+            <Dialog showDrawing={ showDrawing }/>
+            <CanvasDraw
+              canvasHeight={width}
+              canvasWidth={height}
+              disabled={true}
+              hideGrid={true}
+              saveData={data}
+          />
+          </div>
             <div align='right'>
              <Button 
              variant="contained"

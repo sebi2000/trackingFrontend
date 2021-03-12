@@ -12,11 +12,6 @@ import TableRow from '@material-ui/core/TableRow';
 import {useState} from "react"
 
 
-// new Intl.DateTimeFormat("en-GB", {
-//   year: "numeric",
-//   month: "long",
-//   day: "2-digit"
-// }).format(entries.entry)
 
 const columns = [
   { id: 'nume', label: 'Nume', minWidth: 170 },
