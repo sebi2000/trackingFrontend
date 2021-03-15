@@ -3,36 +3,101 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {withStyles} from '@material-ui/core/styles'
 import Header from '../common/Header'
+<<<<<<< HEAD
+=======
 
  class UserView extends React.Component {
+
+  onChange = event => {
+    this.setState({ [event.target.name] : event.target.value})
+  }
+>>>>>>> chore:small corrections
+
    render(){
     return(
       <fieldset>
       <Header/>
         <fieldset>
-          <div>
-            <TextField id="outlined-basic" label="Name" variant="outlined" />
-          </div>
-          <div>
-            <TextField id="outlined-basic" label="Surname" variant="outlined" />
-          </div>
-          <div>
-            <TextField id="outlined-basic" label="Email" variant="outlined" />
-          </div>
-          <div>
-            <TextField id="outlined-basic" label="Phone" variant="outlined" />
-          </div>
-          <div>
-            <TextField id="outlined-basic" label="Company" variant="outlined" />
-          </div>
-          <div >
-            <TextField id="outlined-basic" label="Signature" variant="outlined" />
-          </div>
-          <div>
-          <Button variant="contained" >
-            Next
-          </Button>
-          </div>
+            <TextField 
+             variant="outlined"
+             margin="normal"
+             required
+             fullWidth
+             id="name"
+             label="Name"
+             name="name"
+             autoComplete="name"
+             autoFocus
+             onChange={ this.onChange }
+             />
+           <TextField 
+             variant="outlined"
+             margin="normal"
+             required
+             fullWidth
+             id="surname"
+             label="Surname"
+             name="surname"
+             autoComplete="surname"
+             autoFocus
+             onChange={ this.onChange }
+             />
+            <TextField  
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={ this.onChange }
+              />
+           <TextField 
+             variant="outlined"
+             margin="normal"
+             required
+             fullWidth
+             id="phone"
+             label="Phone"
+             name="phone"
+             autoComplete="phone"
+             autoFocus
+             onChange={ this.onChange }
+             />
+           <TextField 
+             variant="outlined"
+             margin="normal"
+             required
+             fullWidth
+             id="company"
+             label="Company"
+             name="company"
+             autoComplete="company"
+             autoFocus
+             onChange={ this.onChange }
+             />
+          <TextField 
+             variant="outlined"
+             margin="normal"
+             required
+             fullWidth
+             id="signature"
+             label="Signature"
+             name="signature"
+             autoComplete="signature"
+             autoFocus
+             onChange={ this.onChange }
+             />
+            <div align='right'>
+             <Button 
+             variant="contained"
+             color="primary"
+             >
+              Next
+             </Button>
+            </div>
         </fieldset>
     </fieldset>
     )
