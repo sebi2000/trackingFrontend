@@ -3,6 +3,9 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {withStyles} from '@material-ui/core/styles'
 import Header from '../common/Header'
+import Logo from '../../assets/weSolvvoLogoMotto.jpeg'
+import Modal from '../modal/Modal'
+import CanvasDraw from 'react-canvas-draw'
 
  class UserView extends React.Component {
 
@@ -76,7 +79,7 @@ import Header from '../common/Header'
              onChange={ this.onChange }
              />
           <div >
-            <Dialog showDrawing={ showDrawing }/>
+            <Modal showDrawing={ showDrawing }/>
 
             <CanvasDraw
               canvasHeight={width}
