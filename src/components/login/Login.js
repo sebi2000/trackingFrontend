@@ -4,11 +4,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import {createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {createStyles, makeStyles, theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import axios from '../../utils/Axios.js';
 import CONSTANTS from '../../utils/Constants'
+import Header from '../common/Header'
+
 
 let useStyles = makeStyles((theme) => ({
     paper: {
@@ -30,9 +32,8 @@ let useStyles = makeStyles((theme) => ({
     },
   }));
 
-   
   class Login extends React.Component {
-
+    
     state = {
         email: "",
         password: ""
@@ -54,8 +55,10 @@ let useStyles = makeStyles((theme) => ({
 
     render(){
       return (
+        
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+          <Header/>
           <div >
             <Typography component="h1" variant="h5">
             {CONSTANTS.LOGIN}

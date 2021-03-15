@@ -8,6 +8,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from '../../utils/Axios'
 import CONSTANTS from '../../utils/Constants'
+import Header from '../common/Header'
 
 class Register extends React.Component {
 
@@ -34,6 +35,7 @@ class Register extends React.Component {
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
+                <Header/>
                 <div>
                     <Typography component="h1" variant="h5">
                         {CONSTANTS.REGISTER}
