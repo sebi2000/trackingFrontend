@@ -7,6 +7,7 @@ import Register from './components/register/Register'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import EntriesList from './components/entriesList/EntriesList'
 
+
 function Root() {
     return (
         <BrowserRouter>

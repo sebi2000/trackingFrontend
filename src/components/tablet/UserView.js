@@ -1,13 +1,14 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Logo from '../../assets/weSolvvoLogoMotto.jpeg'
+import {withStyles} from '@material-ui/core/styles'
+import Header from '../common/Header'
 
-export default function UserView() {
-
+ class UserView extends React.Component {
+   render(){
     return(
-        <fieldset>
-       <img src={Logo} />
+      <fieldset>
+      <Header/>
         <fieldset>
           <div>
             <TextField id="outlined-basic" label="Name" variant="outlined" />
@@ -33,6 +34,9 @@ export default function UserView() {
           </Button>
           </div>
         </fieldset>
-        </fieldset>
+    </fieldset>
     )
+  }
 }
+
+export default UserView
