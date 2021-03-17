@@ -5,24 +5,16 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {createStyles, makeStyles, theme } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom'
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-<<<<<<< HEAD
 import axios from '../../utils/Axios.js';
 import CONSTANTS from '../../utils/Constants'
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import Header from '../common/Header'
->>>>>>> refactor:rename header to common and import Header
-=======
-import Header from '../common/Header'
-=======
 import Header from '../common/Header'
 
->>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
 
->>>>>>> chore:small corrections
+import Header from '../common/Header'
+
 
   let useStyles = makeStyles((theme) => ({
     paper: {
@@ -44,13 +36,9 @@ import Header from '../common/Header'
     },
   }));
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> chore:small corrections
-=======
->>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
+
+
+
   class Login extends React.Component {
     
     state = {
@@ -78,48 +66,10 @@ import Header from '../common/Header'
         console.log(err)
       })
     }
-=======
-  export default function FormAdmin() {
-    const classes = useStyles();
-  
-    return (
-      <Container component="main" maxWidth="xs">
-            <Header/>
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          
-          <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <Link href="#" variant="body1">
-                Forgot password?
-            </Link>
->>>>>>> refactor:rename header to common and import Header
+
+    onRegisterButtonClick = () =>{
+      this.props.history.push("/register")
+    }
 
     render(){
       return (
@@ -156,9 +106,11 @@ import Header from '../common/Header'
                 autoComplete="current-password"
                 onChange = { this.onChange }
               />
-              <Link href='http://localhost:3000/register' variant="body1">
+              <Button 
+              color="primary"
+              onClick={this.onRegisterButtonClick}>
                   {CONSTANTS.REGISTER}
-              </Link>
+              </Button>
   
               <Button
                 fullWidth
@@ -180,5 +132,5 @@ import Header from '../common/Header'
     }
   }
 
-export default Login;
+export default withRouter(Login);
   
