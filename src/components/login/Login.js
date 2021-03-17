@@ -11,11 +11,16 @@ import Link from '@material-ui/core/Link';
 import axios from '../../utils/Axios.js';
 import CONSTANTS from '../../utils/Constants'
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import Header from '../common/Header'
 >>>>>>> refactor:rename header to common and import Header
 =======
 import Header from '../common/Header'
+=======
+import Header from '../common/Header'
+
+>>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
 
 >>>>>>> chore:small corrections
 
@@ -41,8 +46,11 @@ import Header from '../common/Header'
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> chore:small corrections
+=======
+>>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
   class Login extends React.Component {
     
     state = {

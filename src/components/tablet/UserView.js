@@ -4,14 +4,20 @@ import Button from '@material-ui/core/Button'
 import {withStyles} from '@material-ui/core/styles'
 import Header from '../common/Header'
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
 
  class UserView extends React.Component {
 
   onChange = event => {
     this.setState({ [event.target.name] : event.target.value})
   }
+<<<<<<< HEAD
 >>>>>>> chore:small corrections
+=======
+>>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
 
    render(){
     return(
