@@ -22,12 +22,12 @@ const theme = createMuiTheme({
             },
         },
 
-        MuiButton :{
-            root: {
-                backgroundColor: "#3f50b5",
-                color : "white",
-            },
-        },
+        // MuiButton :{
+        //     root: {
+        //         backgroundColor: "#3f50b5",
+        //         color : "#f",
+        //     },
+        // },
 
         MuiPaper: {
             root : {

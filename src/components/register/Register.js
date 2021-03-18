@@ -104,7 +104,7 @@ class Register extends React.Component {
                             onChange={ this.onChange }
                         />
 
-                        <Button fullWidth onClick={ this.handleRegister }> {CONSTANTS.REGISTER}</Button>
+                        <Button variant="contained" color="primary" fullWidth onClick={ this.handleRegister }> {CONSTANTS.REGISTER}</Button>
 
                         <Grid container>
                             <Grid item>
