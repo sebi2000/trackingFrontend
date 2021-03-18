@@ -28,11 +28,20 @@ import Header from '../common/Header'
         axios.post('/auth', user).then(response => {
           const { status, code } = response.data
           if(status === CONSTANTS.MESSAGES.AUTH_SUCCESS && CONSTANTS.CODES.ACCESS === 202)
+          {
             console.log('User has successfully logged in')
+            this.props.history.push("/entriesList")
+          }
           else if(status === CONSTANTS.MESSAGES.USER_NOT_FOUND && CONSTANTS.CODES.FORBIDDEN === 403)
+          {
             console.log('Access forbidden. User was not found!')
+            alert("User not found!")
+          }
           else if(status === CONSTANTS.MESSAGES.INCORRECT_PASS && code === CONSTANTS.CODES.FORBIDDEN)
+          {
             console.log('Access forbidden. Incorrect password!')
+            alert("Incorrect password")
+          }
           else console.log('Unexpected error')
       })
       .catch(err =>{
@@ -89,7 +98,7 @@ import Header from '../common/Header'
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={ this.handleLogin }
+                onClick={() => {this.handleLogin();}}
               >
                 {CONSTANTS.LOGIN}
               </Button>
