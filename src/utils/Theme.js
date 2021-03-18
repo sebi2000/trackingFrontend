@@ -1,23 +1,13 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple'
 
 const theme = createMuiTheme({
-
-    palette:{
-        primary: {
-            main: purple[500],
-        },
-        
-        secondary: {
-            main: '#11cb5f'
-        }
-    },
     overrides: {
-    
         MuiTableCell: {
             head: {
-                backgroundColor: 'black',
-                color: 'white',
+                fontSize: 17,
+                //fontWeight: 'bold
+                backgroundColor: '#4db6ac',
+                color: 'black',
             },
             body: {
                 fontSize: 14,
@@ -27,10 +17,25 @@ const theme = createMuiTheme({
         MuiTableRow: {
             root: {
                 '&:nth-of-type(odd)': {
-                  backgroundColor: 'hover',
-                },
+                  backgroundColor: '#b2dfdb',
+                }
             },
         },
+
+        MuiButton :{
+            root: {
+                backgroundColor: "#00695c",
+                color : "white",
+            },
+        },
+
+        MuiPaper: {
+            root : {
+                background: 'Linear-gradient(45deg, #b2dfdb 30%, #81d4fa 90%)',
+            },
+        }
+        
+
     }
 });
 
