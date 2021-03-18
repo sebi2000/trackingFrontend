@@ -25,6 +25,7 @@ class Register extends React.Component {
         axios.post('/users', user).then(response =>{
             console.log(response)
         })
+        this.props.history.push("/")
     }
 
     onChange = event =>{

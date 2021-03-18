@@ -19,7 +19,18 @@ class UserView extends React.Component{
     email : "",
     phone : "",
     company : "",
-    signature : ""
+    signature : "",
+    data: "",
+    height: 0,
+    width: 0
+  }
+
+  showDrawing = () =>{
+    this.setState({
+      data : localStorage.getItem("savedDrawing"),
+      height : 200,
+      width : 200
+  })
   }
 
   onChange = event => {
@@ -27,7 +38,14 @@ class UserView extends React.Component{
   }
 
   handleEntries = () =>{
-    let entry = {entries : this.state}
+    let entry = {entries : {
+      name : this.state.name,
+      surname : this.state.surname,
+      email : this.state.email,
+      phone : this.state.phone,
+      company : this.state.company,
+      signature : this.state.signature,
+    }}
     axios.post("/entries", entry).then(response => {
         console.log(response.data)
     })
@@ -40,7 +58,9 @@ class UserView extends React.Component{
       email : "",
       phone : "",
       company : "",
-      signature : ""
+      signature : "",
+      height: 0,
+      width: 0
   })
   }
 
@@ -65,9 +85,20 @@ class UserView extends React.Component{
             <div>
               <TextField onChange={this.onChange} id="outlined-basic" label="Company" variant="outlined" name="company" value={this.state.company}/>
             </div>
-            <div >
-              <TextField onChange={this.onChange} id="outlined-basic" label="Signature" variant="outlined" name="signature" value={this.state.signature}/>
-            </div>
+            
+        <div >
+             <Modal showDrawing={ this.showDrawing }/> 
+         
+            <CanvasDraw
+              canvasHeight={this.state.height}
+              canvasWidth={this.state.width}
+              disabled={true}
+              hideGrid={true}
+              saveData={this.state.data}
+              loadTimeOffset={10}
+            /> 
+         
+          </div>
             <div>
             <Button onClick={() => {this.handleEntries(); this.onNextClick();}} variant="contained" >
               Urmatorul

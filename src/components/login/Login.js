@@ -12,33 +12,6 @@ import axios from '../../utils/Axios.js';
 import CONSTANTS from '../../utils/Constants'
 import Header from '../common/Header'
 
-
-import Header from '../common/Header'
-
-
-  let useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: '100%', 
-      marginTop: theme.spacing(1),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  }));
-
-
-
-
   class Login extends React.Component {
     
     state = {
@@ -55,11 +28,20 @@ import Header from '../common/Header'
         axios.post('/auth', user).then(response => {
           const { status, code } = response.data
           if(status === CONSTANTS.MESSAGES.AUTH_SUCCESS && CONSTANTS.CODES.ACCESS === 202)
+          {
             console.log('User has successfully logged in')
+            this.props.history.push("/entriesList")
+          }
           else if(status === CONSTANTS.MESSAGES.USER_NOT_FOUND && CONSTANTS.CODES.FORBIDDEN === 403)
+          {
             console.log('Access forbidden. User was not found!')
+            alert("User not found!")
+          }
           else if(status === CONSTANTS.MESSAGES.INCORRECT_PASS && code === CONSTANTS.CODES.FORBIDDEN)
+          {
             console.log('Access forbidden. Incorrect password!')
+            alert("Incorrect password")
+          }
           else console.log('Unexpected error')
       })
       .catch(err =>{
@@ -116,7 +98,7 @@ import Header from '../common/Header'
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={ this.handleLogin }
+                onClick={() => {this.handleLogin();}}
               >
                 {CONSTANTS.LOGIN}
               </Button>
