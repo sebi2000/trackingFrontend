@@ -68,7 +68,17 @@ class UserView extends React.Component{
             <div >
               <TextField onChange={this.onChange} id="outlined-basic" label="Signature" variant="outlined" name="signature" value={this.state.signature}/>
             </div>
-            <Modal/>
+            <div >
+            {/* <Modal showDrawing={ showDrawing }/> */}
+{/* 
+            <CanvasDraw
+              canvasHeight={width}
+              canvasWidth={height}
+              disabled={true}
+              hideGrid={true}
+              saveData={data}
+            /> */}
+          </div>
             <div>
             <Button onClick={() => {this.handleEntries(); this.onNextClick();}} variant="contained" >
               Urmatorul

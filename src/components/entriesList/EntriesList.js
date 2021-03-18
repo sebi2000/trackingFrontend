@@ -69,6 +69,7 @@ componentDidMount() {
     return (
       <Paper >
         <Header/>
+        <fieldset>
         <TableContainer >
           <Table entriesList aria-label="Entries List">
             <TableHead>
@@ -105,6 +106,7 @@ componentDidMount() {
               </TableBody> 
             </Table>
           </TableContainer>
+          </fieldset>
         </Paper>
       
     );
