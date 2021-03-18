@@ -24,7 +24,7 @@ const theme = createMuiTheme({
 
         MuiButton :{
             root: {
-                backgroundColor: "#00695c",
+                backgroundColor: "#3f50b5",
                 color : "white",
             },
         },

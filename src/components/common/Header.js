@@ -1,5 +1,5 @@
 import React from 'react'
-import Logo from '../../assets/weSolvvoLogoMotto.jpeg'
+import Logo from '../../assets/weSolvvoLogoMotto.png'
 
 
 function Header(){

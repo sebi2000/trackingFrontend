@@ -4,14 +4,15 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import {createStyles, makeStyles, theme } from '@material-ui/core/styles';
+import {createStyles, makeStyles,ThemeProvider} from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom'
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import axios from '../../utils/Axios.js';
 import CONSTANTS from '../../utils/Constants'
 import Header from '../common/Header'
-
+import theme from '../../utils/Theme'
+  
   class Login extends React.Component {
     
     state = {
@@ -55,7 +56,7 @@ import Header from '../common/Header'
 
     render(){
       return (
-        
+        <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Header/>
@@ -70,7 +71,7 @@ import Header from '../common/Header'
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Adresa de email"
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -82,26 +83,14 @@ import Header from '../common/Header'
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="Parola"
                 type="password"
                 id="password"
                 autoComplete="current-password"
                 onChange = { this.onChange }
               />
-              <Button 
-              color="primary"
-              onClick={this.onRegisterButtonClick}>
-                  {CONSTANTS.REGISTER}
-              </Button>
-  
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                onClick={() => {this.handleLogin();}}
-              >
-                {CONSTANTS.LOGIN}
-              </Button>
+              <Button onClick={this.onRegisterButtonClick}>{CONSTANTS.REGISTER}</Button>
+              <Button fullWidth onClick={ this.handleLogin }>{CONSTANTS.LOGIN}</Button>
               
               <Grid container>
                 <Grid item>
@@ -110,6 +99,7 @@ import Header from '../common/Header'
             </form>
           </div>
         </Container>
+        </ThemeProvider>
       );
     }
   }
