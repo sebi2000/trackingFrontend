@@ -23,7 +23,7 @@ class Modal extends React.Component{
     return (
       <div>
         <Button variant="outlined" color="primary" onClick={() => this.handleClickOpen()}>
-          Sign here
+          Semneaza aici
         </Button>
         <Dialog
           open={this.state.open}

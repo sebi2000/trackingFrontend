@@ -85,7 +85,7 @@ class UserView extends React.Component{
             <TextField  variant="outlined" margin="normal" required fullWidth id="phone" label="Telefon" name="phone" autoComplete="phone" autoFocus onChange={ this.onChange }  value={this.state.phone}/>
             </div>
             <div>
-              <TextField onChange={this.onChange} id="outlined-basic" label="Companie" variant="outlined" name="company" value={this.state.company}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="company" label="Companie" name="company" autoComplete="company" autoFocus onChange={ this.onChange }  value={this.state.company}/>
             </div>
             
         <div >
@@ -102,7 +102,7 @@ class UserView extends React.Component{
          
           </div>
             <div>
-            <Button onClick={() => {this.handleEntries(); this.onNextClick();}}  >
+            <Button variant="contained" color="primary" onClick={() => {this.handleEntries(); this.onNextClick();}}  >
               Urmatorul
             </Button>
             </div>
