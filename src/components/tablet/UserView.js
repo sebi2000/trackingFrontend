@@ -1,15 +1,16 @@
 import React, {useState} from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import {withStyles} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import Header from '../common/Header'
-import Logo from '../../assets/weSolvvoLogoMotto.jpeg'
 import Modal from '../common/Modal'
 import CanvasDraw from 'react-canvas-draw'
 import axios from '../../utils/Axios'
 import { withRouter } from 'react-router-dom'
 import CONSTANTS from '../../utils/Constants'
-
+import {ThemeProvider} from '@material-ui/core/styles'
+import theme from '../../utils/Theme'
+//import Paper from '@material-ui/core/Paper'
 
 class UserView extends React.Component{
 
@@ -65,25 +66,26 @@ class UserView extends React.Component{
   }
 
   render(){
+
     return(
-        <div>
+      <ThemeProvider theme={theme}>
+
+            <Header/>
           <fieldset>
-            <img src={Logo} />
-          <fieldset>
             <div>
-              <TextField onChange={this.onChange} id="outlined-basic" label="Name" variant="outlined" name="name" value={this.state.name}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="name" label="Nume" name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
             </div>
             <div>
-              <TextField onChange={this.onChange} id="outlined-basic" label="Surname" variant="outlined" name="surname" value={this.state.surname}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label="Prenume" name="surname" autoComplete="surname" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
             </div>
             <div>
-              <TextField onChange={this.onChange} id="outlined-basic" label="Email" variant="outlined" name="email" value={this.state.email}/>
+              <TextField  variant="outlined" margin="normal" required fullWidth id="email" label="Adresa de email" name="email" autoComplete="email" autoFocus onChange={ this.onChange }  value={this.state.email}/>
             </div>
             <div>
-              <TextField onChange={this.onChange} id="outlined-basic" label="Phone" variant="outlined" name="phone" value={this.state.phone}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="phone" label="Telefon" name="phone" autoComplete="phone" autoFocus onChange={ this.onChange }  value={this.state.phone}/>
             </div>
             <div>
-              <TextField onChange={this.onChange} id="outlined-basic" label="Company" variant="outlined" name="company" value={this.state.company}/>
+              <TextField onChange={this.onChange} id="outlined-basic" label="Companie" variant="outlined" name="company" value={this.state.company}/>
             </div>
             
         <div >
@@ -100,13 +102,12 @@ class UserView extends React.Component{
          
           </div>
             <div>
-            <Button onClick={() => {this.handleEntries(); this.onNextClick();}} variant="contained" >
+            <Button onClick={() => {this.handleEntries(); this.onNextClick();}}  >
               Urmatorul
             </Button>
             </div>
           </fieldset>
-          </fieldset>
-        </div>
+      </ThemeProvider>
       )
   }
 }

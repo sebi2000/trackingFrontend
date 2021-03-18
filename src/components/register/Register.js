@@ -4,11 +4,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-//import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {ThemeProvider } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from '../../utils/Axios'
 import CONSTANTS from '../../utils/Constants'
 import Header from '../common/Header'
+import theme from '../../utils/Theme'
 
 class Register extends React.Component {
 
@@ -34,6 +35,7 @@ class Register extends React.Component {
 
     render() {
         return (
+            <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Header/>
@@ -49,7 +51,7 @@ class Register extends React.Component {
                             required
                             fullWidth
                             id="name"
-                            label="Name"
+                            label="Nume"
                             name="name"
                             autoComplete="name"
                             autoFocus
@@ -61,7 +63,7 @@ class Register extends React.Component {
                             required
                             fullWidth
                             name="surname"
-                            label="Surname"
+                            label="Prenume"
                             type="name"
                             id="surname"
                             autoComplete="name"
@@ -73,7 +75,7 @@ class Register extends React.Component {
                             required
                             fullWidth
                             id="email"
-                            label="Email Address"
+                            label="Adresa de email"
                             name="email"
                             autoComplete="email"
                             onChange={ this.onChange }
@@ -84,7 +86,7 @@ class Register extends React.Component {
                             required
                             fullWidth
                             name="phone"
-                            label="Phone Number"
+                            label="Nr. Telefon"
                             id="phone"
                             autoComplete="phone"
                             onChange={ this.onChange }
@@ -95,21 +97,14 @@ class Register extends React.Component {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="Parola"
                             type="password"
                             id="password"
                             autoComplete="current-password"
                             onChange={ this.onChange }
                         />
 
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={ this.handleRegister }
-                        >
-                            {CONSTANTS.REGISTER}
-                        </Button>
+                        <Button fullWidth onClick={ this.handleRegister }> {CONSTANTS.REGISTER}</Button>
 
                         <Grid container>
                             <Grid item>
@@ -118,6 +113,7 @@ class Register extends React.Component {
                     </form>
                 </div>
             </Container>
+            </ThemeProvider>
         )
     }
 }
