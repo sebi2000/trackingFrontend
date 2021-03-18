@@ -6,98 +6,77 @@ import Header from '../common/Header'
 import Logo from '../../assets/weSolvvoLogoMotto.jpeg'
 import Modal from '../common/Modal'
 import CanvasDraw from 'react-canvas-draw'
+import axios from '../../utils/Axios'
+import { withRouter } from 'react-router-dom'
+import CONSTANTS from '../../utils/Constants'
 
- class UserView extends React.Component {
+
+class UserView extends React.Component{
+
+  state ={
+    name : "",
+    surname : "",
+    email : "",
+    phone : "",
+    company : "",
+    signature : ""
+  }
 
   onChange = event => {
     this.setState({ [event.target.name] : event.target.value})
   }
 
-   render(){
-    return(
-      <fieldset>
-      <Header/>
-        <fieldset>
-            <TextField 
-             variant="outlined"
-             margin="normal"
-             required
-             fullWidth
-             id="name"
-             label="Name"
-             name="name"
-             autoComplete="name"
-             autoFocus
-             onChange={ this.onChange }
-             />
-           <TextField 
-             variant="outlined"
-             margin="normal"
-             required
-             fullWidth
-             id="surname"
-             label="Surname"
-             name="surname"
-             autoComplete="surname"
-             autoFocus
-             onChange={ this.onChange }
-             />
-            <TextField  
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                onChange={ this.onChange }
-              />
-           <TextField 
-             variant="outlined"
-             margin="normal"
-             required
-             fullWidth
-             id="phone"
-             label="Phone"
-             name="phone"
-             autoComplete="phone"
-             autoFocus
-             onChange={ this.onChange }
-             />
-           <TextField 
-             variant="outlined"
-             margin="normal"
-             required
-             fullWidth
-             id="company"
-             label="Company"
-             name="company"
-             autoComplete="company"
-             autoFocus
-             onChange={ this.onChange }
-             />
-          <div >
-            <Modal showDrawing={ showDrawing }/>
+  handleEntries = () =>{
+    let entry = {entries : this.state}
+    axios.post("/entries", entry).then(response => {
+        console.log(response.data)
+    })
+  }
 
-            <CanvasDraw
-              canvasHeight={width}
-              canvasWidth={height}
-              disabled={true}
-              hideGrid={true}
-              saveData={data}
-            />
-          </div>
-          <div>
-          <Button variant="contained" color="primary">
-            Next
-          </Button>
-          </div>
-        </fieldset>
-    </fieldset>
-    )
+  onNextClick = () =>{
+    this.setState({ 
+      name : "" ,
+      surname : "",
+      email : "",
+      phone : "",
+      company : "",
+      signature : ""
+  })
+  }
+
+  render(){
+    return(
+        <div>
+          <fieldset>
+            <img src={Logo} />
+          <fieldset>
+            <div>
+              <TextField onChange={this.onChange} id="outlined-basic" label="Name" variant="outlined" name="name" value={this.state.name}/>
+            </div>
+            <div>
+              <TextField onChange={this.onChange} id="outlined-basic" label="Surname" variant="outlined" name="surname" value={this.state.surname}/>
+            </div>
+            <div>
+              <TextField onChange={this.onChange} id="outlined-basic" label="Email" variant="outlined" name="email" value={this.state.email}/>
+            </div>
+            <div>
+              <TextField onChange={this.onChange} id="outlined-basic" label="Phone" variant="outlined" name="phone" value={this.state.phone}/>
+            </div>
+            <div>
+              <TextField onChange={this.onChange} id="outlined-basic" label="Company" variant="outlined" name="company" value={this.state.company}/>
+            </div>
+            <div >
+              <TextField onChange={this.onChange} id="outlined-basic" label="Signature" variant="outlined" name="signature" value={this.state.signature}/>
+            </div>
+            <div>
+            <Button onClick={() => {this.handleEntries(); this.onNextClick();}} variant="contained" >
+              Urmatorul
+            </Button>
+            </div>
+          </fieldset>
+          </fieldset>
+        </div>
+      )
   }
 }
-
-export default UserView
+export default withRouter(UserView)
