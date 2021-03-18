@@ -8,8 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import {useState} from "react"
-
+import { withStyles } from '@material-ui/core/styles'
 import axios from '../../utils/Axios'
 import Moment from 'react-moment'
 
@@ -31,6 +30,7 @@ const columns = [
   
   },
 ];
+
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -67,9 +67,9 @@ componentDidMount() {
 
   render() {
     return (
-      <Paper className={classes.root}>
+      <Paper >
         <Header/>
-        <TableContainer className={classes.container}>
+        <TableContainer >
           <Table entriesList aria-label="Entries List">
             <TableHead>
               <TableRow>
