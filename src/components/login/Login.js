@@ -4,15 +4,25 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import {createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {createStyles, makeStyles, theme } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 <<<<<<< HEAD
 import axios from '../../utils/Axios.js';
 import CONSTANTS from '../../utils/Constants'
+<<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import Header from '../common/Header'
 >>>>>>> refactor:rename header to common and import Header
+=======
+import Header from '../common/Header'
+=======
+import Header from '../common/Header'
+
+>>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
+
+>>>>>>> chore:small corrections
 
   let useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,8 +45,14 @@ import Header from '../common/Header'
   }));
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> chore:small corrections
+=======
+>>>>>>> 29c4b347e9405becb0a2f40e56db64c9bebdcec7
   class Login extends React.Component {
-
+    
     state = {
         email: "",
         password: ""
@@ -107,8 +123,10 @@ import Header from '../common/Header'
 
     render(){
       return (
+        
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+          <Header/>
           <div >
             <Typography component="h1" variant="h5">
             {CONSTANTS.LOGIN}
