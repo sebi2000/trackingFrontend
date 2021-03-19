@@ -89,8 +89,8 @@ import theme from '../../utils/Theme'
                 autoComplete="current-password"
                 onChange = { this.onChange }
               />
-              <Button variant="contained" onClick={this.onRegisterButtonClick}>{CONSTANTS.REGISTER}</Button>
-              <Button color="primary" variant="contained" fullWidth onClick={ this.handleLogin }>{CONSTANTS.LOGIN}</Button>
+              <Button  onClick={this.onRegisterButtonClick}>{CONSTANTS.REGISTER}</Button>
+              <Button  fullWidth onClick={ this.handleLogin }>{CONSTANTS.LOGIN}</Button>
               
               <Grid container>
                 <Grid item>

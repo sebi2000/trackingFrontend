@@ -101,7 +101,7 @@ class UserView extends React.Component{
        
           </div>
             <div>
-            <Button variant="contained" color="primary" onClick={() => { this.handleEntries(); this.onNextClick(); }}  >
+            <Button onClick={() => {this.handleEntries(); this.onNextClick();}}  >
               Urmatorul
             </Button>
             </div>

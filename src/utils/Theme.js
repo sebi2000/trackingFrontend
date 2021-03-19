@@ -4,7 +4,7 @@ const theme = createMuiTheme({
     overrides: {
         MuiTableCell: {
             head: {
-                fontSize: 17,
+                fontSize: 20,
                 //fontWeight: 'bold
                 backgroundColor: '#4db6ac',
                 color: 'black',
@@ -16,22 +16,22 @@ const theme = createMuiTheme({
 
         MuiTableRow: {
             root: {
-                '&:nth-of-type(odd)': {
+               // '&:nth-of-type(odd)': {
                   backgroundColor: '#b2dfdb',
-                }
+               // }
             },
         },
 
-        // MuiButton :{
-        //     root: {
-        //         backgroundColor: "#3f50b5",
-        //         color : "#f",
-        //     },
-        // },
+         MuiButton :{
+             root: {
+                 backgroundColor: "#3f50b5",
+                 color : "white",
+            },
+         },
 
         MuiPaper: {
             root : {
-                background: 'Linear-gradient(45deg, #b2dfdb 30%, #81d4fa 90%)',
+                background: 'Linear-gradient(45deg, #E0F2F1 30%, #E0F7FA 90%)',
             },
         }
         
