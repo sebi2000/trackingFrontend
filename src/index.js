@@ -15,8 +15,8 @@ function Root() {
                 <Route exact path="/" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/tablet" component={UserView} />
-                <Route exact path="/resetPass" component={ResetPass}/>
-                <Route exact path="/entriesList" component={EntriesList}/>
+                <Route exact path="/reset" component={ResetPass}/>
+                <Route exact path="/entries" component={EntriesList}/>
             </Switch>
         </BrowserRouter>
     )

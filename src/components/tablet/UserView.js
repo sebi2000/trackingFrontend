@@ -76,16 +76,16 @@ class UserView extends React.Component{
             <TextField  variant="outlined" margin="normal" required fullWidth id="name" label="Nume" name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label="Prenume" name="surname" autoComplete="surname" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label="Prenume" name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
             </div>
             <div>
-              <TextField  variant="outlined" margin="normal" required fullWidth id="email" label="Adresa de email" name="email" autoComplete="email" autoFocus onChange={ this.onChange }  value={this.state.email}/>
+              <TextField  variant="outlined" margin="normal" required fullWidth id="email" label="Adresa de email" name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="phone" label="Telefon" name="phone" autoComplete="phone" autoFocus onChange={ this.onChange }  value={this.state.phone}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="phone" label="Telefon" name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="company" label="Companie" name="company" autoComplete="company" autoFocus onChange={ this.onChange }  value={this.state.company}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="company" label="Companie" name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
             </div>
             
         <div >

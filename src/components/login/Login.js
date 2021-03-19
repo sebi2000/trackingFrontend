@@ -60,7 +60,7 @@ import theme from '../../utils/Theme'
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Header/>
-          <div >
+          <div>
             <Typography component="h1" variant="h5">
             {CONSTANTS.LOGIN}
             </Typography>
@@ -89,10 +89,8 @@ import theme from '../../utils/Theme'
                 autoComplete="current-password"
                 onChange = { this.onChange }
               />
-              <div>
-              <Button variant="contained" color="white" onClick={this.onRegisterButtonClick}>{CONSTANTS.REGISTER}</Button>
-              </div>
-              <Button variant="contained" color="primary" fullWidth onClick={ this.handleLogin }>{CONSTANTS.LOGIN}</Button>
+              <Button variant="contained" onClick={this.onRegisterButtonClick}>{CONSTANTS.REGISTER}</Button>
+              <Button color="primary" variant="contained" fullWidth onClick={ this.handleLogin }>{CONSTANTS.LOGIN}</Button>
               
               <Grid container>
                 <Grid item>

@@ -15,7 +15,7 @@ import Moment from 'react-moment'
 const columns = [
   { id: 'index', label: 'Index', },
   { id: 'name', label: 'Nume', minWidth: 170 },
-  { id: 'surename', label: 'Prenume', minWidth: 100 },
+  { id: 'surname', label: 'Prenume', minWidth: 100 },
   {
     id: 'data_intrare',
     label: 'Data intrare',
@@ -91,7 +91,7 @@ componentDidMount() {
                     <TableRow>
                             <TableCell>{index+1}</TableCell>
                             <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.surename}</TableCell>
+                            <TableCell>{entry.surname}</TableCell>
                             <TableCell>
                               <Moment format = "YYYY/MM/DD">
                                 {entry.data_intrare}
