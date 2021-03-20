@@ -6,7 +6,7 @@ const theme = createMuiTheme({
             head: {
                 fontSize: 20,
                 //fontWeight: 'bold
-                backgroundColor: '#4db6ac',
+                backgroundColor: 'white',
                 color: 'black',
             },
             body: {
@@ -17,7 +17,7 @@ const theme = createMuiTheme({
         MuiTableRow: {
             root: {
                // '&:nth-of-type(odd)': {
-                  backgroundColor: '#b2dfdb',
+                  backgroundColor: 'white',
                // }
             },
         },
