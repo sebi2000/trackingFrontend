@@ -31,7 +31,7 @@ import theme from '../../utils/Theme'
           if(status === CONSTANTS.MESSAGES.AUTH_SUCCESS && CONSTANTS.CODES.ACCESS === 202)
           {
             console.log('User has successfully logged in')
-            this.props.history.push("/entriesList")
+            this.props.history.push("/entries")
           }
           else if(status === CONSTANTS.MESSAGES.USER_NOT_FOUND && CONSTANTS.CODES.FORBIDDEN === 403)
           {

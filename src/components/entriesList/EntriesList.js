@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles'
 import axios from '../../utils/Axios'
 import Moment from 'react-moment'
+import CanvasDraw from "react-canvas-draw"
 
 const columns = [
   { id: 'index', label: 'Index', },
@@ -98,8 +99,15 @@ componentDidMount() {
                               </Moment>
                             </TableCell>
                             <TableCell>{entry.company}</TableCell>
-                            <TableCell align="center">                          
-                                {entry.signature}                         
+                            <TableCell align="center">
+                            <CanvasDraw
+                                canvasHeight={50}
+                                canvasWidth={50}
+                                disabled={true}
+                                hideGrid={true}
+                                saveData={entry.signature}
+                                loadTimeOffset={1}
+                            />                                                   
                             </TableCell>
 
                     </TableRow> )} 
