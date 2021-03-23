@@ -1,17 +1,17 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import Header from '../common/Header'
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { withStyles } from '@material-ui/core/styles'
 import axios from '../../utils/Axios'
 import Moment from 'react-moment'
 import CanvasDraw from 'react-canvas-draw'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Button } from '@material-ui/core';
 
 const columns = [
   { id: 'index', label: 'Index', },
@@ -31,28 +31,15 @@ const columns = [
   
   },
 ];
-
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: "#bdbdbd",
-    color: theme.palette.common.black,
-    fontSize: 15,
-  },
-
-}))(TableCell);
-
-
 class EntriesList extends React.Component {
-
   state = {
+    startDate:"",
     classes : "",
     page : "",
     rowsPerPage : "5",
     entries: []
-
-  }
-
+}
+ 
   getEntries = () => axios.get('/entries').then(response => {
     console.log("CDM",response.data)
     this.setState({entries : response.data})
@@ -70,6 +57,12 @@ componentDidMount() {
     return (
      <div>
         <Header/>
+        <div>
+        <Button>Filter</Button>
+        <Button>Export</Button>
+        <DatePicker  onSelect={this.handleDateSelect}  onChange={this.handleDateChange}/>
+        <DatePicker onSelect={this.handleDateSelect}  onChange={this.handleDateChange}/>
+        </div>
         <fieldset>
         <TableContainer >
           <Table entriesList aria-label="Entries List">
