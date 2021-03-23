@@ -10,7 +10,6 @@ import { withRouter } from 'react-router-dom'
 import CONSTANTS from '../../utils/Constants'
 import {ThemeProvider} from '@material-ui/core/styles'
 import theme from '../../utils/Theme'
-//import Paper from '@material-ui/core/Paper'
 
 class UserView extends React.Component{
 
@@ -21,16 +20,13 @@ class UserView extends React.Component{
     phone : "",
     company : "",
     signature : "",
-    data: "",
-    height: 0,
-    width: 0
+    show: false
   }
 
   showDrawing = () =>{
     this.setState({
-      data : localStorage.getItem("savedDrawing"),
-      height : 200,
-      width : 200
+      signature: localStorage.getItem("savedDrawing"),
+      show : true,
   })
   }
 
@@ -50,6 +46,7 @@ class UserView extends React.Component{
     axios.post("/entries", entry).then(response => {
         console.log(response.data)
     })
+
   }
 
   onNextClick = () =>{
@@ -59,14 +56,11 @@ class UserView extends React.Component{
       email : "",
       phone : "",
       company : "",
-      signature : "",
-      height: 0,
-      width: 0
+      show: false
   })
   }
 
   render(){
-
     return(
       <ThemeProvider theme={theme}>
 
@@ -88,21 +82,26 @@ class UserView extends React.Component{
             <TextField  variant="outlined" margin="normal" required fullWidth id="company" label="Companie" name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
             </div>
             
-        <div >
-             <Modal showDrawing={ this.showDrawing }/> 
-         
-            <CanvasDraw
-              canvasHeight={this.state.height}
-              canvasWidth={this.state.width}
+          <div>
+            <Modal showDrawing={ this.showDrawing }/> 
+
+            {this.state.show ?
+              <CanvasDraw
+              canvasHeight={200}
+              canvasWidth={200}
               disabled={true}
               hideGrid={true}
-              saveData={this.state.data}
-              loadTimeOffset={10}
-            /> 
-         
+              ref={canvasDraw => (this.loadableCanvas = canvasDraw)}
+              saveData={localStorage.getItem("savedDrawing")}
+              loadTimeOffset={2}
+            />
+            : null
+          } 
+           
+       
           </div>
             <div>
-            <Button variant="contained" color="primary" onClick={() => {this.handleEntries(); this.onNextClick();}}  >
+            <Button variant="contained" color="primary" onClick={() => { this.handleEntries(); this.onNextClick(); }}  >
               Urmatorul
             </Button>
             </div>
