@@ -6,10 +6,12 @@ import ResetPass from './components/resetPass/ResetPass'
 import Register from './components/register/Register'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import EntriesList from './components/entriesList/EntriesList'
-
+import theme from '../src/utils/Theme'
+import {ThemeProvider} from '@material-ui/core/styles'
 
 function Root() {
     return (
+        <ThemeProvider theme={theme}>
         <BrowserRouter>
             <Switch>
                 <Route exact path="/" component={Login} />
@@ -19,6 +21,7 @@ function Root() {
                 <Route exact path="/entries" component={EntriesList}/>
             </Switch>
         </BrowserRouter>
+        </ThemeProvider>
     )
 }
 

@@ -4,12 +4,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import {ThemeProvider } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from '../../utils/Axios'
 import CONSTANTS from '../../utils/Constants'
-import Header from '../common/Header'
-import theme from '../../utils/Theme'
+ import Header from '../common/Header'
 
 class Register extends React.Component {
 
@@ -35,7 +33,7 @@ class Register extends React.Component {
 
     render() {
         return (
-            <ThemeProvider theme={theme}>
+            <div>
                  <Header/>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -113,8 +111,8 @@ class Register extends React.Component {
                     </form>
                 </div>
             </Container>
-            </ThemeProvider>
-        )
+            </div>
+          )
     }
 }
 
