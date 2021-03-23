@@ -68,7 +68,10 @@ class EntriesList extends React.Component {
   }
 
   handleChangeRowsPerPage = (event) =>{
-    this.setState({rowsPerPage : parseInt(event.target.value, 10)}, () =>{
+    this.setState({
+      rowsPerPage : parseInt(event.target.value, 10),
+      page : 0
+    }, () =>{
       this.getEntries(this.state.page, this.state.rowsPerPage)
     })
     
