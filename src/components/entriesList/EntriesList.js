@@ -41,12 +41,17 @@ class EntriesList extends React.Component {
     rowsPerPage : "5",
     entries: [],
     startDate : "",
-    endDate : ""
+    endDate : "",
+    count : 0
 }
  
+
   getEntries = (page, rows) =>{
     axios.get('/entries/?page='+ page + '&rows=' + rows).then(response => {
-      this.setState({entries : response.data})
+      this.setState({
+        entries : response.data[0],
+        count : response.data[1]
+       })
     }).catch(err => {
       console.log(err)
     })
@@ -130,7 +135,7 @@ class EntriesList extends React.Component {
           </TableContainer>
           <TablePagination
                 component="div"
-                count={20}
+                count={this.state.count}
                 rowsPerPageOptions = {[5, 10, 25]}
                 page={this.state.page}
                 onChangePage={this.handleChangePage}
