@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/core/styles'
 import axios from '../../utils/Axios'
 import Moment from 'react-moment'
-import CanvasDraw from "react-canvas-draw"
+import CanvasDraw from 'react-canvas-draw'
 
 const columns = [
   { id: 'index', label: 'Index', },
