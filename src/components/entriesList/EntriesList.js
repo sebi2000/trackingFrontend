@@ -13,6 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Button  from '@material-ui/core/Button';
 import CONSTANTS from '../../utils/Constants';
+import TablePagination from '@material-ui/core/TablePagination';
 
 const columns = [
   { id: 'index', label: 'Index', },
@@ -43,18 +44,30 @@ class EntriesList extends React.Component {
     endDate : ""
 }
  
-  getEntries = () => axios.get('/entries').then(response => {
-    console.log("CDM",response.data)
-    this.setState({entries : response.data})
-    
-    console.log("ENTRIES",this.state.entries)
+  getEntries = (page, rows) =>{
+    axios.get('/entries/?page='+ page + '&rows=' + rows).then(response => {
+      this.setState({entries : response.data})
     }).catch(err => {
       console.log(err)
     })
+  }
 
-componentDidMount() {
-  this.getEntries()
-}
+  componentDidMount() {
+    this.getEntries(this.state.page, this.state.rowsPerPage)
+  }
+
+  handleChangePage = (event, newPage) =>{
+    this.setState({page : newPage}, () => {
+      this.getEntries(this.state.page, this.state.rowsPerPage)
+     })
+  }
+
+  handleChangeRowsPerPage = (event) =>{
+    this.setState({rowsPerPage : parseInt(event.target.value, 10)}, () =>{
+      this.getEntries(this.state.page, this.state.rowsPerPage)
+    })
+    
+  }
 
   render() {
     const styles={
@@ -91,7 +104,7 @@ componentDidMount() {
                   {this.state.entries.map((entry, index) => 
                   
                     <TableRow>
-                            <TableCell>{index+1}</TableCell>
+                            <TableCell>{this.state.page * this.state.rowsPerPage + index + 1}</TableCell>
                             <TableCell>{entry.name}</TableCell>
                             <TableCell>{entry.surname}</TableCell>
                             <TableCell>
@@ -115,6 +128,15 @@ componentDidMount() {
               </TableBody> 
             </Table>
           </TableContainer>
+          <TablePagination
+                component="div"
+                count={20}
+                rowsPerPageOptions = {[5, 10, 25]}
+                page={this.state.page}
+                onChangePage={this.handleChangePage}
+                rowsPerPage={this.state.rowsPerPage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+            />
           </fieldset>
     </div>
     )
