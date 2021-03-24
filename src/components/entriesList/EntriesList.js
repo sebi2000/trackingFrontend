@@ -1,4 +1,4 @@
-import React ,{useState} from 'react'
+import React from 'react'
 import Header from '../common/Header'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -31,9 +31,9 @@ const columns = [
   
   },
 ];
+
 class EntriesList extends React.Component {
   state = {
-    startDate:"",
     classes : "",
     page : "",
     rowsPerPage : "5",
@@ -54,10 +54,15 @@ componentDidMount() {
 }
 
   render() {
+    const styles={
+    justifyContent: 'flex-end',
+    display: 'flex',
+    paddingBottom: '20px'
+    }
     return (
      <div>
         <Header/>
-        <div>
+        <div style={styles}>
         <Button>Filter</Button>
         <Button>Export</Button>
         <DatePicker  onSelect={this.handleDateSelect}  onChange={this.handleDateChange}/>
