@@ -7,7 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import axios from '../../utils/Axios'
 import CONSTANTS from '../../utils/Constants'
- import Header from '../common/Header'
+import Header from '../common/Header'
+import theme from '../../utils/Theme'
+import validator from 'validator'
 
 class Register extends React.Component {
 
@@ -20,11 +22,22 @@ class Register extends React.Component {
     }
 
     handleRegister = () => {
-        let user = this.state
-        axios.post('/users', user).then(response =>{
-            console.log(response)
-        })
-        this.props.history.push("/")
+
+        let surnameIsValid = validator.isAlpha(this.state.surname)
+        let nameIsValid = validator.isAlpha(this.state.name)
+        let emailIsValid = validator.isEmail(this.state.email)
+        let phoneIsValid = validator.isNumeric(this.state.phone)
+        let passwordIsValid = !validator.isEmpty(this.state.password)
+
+        if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && passwordIsValid)
+        {
+            let user = {user : this.state}
+            axios.post('/users', user).then(response =>{
+                console.log(response)
+            })
+            this.props.history.push("/")
+        }
+        else alert('Introdu datele in mod corespunzator')
     }
 
     onChange = event =>{
@@ -50,8 +63,8 @@ class Register extends React.Component {
                             fullWidth
                             id="name"
                             label="Nume"
-                            name="name"
-                            autoComplete="name"
+                            name="surname"
+                            autoComplete="surname"
                             autoFocus
                             onChange={ this.onChange }
                         />
@@ -60,10 +73,10 @@ class Register extends React.Component {
                             margin="normal"
                             required
                             fullWidth
-                            name="surname"
+                            name="name"
                             label="Prenume"
                             type="name"
-                            id="surname"
+                            id="name"
                             autoComplete="name"
                             onChange={ this.onChange }
                         />
