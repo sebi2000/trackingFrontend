@@ -29,6 +29,7 @@ const theme = createMuiTheme({
                  backgroundColor: "#3f50b5",
                  color : "white",
             },
+            
          },
 
         MuiPaper: {

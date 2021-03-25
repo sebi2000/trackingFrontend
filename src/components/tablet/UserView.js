@@ -40,6 +40,7 @@ class UserView extends React.Component{
       phone : this.state.phone,
       company : this.state.company,
       signature : this.state.signature,
+      date: new Date()
     }}
     axios.post("/entries", entry).then(response => {
         console.log(response.data)

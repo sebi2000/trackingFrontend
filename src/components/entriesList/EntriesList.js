@@ -37,7 +37,9 @@ class EntriesList extends React.Component {
     classes : "",
     page : "",
     rowsPerPage : "5",
-    entries: []
+    entries: [],
+    startDate : "",
+    endDate : ""
 }
  
   getEntries = () => axios.get('/entries').then(response => {
@@ -65,8 +67,8 @@ componentDidMount() {
         <div style={styles}>
         <Button>Filter</Button>
         <Button>Export</Button>
-        <DatePicker  onSelect={this.handleDateSelect}  onChange={this.handleDateChange}/>
-        <DatePicker onSelect={this.handleDateSelect}  onChange={this.handleDateChange}/>
+        <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
+        <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
         </div>
         <fieldset>
         <TableContainer >
@@ -92,9 +94,9 @@ componentDidMount() {
                             <TableCell>{entry.name}</TableCell>
                             <TableCell>{entry.surname}</TableCell>
                             <TableCell>
-                              <Moment format = "YYYY/MM/DD">
-                                {entry.data_intrare}
-                              </Moment>
+                               <Moment format = "YYYY/MM/DD"> 
+                                {entry.date}
+                             </Moment> 
                             </TableCell>
                             <TableCell>{entry.company}</TableCell>
                             <TableCell align="center">
