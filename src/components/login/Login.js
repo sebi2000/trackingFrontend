@@ -1,17 +1,14 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import {createStyles, makeStyles,ThemeProvider} from '@material-ui/core/styles';
+import React from 'react'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 import { withRouter } from 'react-router-dom'
-import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import axios from '../../utils/Axios.js';
+import Container from '@material-ui/core/Container'
+import axios from '../../utils/Axios.js'
 import CONSTANTS from '../../utils/Constants'
 import Header from '../common/Header'
-import theme from '../../utils/Theme'
   
   class Login extends React.Component {
     
@@ -56,7 +53,7 @@ import theme from '../../utils/Theme'
 
     render(){
       return (
-        <ThemeProvider theme={theme}>
+        <div>
         <Header/>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -99,7 +96,7 @@ import theme from '../../utils/Theme'
             </form>
           </div>
         </Container>
-        </ThemeProvider>
+        </div>
       );
     }
   }

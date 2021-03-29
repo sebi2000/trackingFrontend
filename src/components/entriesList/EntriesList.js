@@ -1,17 +1,18 @@
 import React from 'react'
 import Header from '../common/Header'
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { withStyles } from '@material-ui/core/styles'
 import axios from '../../utils/Axios'
 import Moment from 'react-moment'
 import CanvasDraw from 'react-canvas-draw'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Button  from '@material-ui/core/Button';
+import CONSTANTS from '../../utils/Constants';
 
 const columns = [
   { id: 'index', label: 'Index', },
@@ -32,27 +33,16 @@ const columns = [
   },
 ];
 
-
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: "#bdbdbd",
-    color: theme.palette.common.black,
-    fontSize: 15,
-  },
-
-}))(TableCell);
-
-
 class EntriesList extends React.Component {
-
   state = {
     classes : "",
     page : "",
     rowsPerPage : "5",
-    entries: []
-
-  }
-
+    entries: [],
+    startDate : "",
+    endDate : ""
+}
+ 
   getEntries = () => axios.get('/entries').then(response => {
     console.log("CDM",response.data)
     this.setState({entries : response.data})
@@ -67,9 +57,20 @@ componentDidMount() {
 }
 
   render() {
+    const styles={
+    justifyContent: 'flex-end',
+    display: 'flex',
+    paddingBottom: '20px'
+    }
     return (
      <div>
         <Header/>
+        <div style={styles}>
+        <Button>Filter</Button>
+        <Button>Export</Button>
+        <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
+        <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
+        </div>
         <fieldset>
         <TableContainer >
           <Table entriesList aria-label="Entries List">
@@ -94,9 +95,9 @@ componentDidMount() {
                             <TableCell>{entry.name}</TableCell>
                             <TableCell>{entry.surname}</TableCell>
                             <TableCell>
-                              <Moment format = "YYYY/MM/DD">
-                                {entry.data_intrare}
-                              </Moment>
+                               <Moment format = {CONSTANTS.DATE_FORMAT}> 
+                                {entry.date}
+                             </Moment> 
                             </TableCell>
                             <TableCell>{entry.company}</TableCell>
                             <TableCell align="center">

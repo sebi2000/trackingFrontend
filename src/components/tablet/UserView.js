@@ -1,13 +1,11 @@
-import React, {useState} from 'react'
+import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import {makeStyles} from '@material-ui/core/styles'
 import Header from '../common/Header'
 import Modal from '../common/Modal'
 import CanvasDraw from 'react-canvas-draw'
 import axios from '../../utils/Axios'
 import { withRouter } from 'react-router-dom'
-import CONSTANTS from '../../utils/Constants'
 
 class UserView extends React.Component{
 
@@ -40,6 +38,7 @@ class UserView extends React.Component{
       phone : this.state.phone,
       company : this.state.company,
       signature : this.state.signature,
+      date: new Date()
     }}
     axios.post("/entries", entry).then(response => {
         console.log(response.data)

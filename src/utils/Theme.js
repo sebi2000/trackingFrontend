@@ -24,9 +24,12 @@ const theme = createMuiTheme({
 
          MuiButton :{
              root: {
+                 marginTop:"10px",
+                 marginRight:"10px",
                  backgroundColor: "#3f50b5",
                  color : "white",
             },
+            
          },
 
         MuiPaper: {
