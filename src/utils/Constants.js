@@ -3,6 +3,7 @@ const CONSTANTS = {
   FRONTEND_URL : 'http://localhost:3000',
   LOGIN : 'Log In',
   REGISTER : 'Register',
+  DATE_FORMAT:'YYYY/MM/DD',
   MESSAGES: {
     USER_NOT_FOUND: 'User not found',
     AUTH_SUCCESS: 'Authentication was successful',

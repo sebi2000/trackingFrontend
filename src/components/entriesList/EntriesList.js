@@ -12,6 +12,7 @@ import CanvasDraw from 'react-canvas-draw'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Button  from '@material-ui/core/Button';
+import CONSTANTS from '../../utils/Constants';
 
 const columns = [
   { id: 'index', label: 'Index', },
@@ -94,7 +95,7 @@ componentDidMount() {
                             <TableCell>{entry.name}</TableCell>
                             <TableCell>{entry.surname}</TableCell>
                             <TableCell>
-                               <Moment format = "YYYY/MM/DD"> 
+                               <Moment format = {CONSTANTS.DATE_FORMAT}> 
                                 {entry.date}
                              </Moment> 
                             </TableCell>
