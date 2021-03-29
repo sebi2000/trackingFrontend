@@ -12,7 +12,9 @@ const CONSTANTS = {
   CODES: {
     ACCESS: 202,
     FORBIDDEN : 403
-}
+  },
+  PARSE_INT_RADIX: 10,
+  ROWS_PER_PAGE_ARRAY : [5, 10, 25] 
 }
 export default CONSTANTS
     
