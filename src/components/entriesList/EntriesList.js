@@ -68,7 +68,7 @@ componentDidMount() {
 
   render() {
     return (
-      <Paper >
+     <div>
         <Header/>
         <fieldset>
         <TableContainer >
@@ -115,9 +115,8 @@ componentDidMount() {
             </Table>
           </TableContainer>
           </fieldset>
-        </Paper>
-      
-    );
+    </div>
+    )
   }
 }
 

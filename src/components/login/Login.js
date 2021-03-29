@@ -57,9 +57,9 @@ import theme from '../../utils/Theme'
     render(){
       return (
         <ThemeProvider theme={theme}>
+        <Header/>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
-          <Header/>
           <div>
             <Typography component="h1" variant="h5">
             {CONSTANTS.LOGIN}
@@ -89,8 +89,8 @@ import theme from '../../utils/Theme'
                 autoComplete="current-password"
                 onChange = { this.onChange }
               />
-              <Button variant="contained" onClick={this.onRegisterButtonClick}>{CONSTANTS.REGISTER}</Button>
-              <Button color="primary" variant="contained" fullWidth onClick={ this.handleLogin }>{CONSTANTS.LOGIN}</Button>
+              <Button  onClick={this.onRegisterButtonClick}>{CONSTANTS.REGISTER}</Button>
+              <Button  fullWidth onClick={ this.handleLogin }>{CONSTANTS.LOGIN}</Button>
               
               <Grid container>
                 <Grid item>

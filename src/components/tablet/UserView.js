@@ -8,8 +8,6 @@ import CanvasDraw from 'react-canvas-draw'
 import axios from '../../utils/Axios'
 import { withRouter } from 'react-router-dom'
 import CONSTANTS from '../../utils/Constants'
-import {ThemeProvider} from '@material-ui/core/styles'
-import theme from '../../utils/Theme'
 
 class UserView extends React.Component{
 
@@ -62,8 +60,7 @@ class UserView extends React.Component{
 
   render(){
     return(
-      <ThemeProvider theme={theme}>
-
+           <div>
             <Header/>
           <fieldset>
             <div>
@@ -101,12 +98,12 @@ class UserView extends React.Component{
        
           </div>
             <div>
-            <Button variant="contained" color="primary" onClick={() => { this.handleEntries(); this.onNextClick(); }}  >
+            <Button onClick={() => {this.handleEntries(); this.onNextClick();}}  >
               Urmatorul
             </Button>
             </div>
           </fieldset>
-      </ThemeProvider>
+          </div>
       )
   }
 }
