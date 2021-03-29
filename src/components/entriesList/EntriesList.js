@@ -14,6 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Button  from '@material-ui/core/Button';
 import CONSTANTS from '../../utils/Constants';
 import TablePagination from '@material-ui/core/TablePagination';
+import CONSTANTS from '../../utils/Constants'
 
 const columns = [
   { id: 'index', label: 'Index', },
@@ -69,7 +70,7 @@ class EntriesList extends React.Component {
 
   handleChangeRowsPerPage = (event) =>{
     this.setState({
-      rowsPerPage : parseInt(event.target.value, 10),
+      rowsPerPage : parseInt(event.target.value, CONSTANTS.PARSE_INT_RADIX),
       page : 0
     }, () =>{
       this.getEntries(this.state.page, this.state.rowsPerPage)
@@ -139,7 +140,7 @@ class EntriesList extends React.Component {
           <TablePagination
                 component="div"
                 count={this.state.count}
-                rowsPerPageOptions = {[5, 10, 25]}
+                rowsPerPageOptions = {CONSTANTS.ROWS_PER_PAGE_ARRAY}
                 page={this.state.page}
                 onChangePage={this.handleChangePage}
                 rowsPerPage={this.state.rowsPerPage}
