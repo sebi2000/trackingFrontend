@@ -37,11 +37,11 @@ const columns = [
 class EntriesList extends React.Component {
   state = {
     classes : "",
-    page : "",
-    rowsPerPage : "5",
+    page : 0,
+    rowsPerPage : 5,
     entries: [],
-    startDate : "",
-    endDate : "",
+    startDate : new Date(),
+    endDate : new Date(),
     count : 0
 }
  
@@ -71,17 +71,17 @@ class EntriesList extends React.Component {
     this.setState({
       rowsPerPage : parseInt(event.target.value, CONSTANTS.PARSE_INT_RADIX),
       page : 0
-    }, () =>{
+    }, () => {
       this.getEntries(this.state.page, this.state.rowsPerPage)
     })
     
   }
 
   render() {
-    const styles={
-    justifyContent: 'flex-end',
-    display: 'flex',
-    paddingBottom: '20px'
+    const styles= {
+      justifyContent: 'flex-end',
+      display: 'flex',
+      paddingBottom: '20px'
     }
     return (
      <div>
