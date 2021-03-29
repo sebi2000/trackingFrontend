@@ -11,7 +11,7 @@ import Moment from 'react-moment'
 import CanvasDraw from 'react-canvas-draw'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { Button } from '@material-ui/core';
+import Button  from '@material-ui/core/Button';
 
 const columns = [
   { id: 'index', label: 'Index', },
