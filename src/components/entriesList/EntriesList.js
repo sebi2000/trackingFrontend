@@ -1,20 +1,19 @@
 import React from 'react'
 import Header from '../common/Header'
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 import axios from '../../utils/Axios'
 import Moment from 'react-moment'
 import CanvasDraw from 'react-canvas-draw'
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import Button  from '@material-ui/core/Button';
-import CONSTANTS from '../../utils/Constants';
-import TablePagination from '@material-ui/core/TablePagination';
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import Button  from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
+import TablePagination from '@material-ui/core/TablePagination'
 
 const columns = [
   { id: 'index', label: 'Index', },
