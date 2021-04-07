@@ -14,6 +14,8 @@ import "react-datepicker/dist/react-datepicker.css"
 import Button  from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
 import TablePagination from '@material-ui/core/TablePagination'
+import { CSVLink, CSV} from 'react-csv'
+
 
 const columns = [
   { id: 'index', label: 'Index', },
@@ -32,6 +34,13 @@ const columns = [
     label: 'Semnatura',
   
   },
+];
+
+const csvData = [
+  ["firstname", "lastname", "email"],
+  ["Ahmed", "Tomi", "ah@smthing.co.com"],
+  ["Raed", "Labes", "rl@smthing.co.com"],
+  ["Yezzi", "Min l3b", "ymin@cocococo.com"]
 ];
 
 class EntriesList extends React.Component {
@@ -79,7 +88,7 @@ class EntriesList extends React.Component {
 
   render() {
     const styles= {
-      justifyContent: 'flex-end',
+      justifyContent: 'flex-end', 
       display: 'flex',
       paddingBottom: '20px'
     }
@@ -88,7 +97,10 @@ class EntriesList extends React.Component {
         <Header/>
         <div style={styles}>
         <Button>Filter</Button>
-        <Button>Export</Button>
+        <Button>
+        <CSVLink data={csvData}>Export</CSVLink>
+        </Button>
+        
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
         </div>
