@@ -49,7 +49,7 @@ Thumbs.db
 *.mov
 *.wmv
 
-Dockerfile
+.Dockerfile
 .dockerignore
 
 
