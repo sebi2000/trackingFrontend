@@ -9,6 +9,8 @@ import Container from '@material-ui/core/Container'
 import axios from '../../utils/Axios.js'
 import CONSTANTS from '../../utils/Constants'
 import Header from '../common/Header'
+import { StatusCodes } from 'http-status-codes'
+import validator from 'validator'
   
   class Login extends React.Component {
     
@@ -22,29 +24,32 @@ import Header from '../common/Header'
     }
 
     handleLogin = () => {
-        let user = {user : this.state}
-        axios.post('/auth', user).then(response => {
-          const { status, code } = response.data
-          if(status === CONSTANTS.MESSAGES.AUTH_SUCCESS && CONSTANTS.CODES.ACCESS === 202)
-          {
-            console.log('User has successfully logged in')
-            this.props.history.push("/entries")
-          }
-          else if(status === CONSTANTS.MESSAGES.USER_NOT_FOUND && CONSTANTS.CODES.FORBIDDEN === 403)
-          {
-            console.log('Access forbidden. User was not found!')
-            alert("User not found!")
-          }
-          else if(status === CONSTANTS.MESSAGES.INCORRECT_PASS && code === CONSTANTS.CODES.FORBIDDEN)
-          {
-            console.log('Access forbidden. Incorrect password!')
-            alert("Incorrect password")
-          }
-          else console.log('Unexpected error')
-      })
-      .catch(err =>{
-        console.log(err)
-      })
+
+        let emailIsValid = validator.isEmail(this.state.email)
+        let passIsValid = !(validator.isEmpty(this.state.password))
+            
+        if(emailIsValid && passIsValid){
+          let user = {user : this.state}
+          axios.post('/auth', user).then(response => {
+            const { status, code } = response.data
+           
+            if(code === StatusCodes.OK && status === CONSTANTS.MESSAGES.AUTH_SUCCESS)
+                this.props.history.push("/entries")
+            else if(code=== StatusCodes.FORBIDDEN && status === CONSTANTS.MESSAGES.USER_NOT_FOUND)
+                alert("User not found!")
+            else if(code === StatusCodes.FORBIDDEN && status === CONSTANTS.MESSAGES.INCORRECT_PASS)
+                alert("Incorrect password")
+            else alert("Unexpected error")
+          })
+          .catch(err =>{
+            console.log(err)
+          })
+        }
+        else{
+          if(!emailIsValid)
+            alert("Enter a valid email!")
+          else alert("Password should not be empty!")
+        }
     }
 
     onRegisterButtonClick = () =>{
