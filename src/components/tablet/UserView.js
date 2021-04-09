@@ -6,6 +6,8 @@ import Modal from '../common/Modal'
 import CanvasDraw from 'react-canvas-draw'
 import axios from '../../utils/Axios'
 import { withRouter } from 'react-router-dom'
+import CONSTANTS from '../../utils/Constants'
+import validator from 'validator'
 
 class UserView extends React.Component{
 
@@ -44,6 +46,28 @@ class UserView extends React.Component{
         console.log(response.data)
     })
 
+    let surnameIsValid = validator.isAlpha(this.state.surname)
+    let nameIsValid = validator.isAlpha(this.state.name)
+    let emailIsValid = validator.isEmail(this.state.email)
+    let phoneIsValid = validator.isNumeric(this.state.phone)
+    let companyIsValid = validator.isAlpha(this.state.company)
+    let signatureIsValid = !validator.isEmpty(this.state.signature)
+    
+    if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && companyIsValid && signatureIsValid)
+    {
+      let entry = {entries : {
+        name : this.state.name,
+        surname : this.state.surname,
+        email : this.state.email,
+        phone : this.state.phone,
+        company : this.state.company,
+        signature : this.state.signature,
+      }}
+      axios.post("/entries", entry).then(response => {
+          console.log(response.data)
+      })
+    }
+    else alert("Introdu datele in mod corespunzator")
   }
 
   onNextClick = () =>{
@@ -63,10 +87,10 @@ class UserView extends React.Component{
             <Header/>
           <fieldset>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="name" label="Nume" name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="name" label="Nume" name="surname" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label="Prenume" name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label="Prenume" name="name" autoComplete="surname"  onChange={ this.onChange }  value={this.state.name}/>
             </div>
             <div>
               <TextField  variant="outlined" margin="normal" required fullWidth id="email" label="Adresa de email" name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
