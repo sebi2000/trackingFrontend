@@ -14,24 +14,17 @@ import "react-datepicker/dist/react-datepicker.css"
 import Button  from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
 import TablePagination from '@material-ui/core/TablePagination'
+import { CSVLink } from "react-csv"
 
 const columns = [
   { id: 'index', label: 'Index', },
   { id: 'name', label: 'Nume', minWidth: 170 },
   { id: 'surname', label: 'Prenume', minWidth: 100 },
-  {
-    id: 'data_intrare',
-    label: 'Data intrare',
-  },
-  {
-    id: 'company',
-    label: 'Companie',
-  },
-  {
-    id: 'signature',
-    label: 'Semnatura',
-  
-  },
+  { id: 'email', label: 'Email', minWidth: 100 },
+  { id: 'data_intrare', label: 'Data intrare', minWidth: 100},
+  { id: 'company', label: 'Companie', minWidth: 100},
+  { id: 'phone', label: 'Telefon', minWidth: 100 },
+  { id: 'signature', label: 'Semnatura', minWidth: 100}
 ];
 
 class EntriesList extends React.Component {
@@ -42,17 +35,30 @@ class EntriesList extends React.Component {
     entries: [],
     startDate : new Date(2021,0,1),
     endDate : new Date(),
-    count : 0
+    count : 0,
+    csvData : []
 }
  
-
   getEntries = (page, rows) =>{
-    console.log(this.state.startDate)
-    console.log(this.state.endDate)
     axios.get('/entries/?page='+ page + '&rows=' + rows + '&start=' + this.state.startDate + '&end=' + this.state.endDate).then(response => {
+     
+      let aux=[]
+      response.data[0].map((entry, index)=>{
+        
+        aux[index] = { 
+          'Nume' : entry.name, 
+          'Prenume' : entry.surname, 
+          'Email' : entry.email,
+          'Telefon' : entry.phone,
+          'Companie' : entry.company,
+          'Data intrare' : entry.date
+        }
+      })
+        
       this.setState({
         entries : response.data[0],
-        count : response.data[1]
+        count : response.data[1],
+        csvData : aux
        })
     }).catch(err => {
       console.log(err)
@@ -78,8 +84,7 @@ class EntriesList extends React.Component {
     })
     
   }
-
-
+  
   render() {
     const styles= {
       justifyContent: 'flex-end',
@@ -91,7 +96,7 @@ class EntriesList extends React.Component {
         <Header/>
         <div style={styles}>
         <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
-        <Button>Export</Button>
+        <Button><CSVLink data={this.state.csvData} >Export</CSVLink></Button>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
         </div>
@@ -105,7 +110,6 @@ class EntriesList extends React.Component {
                     key={column.id}
                     align={column.align}
                     style={{ minWidth: column.minWidth }}>
-                      
                     {column.label}
                   </TableCell>
                 ))}
@@ -113,17 +117,18 @@ class EntriesList extends React.Component {
             </TableHead>
               <TableBody>
                   {this.state.entries.map((entry, index) => 
-                  
                     <TableRow>
                             <TableCell>{this.state.page * this.state.rowsPerPage + index + 1}</TableCell>
                             <TableCell>{entry.name}</TableCell>
                             <TableCell>{entry.surname}</TableCell>
+                            <TableCell>{entry.email}</TableCell>
                             <TableCell>
                                <Moment format = {CONSTANTS.DATE_FORMAT}> 
                                 {entry.date}
                              </Moment> 
                             </TableCell>
                             <TableCell>{entry.company}</TableCell>
+                            <TableCell>{entry.phone}</TableCell>
                             <TableCell align="center">
                             <CanvasDraw
                                 canvasHeight={50}
@@ -134,7 +139,6 @@ class EntriesList extends React.Component {
                                 loadTimeOffset={1}
                             />                                                   
                             </TableCell>
-
                     </TableRow> )} 
               </TableBody> 
             </Table>
