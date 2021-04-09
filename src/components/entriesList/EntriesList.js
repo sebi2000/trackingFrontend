@@ -40,14 +40,16 @@ class EntriesList extends React.Component {
     page : 0,
     rowsPerPage : 5,
     entries: [],
-    startDate : new Date(),
+    startDate : new Date(2021,0,1),
     endDate : new Date(),
     count : 0
 }
  
 
   getEntries = (page, rows) =>{
-    axios.get('/entries/?page='+ page + '&rows=' + rows).then(response => {
+    console.log(this.state.startDate)
+    console.log(this.state.endDate)
+    axios.get('/entries/?page='+ page + '&rows=' + rows + '&start=' + this.state.startDate + '&end=' + this.state.endDate).then(response => {
       this.setState({
         entries : response.data[0],
         count : response.data[1]
@@ -77,6 +79,7 @@ class EntriesList extends React.Component {
     
   }
 
+
   render() {
     const styles= {
       justifyContent: 'flex-end',
@@ -87,7 +90,7 @@ class EntriesList extends React.Component {
      <div>
         <Header/>
         <div style={styles}>
-        <Button>Filter</Button>
+        <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
         <Button>Export</Button>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
