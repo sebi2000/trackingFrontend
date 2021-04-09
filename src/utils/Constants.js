@@ -1,5 +1,5 @@
 const CONSTANTS = {
-  BACKEND_URL : 'http://localhost:9000',
+  BACKEND_URL : 'http://localhost/api',
   FRONTEND_URL : 'http://localhost:3000',
   LOGIN : 'Log In',
   REGISTER : 'Register',

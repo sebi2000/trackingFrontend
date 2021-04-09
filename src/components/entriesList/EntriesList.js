@@ -27,13 +27,6 @@ const columns = [
   { id: 'signature', label: 'Semnatura', minWidth: 100}
 ];
 
-const csvData = [
-  ["firstname", "lastname", "email"],
-  ["Ahmed", "Tomi", "ah@smthing.co.com"],
-  ["Raed", "Labes", "rl@smthing.co.com"],
-  ["Yezzi", "Min l3b", "ymin@cocococo.com"]
-];
-
 class EntriesList extends React.Component {
   state = {
     classes : "",
@@ -94,7 +87,6 @@ class EntriesList extends React.Component {
 
   onLogOutButton = () => {
     axios.get('/logout').then(response => {
-      //console.log(response)
       this.props.logOut()
       this.props.history.push('/')
     })
@@ -111,11 +103,11 @@ class EntriesList extends React.Component {
         <Header/>
         <div style={styles}>
         <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
-        <Button><CSVLink data={this.state.csvData} >Export</CSVLink></Button>
+        <Button><CSVLink data={this.state.csvData} filename={"Lista-Intrati.csv"}>Export</CSVLink></Button>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
         </div>
-        <Button onClick={this.onLogOutButton} variant='contained'> Log Out </Button>
+        <Button onClick={() => this.onLogOutButton()} > Log Out </Button>
         <fieldset>
         <TableContainer >
           <Table entriesList aria-label="Entries List">

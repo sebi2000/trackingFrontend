@@ -8,8 +8,10 @@ import Container from '@material-ui/core/Container';
 import axios from '../../utils/Axios'
 import CONSTANTS from '../../utils/Constants'
 import Header from '../common/Header'
-import theme from '../../utils/Theme'
 import validator from 'validator'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+toast.configure()
 
 class Register extends React.Component {
 
@@ -37,7 +39,7 @@ class Register extends React.Component {
             })
             this.props.history.push("/")
         }
-        else alert('Introdu datele in mod corespunzator')
+        else toast.error('Introdu datele in mod corespunzator')
     }
 
     onChange = event =>{

@@ -11,6 +11,9 @@ import CONSTANTS from '../../utils/Constants'
 import Header from '../common/Header'
 import { StatusCodes } from 'http-status-codes'
 import validator from 'validator'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+toast.configure()
   
   class Login extends React.Component {
     
@@ -32,14 +35,16 @@ import validator from 'validator'
           let user = {user : this.state}
           axios.post('/auth', user).then(response => {
             const { status, code } = response.data
-           
-            if(code === StatusCodes.OK && status === CONSTANTS.MESSAGES.AUTH_SUCCESS)
-                this.props.history.push("/entries")
+            console.log(response.data)
+            if(code === StatusCodes.OK && status === CONSTANTS.MESSAGES.AUTH_SUCCESS){
+              this.props.logIn()
+              this.props.history.push("/entries")
+            }
             else if(code=== StatusCodes.FORBIDDEN && status === CONSTANTS.MESSAGES.USER_NOT_FOUND)
-                alert("User not found!")
+                toast.error('User not found')
             else if(code === StatusCodes.FORBIDDEN && status === CONSTANTS.MESSAGES.INCORRECT_PASS)
-                alert("Incorrect password")
-            else alert("Unexpected error")
+                toast.error('Incorrect password')
+            else toast.error('Server error')
           })
           .catch(err =>{
             console.log(err)
@@ -47,8 +52,8 @@ import validator from 'validator'
         }
         else{
           if(!emailIsValid)
-            alert("Enter a valid email!")
-          else alert("Password should not be empty!")
+            toast.error('Enter a valid email')
+          else toast.error('Password should not be empty')
         }
     }
 
