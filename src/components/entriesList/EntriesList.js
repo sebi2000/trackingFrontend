@@ -84,7 +84,15 @@ class EntriesList extends React.Component {
     })
     
   }
-  
+
+  onLogOutButton = () => {
+    axios.get('/logout').then(response => {
+      //console.log(response)
+      this.props.logOut()
+      this.props.history.push('/')
+    })
+  }
+
   render() {
     const styles= {
       justifyContent: 'flex-end',
@@ -100,6 +108,7 @@ class EntriesList extends React.Component {
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
         </div>
+        <Button onClick={this.onLogOutButton} variant='contained'> Log Out </Button>
         <fieldset>
         <TableContainer >
           <Table entriesList aria-label="Entries List">
