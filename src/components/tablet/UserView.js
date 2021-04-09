@@ -8,6 +8,9 @@ import axios from '../../utils/Axios'
 import { withRouter } from 'react-router-dom'
 import CONSTANTS from '../../utils/Constants'
 import validator from 'validator'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+toast.configure()
 
 class UserView extends React.Component{
 
@@ -50,7 +53,7 @@ class UserView extends React.Component{
     let nameIsValid = validator.isAlpha(this.state.name)
     let emailIsValid = validator.isEmail(this.state.email)
     let phoneIsValid = validator.isNumeric(this.state.phone)
-    let companyIsValid = validator.isAlpha(this.state.company)
+    let companyIsValid = !validator.isEmpty(this.state.company)
     let signatureIsValid = !validator.isEmpty(this.state.signature)
     
     if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && companyIsValid && signatureIsValid)
@@ -65,9 +68,10 @@ class UserView extends React.Component{
       }}
       axios.post("/entries", entry).then(response => {
           console.log(response.data)
+          toast.success('Te-ai inregistrat cu succes!')
       })
     }
-    else alert("Introdu datele in mod corespunzator")
+    else toast.error('Introdu datele in mod corespunzator')
   }
 
   onNextClick = () =>{

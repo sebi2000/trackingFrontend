@@ -14,7 +14,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import Button  from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
 import TablePagination from '@material-ui/core/TablePagination'
-import { CSVLink } from "react-csv"
+import { CSVLink} from 'react-csv'
 
 const columns = [
   { id: 'index', label: 'Index', },
@@ -87,7 +87,6 @@ class EntriesList extends React.Component {
 
   onLogOutButton = () => {
     axios.get('/logout').then(response => {
-      //console.log(response)
       this.props.logOut()
       this.props.history.push('/')
     })
@@ -95,7 +94,7 @@ class EntriesList extends React.Component {
 
   render() {
     const styles= {
-      justifyContent: 'flex-end',
+      justifyContent: 'flex-end', 
       display: 'flex',
       paddingBottom: '20px'
     }
@@ -104,11 +103,11 @@ class EntriesList extends React.Component {
         <Header/>
         <div style={styles}>
         <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
-        <Button><CSVLink data={this.state.csvData} >Export</CSVLink></Button>
+        <Button><CSVLink data={this.state.csvData} filename={"Lista-Intrati.csv"}>Export</CSVLink></Button>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
         </div>
-        <Button onClick={this.onLogOutButton} variant='contained'> Log Out </Button>
+        <Button onClick={() => this.onLogOutButton()} > Log Out </Button>
         <fieldset>
         <TableContainer >
           <Table entriesList aria-label="Entries List">
