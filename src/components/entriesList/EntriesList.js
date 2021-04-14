@@ -93,6 +93,17 @@ class EntriesList extends React.Component {
     })
   }
 
+  onEditButton = () => {
+    console.log('Edit button')
+  }
+
+  onDeleteButton = id => {
+    axios.delete(`/entries/${id}`).then(resp => {
+      console.log(resp)
+      this.getEntries(this.state.page, this.state.rowsPerPage)
+    })
+  }
+
   render() {
     const styles= {
       justifyContent: 'flex-end', 
@@ -104,12 +115,17 @@ class EntriesList extends React.Component {
      <div>
         <Header/>
         <div style={styles}>
-        <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>{RO.filter}</Button>
-        <Button><CSVLink data={this.state.csvData} filename={"Lista-Intrati.csv"}>{RO.export}</CSVLink></Button>
-        <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
-        <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
+        <Button onClick={() => this.onLogOutButton()}> Log Out </Button>
+        <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
+        <Button><CSVLink data={this.state.csvData} filename={"Lista-Intrati.csv"}>Export</CSVLink></Button>
+        <div style={{zIndex: 100}}>
+          <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
         </div>
-        <Button onClick={() => this.onLogOutButton()} >{RO.logout}</Button>
+        <div style={{zIndex: 100}}>
+          <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
+        </div>
+        </div>
+       
         <fieldset>
         <TableContainer >
           <Table entriesList>
@@ -148,6 +164,10 @@ class EntriesList extends React.Component {
                                 saveData={entry.signature}
                                 loadTimeOffset={1}
                             />                                                   
+                            </TableCell>
+                            <TableCell>
+                              <Button onClick={this.onEditButton}>Edit</Button>
+                              <Button color="secondary" variant="contained" onClick={ () => { this.onDeleteButton(entry._id)} } >Delete</Button>
                             </TableCell>
                     </TableRow> )} 
               </TableBody> 
