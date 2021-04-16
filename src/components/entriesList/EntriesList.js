@@ -16,6 +16,7 @@ import CONSTANTS from '../../utils/Constants'
 import TablePagination from '@material-ui/core/TablePagination'
 import { CSVLink} from 'react-csv'
 const RO = require('../../utils/language/RO.json')
+import Dialog from '../common/Dialog'
 
 const columns = [
   { label: RO.entries.index, },
@@ -42,7 +43,7 @@ class EntriesList extends React.Component {
  
   getEntries = (page, rows) =>{
     axios.get('/entries/?page='+ page + '&rows=' + rows + '&start=' + this.state.startDate + '&end=' + this.state.endDate).then(response => {
-     
+      
       let aux=[]
       response.data[0].map((entry, index)=>{
         
@@ -93,10 +94,6 @@ class EntriesList extends React.Component {
     })
   }
 
-  onEditButton = () => {
-    console.log('Edit button')
-  }
-
   onDeleteButton = id => {
     axios.delete(`/entries/${id}`).then(resp => {
       console.log(resp)
@@ -145,8 +142,8 @@ class EntriesList extends React.Component {
                   {this.state.entries.map((entry, index) => 
                     <TableRow>
                             <TableCell>{this.state.page * this.state.rowsPerPage + index + 1}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
                             <TableCell>{entry.surname}</TableCell>
+                            <TableCell>{entry.name}</TableCell>
                             <TableCell>{entry.email}</TableCell>
                             <TableCell>
                                <Moment format = {CONSTANTS.DATE_FORMAT}> 
@@ -166,8 +163,10 @@ class EntriesList extends React.Component {
                             />                                                   
                             </TableCell>
                             <TableCell>
-                              <Button onClick={this.onEditButton}>Edit</Button>
+                              <div style={{display: 'flex'}}>
+                              <Dialog entry={entry} function={this.onChange} getEntries={this.getEntries}/>
                               <Button color="secondary" variant="contained" onClick={ () => { this.onDeleteButton(entry._id)} } >Delete</Button>
+                              </div>
                             </TableCell>
                     </TableRow> )} 
               </TableBody> 

@@ -37,19 +37,7 @@ class UserView extends React.Component{
   }
 
   handleEntries = () =>{
-    let entry = {entries : {
-      name : this.state.name,
-      surname : this.state.surname,
-      email : this.state.email,
-      phone : this.state.phone,
-      company : this.state.company,
-      signature : this.state.signature,
-      date: new Date()
-    }}
-    axios.post("/entries", entry).then(response => {
-        console.log(response.data)
-    })
-
+    
     let surnameIsValid = validator.isAlpha(this.state.surname)
     let nameIsValid = validator.isAlpha(this.state.name)
     let emailIsValid = validator.isEmail(this.state.email)
@@ -66,7 +54,9 @@ class UserView extends React.Component{
         phone : this.state.phone,
         company : this.state.company,
         signature : this.state.signature,
+        date: new Date()
       }}
+      console.log(entry)
       axios.post("/entries", entry).then(response => {
           console.log(response.data)
           toast.success(RO.notifications.ENTRY_REGISTRATION)
@@ -92,10 +82,17 @@ class UserView extends React.Component{
             <Header/>
           <fieldset>
             <div>
+<<<<<<< HEAD
             <TextField  variant="outlined" margin="normal" required fullWidth id="name" label={RO.entries.name} name="surname" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
             </div>
             <div>
             <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="name" autoComplete="surname"  onChange={ this.onChange }  value={this.state.name}/>
+=======
+            <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label="Nume" name="surname" autoComplete="surname" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
+            </div>
+            <div>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="name" label="Prenume" name="name" autoComplete="name"  onChange={ this.onChange }  value={this.state.name}/>
+>>>>>>> 4815846 (feat: add actions entries table)
             </div>
             <div>
               <TextField  variant="outlined" margin="normal" required fullWidth id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
