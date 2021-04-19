@@ -4,6 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CanvasDraw from 'react-canvas-draw'
+const RO = require('../../utils/language/RO.json')
 
 class Modal extends React.Component{
 
@@ -23,7 +24,7 @@ class Modal extends React.Component{
     return (
       <div>
         <Button  onClick={() => this.handleClickOpen()}>
-          Semneaza aici
+          {RO.sign}
         </Button>
         <Dialog
           open={this.state.open}
@@ -31,7 +32,7 @@ class Modal extends React.Component{
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Sign here"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{RO.sign}</DialogTitle>
           <DialogContent>
             <div>
               <div>
@@ -47,7 +48,7 @@ class Modal extends React.Component{
                     this.props.showDrawing()
                   }}
                 >
-                  Save
+                  {RO.save}
                 </Button>
 
                 <Button
@@ -56,7 +57,7 @@ class Modal extends React.Component{
                     this.saveableCanvas.clear();
                   }}
                 >
-                  Clear
+                  {RO.clear}
                 </Button> 
               </div>
               <CanvasDraw

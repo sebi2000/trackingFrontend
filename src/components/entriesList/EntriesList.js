@@ -15,16 +15,17 @@ import Button  from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
 import TablePagination from '@material-ui/core/TablePagination'
 import { CSVLink} from 'react-csv'
+const RO = require('../../utils/language/RO.json')
 
 const columns = [
-  { id: 'index', label: 'Index', },
-  { id: 'name', label: 'Nume', minWidth: 170 },
-  { id: 'surname', label: 'Prenume', minWidth: 100 },
-  { id: 'email', label: 'Email', minWidth: 100 },
-  { id: 'data_intrare', label: 'Data intrare', minWidth: 100},
-  { id: 'company', label: 'Companie', minWidth: 100},
-  { id: 'phone', label: 'Telefon', minWidth: 100 },
-  { id: 'signature', label: 'Semnatura', minWidth: 100}
+  { label: RO.entries.index, },
+  { label: RO.entries.name, minWidth: 170 },
+  { label: RO.entries.surname, minWidth: 100 },
+  { label: RO.entries.email, minWidth: 100 },
+  { label: RO.entries.date, minWidth: 100},
+  { label: RO.entries.company, minWidth: 100},
+  { label: RO.entries.phone, minWidth: 100 },
+  { label: RO.entries.signature, minWidth: 100}
 ];
 
 class EntriesList extends React.Component {
@@ -46,12 +47,12 @@ class EntriesList extends React.Component {
       response.data[0].map((entry, index)=>{
         
         aux[index] = { 
-          'Nume' : entry.name, 
-          'Prenume' : entry.surname, 
-          'Email' : entry.email,
-          'Telefon' : entry.phone,
-          'Companie' : entry.company,
-          'Data intrare' : entry.date
+          [RO.entries.surname] : entry.surname, 
+          [RO.entries.name] : entry.name, 
+          [RO.entries.email] : entry.email,
+          [RO.entries.phone]: entry.phone,
+          [RO.entries.company]: entry.company,
+          [RO.entries.date]: entry.date
         }
       })
         
@@ -98,19 +99,20 @@ class EntriesList extends React.Component {
       display: 'flex',
       paddingBottom: '20px'
     }
+    
     return (
      <div>
         <Header/>
         <div style={styles}>
-        <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
-        <Button><CSVLink data={this.state.csvData} filename={"Lista-Intrati.csv"}>Export</CSVLink></Button>
+        <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>{RO.filter}</Button>
+        <Button><CSVLink data={this.state.csvData} filename={"Lista-Intrati.csv"}>{RO.export}</CSVLink></Button>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
         <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
         </div>
-        <Button onClick={() => this.onLogOutButton()} > Log Out </Button>
+        <Button onClick={() => this.onLogOutButton()} >{RO.logout}</Button>
         <fieldset>
         <TableContainer >
-          <Table entriesList aria-label="Entries List">
+          <Table entriesList>
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
