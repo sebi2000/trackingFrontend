@@ -8,6 +8,8 @@
     "sign": "Semneaza aici",
     "save": "Salveaza",
     "clear": "Sterge",
+    "edit": "Edit",
+    "cancel":"Anuleaza",
     "entries": {
         "index":"Index",
         "name": "Prenume",

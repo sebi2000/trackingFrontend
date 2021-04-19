@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from '../../utils/Axios'
+const RO = require('../../utils/language/RO.json')
 
 export default function FormDialog(props) {
   
@@ -59,7 +60,7 @@ export default function FormDialog(props) {
   return (
     <div>
       <Button onClick={handleClickOpen}>
-        Edit
+        {RO.edit}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Editeaza</DialogTitle>
@@ -72,10 +73,10 @@ export default function FormDialog(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {handleClose(); onSaveClick()}} >
-            Salveaza
+            {RO.save}
           </Button>
           <Button onClick={handleClose}>
-            Anuleaza
+            {RO.cancel}
           </Button>
         </DialogActions>
       </Dialog>

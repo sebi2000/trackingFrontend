@@ -15,11 +15,11 @@ import Button  from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
 import TablePagination from '@material-ui/core/TablePagination'
 import { CSVLink} from 'react-csv'
-const RO = require('../../utils/language/RO.json')
 import Dialog from '../common/Dialog'
 import { withStyles } from '@material-ui/core/styles'
+const RO = require('../../utils/language/RO.json')
 
-const styles = {
+const styles = theme => ({
   root: {
     justifyContent: 'flex-end', 
     display: 'flex',
@@ -40,7 +40,7 @@ const styles = {
   logout: {
     marginRight: 'auto'
   }
-}
+})
 
 const columns = [
   { label: RO.entries.index, },
@@ -126,19 +126,20 @@ class EntriesList extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
     return (
      <div>
         <Header/>
-        <div className={this.props.classes.root}>
-          <Button className={this.props.classes.logout} onClick={() => this.onLogOutButton()}> Log Out </Button>
-        <div className={this.props.classes.datepicker}>
+        <div className={classes.root}>
+          <Button className={classes.logout} onClick={() => this.onLogOutButton()}> Log Out </Button>
+        <div className={classes.datepicker}>
           <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
         </div>
-        <div className={this.props.classes.datepicker}>
+        <div className={classes.datepicker}>
           <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
         </div>
           <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
-          <Button><CSVLink className={this.props.classes.export} data={this.state.csvData} filename={"Lista-Intrati.csv"}>Export</CSVLink></Button>
+          <Button><CSVLink className={classes.export} data={this.state.csvData} filename={"Lista-Intrati.csv"}>Export</CSVLink></Button>
         </div>
        
         <fieldset>
@@ -181,7 +182,7 @@ class EntriesList extends React.Component {
                             />                                                   
                             </TableCell>
                             <TableCell>
-                              <div className={this.props.classes.actions}>
+                              <div className={classes.actions}>
                               <Dialog entry={entry} function={this.onChange} getEntries={this.getEntries}/>
                               <Button color="secondary" variant="contained" onClick={ () => { this.onDeleteButton(entry._id)} } >Delete</Button>
                               </div>
