@@ -11,6 +11,7 @@ import Header from '../common/Header'
 import validator from 'validator'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+const RO = require('../../utils/language/RO.json')
 toast.configure()
 
 class Register extends React.Component {
@@ -54,7 +55,7 @@ class Register extends React.Component {
                 <CssBaseline />
                 <div>
                     <Typography component="h1" variant="h5">
-                        {CONSTANTS.REGISTER}
+                        {RO.register}
                     </Typography>
 
                     <form noValidate>
@@ -64,7 +65,7 @@ class Register extends React.Component {
                             required
                             fullWidth
                             id="name"
-                            label="Nume"
+                            label={RO.entries.surname}
                             name="surname"
                             autoComplete="surname"
                             autoFocus
@@ -76,7 +77,7 @@ class Register extends React.Component {
                             required
                             fullWidth
                             name="name"
-                            label="Prenume"
+                            label={RO.entries.name}
                             type="name"
                             id="name"
                             autoComplete="name"
@@ -88,7 +89,7 @@ class Register extends React.Component {
                             required
                             fullWidth
                             id="email"
-                            label="Adresa de email"
+                            label={RO.entries.email}
                             name="email"
                             autoComplete="email"
                             onChange={ this.onChange }
@@ -99,7 +100,7 @@ class Register extends React.Component {
                             required
                             fullWidth
                             name="phone"
-                            label="Nr. Telefon"
+                            label={RO.entries.phone}
                             id="phone"
                             autoComplete="phone"
                             onChange={ this.onChange }
@@ -110,14 +111,14 @@ class Register extends React.Component {
                             required
                             fullWidth
                             name="password"
-                            label="Parola"
+                            label={RO.entries.password}
                             type="password"
                             id="password"
                             autoComplete="current-password"
                             onChange={ this.onChange }
                         />
 
-                        <Button variant="contained" color="primary" fullWidth onClick={ this.handleRegister }> {CONSTANTS.REGISTER}</Button>
+                        <Button variant="contained" color="primary" fullWidth onClick={ this.handleRegister }> {RO.register}</Button>
 
                         <Grid container>
                             <Grid item>

@@ -10,6 +10,7 @@ import CONSTANTS from '../../utils/Constants'
 import validator from 'validator'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+const RO = require('../../utils/language/RO.json')
 toast.configure()
 
 class UserView extends React.Component{
@@ -68,10 +69,10 @@ class UserView extends React.Component{
       }}
       axios.post("/entries", entry).then(response => {
           console.log(response.data)
-          toast.success('Te-ai inregistrat cu succes!')
+          toast.success(RO.notifications.ENTRY_REGISTRATION)
       })
     }
-    else toast.error('Introdu datele in mod corespunzator')
+    else toast.error(RO.notifications.ENTRY_ERROR)
   }
 
   onNextClick = () =>{
@@ -91,19 +92,19 @@ class UserView extends React.Component{
             <Header/>
           <fieldset>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="name" label="Nume" name="surname" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="name" label={RO.entries.name} name="surname" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label="Prenume" name="name" autoComplete="surname"  onChange={ this.onChange }  value={this.state.name}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="name" autoComplete="surname"  onChange={ this.onChange }  value={this.state.name}/>
             </div>
             <div>
-              <TextField  variant="outlined" margin="normal" required fullWidth id="email" label="Adresa de email" name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
+              <TextField  variant="outlined" margin="normal" required fullWidth id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="phone" label="Telefon" name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="company" label="Companie" name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
+            <TextField  variant="outlined" margin="normal" required fullWidth id="company" label={RO.entries.company} name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
             </div>
             
           <div>
@@ -126,7 +127,7 @@ class UserView extends React.Component{
           </div>
             <div>
             <Button onClick={() => {this.handleEntries(); this.onNextClick();}}  >
-              Urmatorul
+              {RO.next}
             </Button>
             </div>
           </fieldset>

@@ -1,0 +1,36 @@
+{
+    "filter": "Filtreaza",
+    "login" : "Logheaza-te",
+    "export": "Exporteaza",
+    "logout": "Delogheaza-te",
+    "register": "Inregistreaza-te",
+    "next": "Urmatorul",
+    "sign": "Semneaza aici",
+    "save": "Salveaza",
+    "clear": "Sterge",
+    "entries": {
+        "index":"Index",
+        "name": "Prenume",
+        "surname": "Nume",
+        "email": "Email",
+        "date": "Data intrare",
+        "company": "Companie",
+        "phone": "Telefon",
+        "signature": "Semnatura",
+        "password": "Parola"
+    },
+    "auth":{
+        "email": "Adresa de email",
+        "password": "Parola"
+    },
+    "notifications": {
+        "USER_NOT_FOUND": "Utilizatorul nu a fost gasit",
+        "AUTH_SUCCESS": "Autentificare cu succes",
+        "INCORRECT_PASS" : "Parola incorecta",
+        "SERVER_ERROR": "Eroare server",
+        "EMAIL_INCORRECT": "Email necorespunzator",
+        "PASS_INCORRECT": "Parola trebuie sa contina minim un caracter",
+        "ENTRY_ERROR": "Introdu datele in mod corespunzator",
+        "ENTRY_REGISTRATION": "Te-ai inregistrat cu succes"
+      }
+}

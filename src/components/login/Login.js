@@ -4,15 +4,15 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import { withRouter } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import Container from '@material-ui/core/Container'
 import axios from '../../utils/Axios.js'
-import CONSTANTS from '../../utils/Constants'
 import Header from '../common/Header'
 import { StatusCodes } from 'http-status-codes'
 import validator from 'validator'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+const RO = require('../../utils/language/RO.json')
 toast.configure()
   
   class Login extends React.Component {
@@ -35,16 +35,15 @@ toast.configure()
           let user = {user : this.state}
           axios.post('/auth', user).then(response => {
             const { status, code } = response.data
-            console.log(response.data)
-            if(code === StatusCodes.OK && status === CONSTANTS.MESSAGES.AUTH_SUCCESS){
+            if(code === StatusCodes.OK && status === RO.notifications.AUTH_SUCCESS){
               this.props.logIn()
               this.props.history.push("/entries")
             }
-            else if(code=== StatusCodes.FORBIDDEN && status === CONSTANTS.MESSAGES.USER_NOT_FOUND)
-                toast.error('User not found')
-            else if(code === StatusCodes.FORBIDDEN && status === CONSTANTS.MESSAGES.INCORRECT_PASS)
-                toast.error('Incorrect password')
-            else toast.error('Server error')
+            else if(code=== StatusCodes.FORBIDDEN && status === RO.notifications.USER_NOT_FOUND)
+                toast.error(RO.notifications.USER_NOT_FOUND)
+            else if(code === StatusCodes.FORBIDDEN && status === RO.notifications.INCORRECT_PASS)
+                toast.error(RO.notifications.INCORRECT_PASS)
+            else toast.error(RO.notifications.SERVER_ERROR)
           })
           .catch(err =>{
             console.log(err)
@@ -52,8 +51,8 @@ toast.configure()
         }
         else{
           if(!emailIsValid)
-            toast.error('Enter a valid email')
-          else toast.error('Password should not be empty')
+            toast.error(RO.notifications.EMAIL_INCORRECT)
+          else toast.error(RO.notifications.PASS_INCORRECT)
         }
     }
 
@@ -69,7 +68,7 @@ toast.configure()
           <CssBaseline />
           <div>
             <Typography component="h1" variant="h5">
-            {CONSTANTS.LOGIN}
+            {RO.login}
             </Typography>
             <form noValidate>
               <TextField  
@@ -78,7 +77,7 @@ toast.configure()
                 required
                 fullWidth
                 id="email"
-                label="Adresa de email"
+                label={RO.auth.email}
                 name="email"
                 autoComplete="email"
                 autoFocus
@@ -90,14 +89,14 @@ toast.configure()
                 required
                 fullWidth
                 name="password"
-                label="Parola"
+                label={RO.auth.password}
                 type="password"
                 id="password"
                 autoComplete="current-password"
                 onChange = { this.onChange }
               />
-              <Button  onClick={this.onRegisterButtonClick}>{CONSTANTS.REGISTER}</Button>
-              <Button  fullWidth onClick={ this.handleLogin }>{CONSTANTS.LOGIN}</Button>
+              <Button  onClick={this.onRegisterButtonClick}>{RO.register}</Button>
+              <Button  fullWidth onClick={ this.handleLogin }>{RO.login}</Button>
               
               <Grid container>
                 <Grid item>
