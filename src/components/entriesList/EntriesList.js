@@ -17,6 +17,30 @@ import TablePagination from '@material-ui/core/TablePagination'
 import { CSVLink} from 'react-csv'
 const RO = require('../../utils/language/RO.json')
 import Dialog from '../common/Dialog'
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = {
+  root: {
+    justifyContent: 'flex-end', 
+    display: 'flex',
+    paddingBottom: '20px'
+  },
+  datepicker: {
+    zIndex: '100',
+    marginTop: '17px',
+    marginRight: '10px'
+  },
+  actions:{
+    display: 'flex'
+  },
+  export: {
+    color: 'white',
+    textDecoration: 'none'
+  },
+  logout: {
+    marginRight: 'auto'
+  }
+}
 
 const columns = [
   { label: RO.entries.index, },
@@ -102,25 +126,19 @@ class EntriesList extends React.Component {
   }
 
   render() {
-    const styles= {
-      justifyContent: 'flex-end', 
-      display: 'flex',
-      paddingBottom: '20px'
-    }
-    
     return (
      <div>
         <Header/>
-        <div style={styles}>
-        <Button onClick={() => this.onLogOutButton()}> Log Out </Button>
-        <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
-        <Button><CSVLink data={this.state.csvData} filename={"Lista-Intrati.csv"}>Export</CSVLink></Button>
-        <div style={{zIndex: 100}}>
+        <div className={this.props.classes.root}>
+          <Button className={this.props.classes.logout} onClick={() => this.onLogOutButton()}> Log Out </Button>
+        <div className={this.props.classes.datepicker}>
           <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
         </div>
-        <div style={{zIndex: 100}}>
+        <div className={this.props.classes.datepicker}>
           <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
         </div>
+          <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
+          <Button><CSVLink className={this.props.classes.export} data={this.state.csvData} filename={"Lista-Intrati.csv"}>Export</CSVLink></Button>
         </div>
        
         <fieldset>
@@ -163,7 +181,7 @@ class EntriesList extends React.Component {
                             />                                                   
                             </TableCell>
                             <TableCell>
-                              <div style={{display: 'flex'}}>
+                              <div className={this.props.classes.actions}>
                               <Dialog entry={entry} function={this.onChange} getEntries={this.getEntries}/>
                               <Button color="secondary" variant="contained" onClick={ () => { this.onDeleteButton(entry._id)} } >Delete</Button>
                               </div>
@@ -187,4 +205,4 @@ class EntriesList extends React.Component {
   }
 }
 
-export default EntriesList;
+export default (withStyles)(styles)(EntriesList);

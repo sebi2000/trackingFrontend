@@ -56,7 +56,6 @@ class UserView extends React.Component{
         signature : this.state.signature,
         date: new Date()
       }}
-      console.log(entry)
       axios.post("/entries", entry).then(response => {
           console.log(response.data)
           toast.success(RO.notifications.ENTRY_REGISTRATION)
