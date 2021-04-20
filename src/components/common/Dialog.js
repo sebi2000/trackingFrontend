@@ -51,7 +51,6 @@ export default function FormDialog(props) {
           'phone': entry[4].value
       }
       axios.put(`/entries/${props.entry._id}`, aux).then(resp => {
-          console.log(resp)
           props.getEntries()
       })
     }
