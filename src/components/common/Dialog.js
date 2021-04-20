@@ -9,20 +9,12 @@ import axios from '../../utils/Axios'
 const RO = require('../../utils/language/RO.json')
 
 export default function FormDialog(props) {
-  
-  let initialFields = [
-      {name:'surname', value: props.entry.surname},
-      {name:'name', value: props.entry.name},
-      {name:'email', value: props.entry.email},
-      {name:'company', value: props.entry.company},
-      {name:'phone', value: props.entry.phone}
-  ]
-
+   
   const [open, setOpen] = React.useState(false)
-  const [entry, setEntry] = React.useState([...initialFields])
+  const [entry, setEntry] = React.useState(props.entry)
 
   useEffect(() => {
-    setEntry(initialFields)
+    setEntry(props.entry)
   },[props.entry]);
 
   const handleClickOpen = () => {
@@ -31,26 +23,19 @@ export default function FormDialog(props) {
 
   const handleClose = () => {
     setOpen(false);
-    setEntry(initialFields)
+    setEntry(props.entry)
   };
 
   const onChange = (event) =>{
-    let index = entry.findIndex(field => field.name === event.target.name)
-    let copy = [...entry]
-    copy[index].value = event.target.value
-    setEntry(copy)
+    setEntry({
+      ...entry,
+      [event.target.name] : event.target.value
+    })
   }
 
   const onSaveClick = () => {
-    if(JSON.stringify(initialFields) !== JSON.stringify(entry)){
-      let aux ={
-          'surname': entry[0].value,
-          'name': entry[1].value,
-          'email': entry[2].value,
-          'company': entry[3].value,
-          'phone': entry[4].value
-      }
-      axios.put(`/entries/${props.entry._id}`, aux).then(resp => {
+    if(JSON.stringify(props.entry) !== JSON.stringify(entry)){
+      axios.put(`/entries/${props.entry._id}`, entry).then(resp => {
           props.getEntries()
       })
     }
@@ -64,11 +49,11 @@ export default function FormDialog(props) {
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Editeaza</DialogTitle>
         <DialogContent>
-            <TextField name="surname" margin="dense" id="surname" label="Nume" fullWidth value={entry[0].value} onChange={onChange}/>
-            <TextField name="name" margin="dense" id="name" label="Prenume" fullWidth value={entry[1].value} onChange={onChange}/>
-            <TextField name="email" margin="dense" id="email" label="Email" fullWidth value={entry[2].value} onChange={onChange}/>
-            <TextField name="company" margin="dense" id="company" label="Companie" fullWidth value={entry[3].value} onChange={onChange}/>
-            <TextField name="phone" margin="dense" id="phone" label="Telefon" fullWidth value={entry[4].value} onChange={onChange}/>
+            <TextField name="surname" margin="dense" id="surname" label="Nume" fullWidth value={entry.surname} onChange={onChange}/>
+            <TextField name="name" margin="dense" id="name" label="Prenume" fullWidth value={entry.name} onChange={onChange}/>
+            <TextField name="email" margin="dense" id="email" label="Email" fullWidth value={entry.email} onChange={onChange}/>
+            <TextField name="company" margin="dense" id="company" label="Companie" fullWidth value={entry.company} onChange={onChange}/>
+            <TextField name="phone" margin="dense" id="phone" label="Telefon" fullWidth value={entry.phone} onChange={onChange}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {handleClose(); onSaveClick()}} >
