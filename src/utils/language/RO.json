@@ -19,7 +19,8 @@
         "company": "Companie",
         "phone": "Telefon",
         "signature": "Semnatura",
-        "password": "Parola"
+        "password": "Parola",
+        "actions": "Actiuni"
     },
     "auth":{
         "email": "Adresa de email",

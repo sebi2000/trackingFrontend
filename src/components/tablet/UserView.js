@@ -47,7 +47,7 @@ class UserView extends React.Component{
     
     if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && companyIsValid && signatureIsValid)
     {
-      let entry = {entries : {
+      let entry = {
         name : this.state.name,
         surname : this.state.surname,
         email : this.state.email,
@@ -55,8 +55,8 @@ class UserView extends React.Component{
         company : this.state.company,
         signature : this.state.signature,
         date: new Date()
-      }}
-      axios.post("/entries", entry).then(response => {
+      }
+      axios.post("/entries", {entry}).then(response => {
           console.log(response.data)
           toast.success(RO.notifications.ENTRY_REGISTRATION)
       })

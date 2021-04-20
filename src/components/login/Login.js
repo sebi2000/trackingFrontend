@@ -34,6 +34,7 @@ toast.configure()
         if(emailIsValid && passIsValid){
           let user = {user : this.state}
           axios.post('/auth', user).then(response => {
+            console.log(response.data)
             const { status, code } = response.data
             if(code === StatusCodes.OK && status === RO.notifications.AUTH_SUCCESS){
               this.props.logIn()

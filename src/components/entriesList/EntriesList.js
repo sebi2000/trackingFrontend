@@ -50,7 +50,8 @@ const columns = [
   { label: RO.entries.date, minWidth: 100},
   { label: RO.entries.company, minWidth: 100},
   { label: RO.entries.phone, minWidth: 100 },
-  { label: RO.entries.signature, minWidth: 100}
+  { label: RO.entries.signature, minWidth: 100},
+  { label: RO.entries.actions, minWidth: 100}
 ];
 
 class EntriesList extends React.Component {
