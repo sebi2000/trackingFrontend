@@ -121,7 +121,6 @@ class EntriesList extends React.Component {
 
   onDeleteButton = id => {
     axios.delete(`/entries/${id}`).then(resp => {
-      console.log(resp)
       this.getEntries(this.state.page, this.state.rowsPerPage)
     })
   }
