@@ -47,7 +47,7 @@ export default function FormDialog(props) {
         {RO.edit}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Editeaza</DialogTitle>
+        <DialogTitle id="form-dialog-title">{RO.edit}</DialogTitle>
         <DialogContent>
             <TextField name="surname" margin="dense" id="surname" label="Nume" fullWidth value={entry.surname} onChange={onChange}/>
             <TextField name="name" margin="dense" id="name" label="Prenume" fullWidth value={entry.name} onChange={onChange}/>

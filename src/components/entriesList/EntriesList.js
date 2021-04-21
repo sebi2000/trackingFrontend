@@ -132,15 +132,15 @@ class EntriesList extends React.Component {
      <div>
         <Header/>
         <div className={classes.root}>
-          <Button className={classes.logout} onClick={() => this.onLogOutButton()}> Log Out </Button>
+          <Button className={classes.logout} onClick={() => this.onLogOutButton()}> {RO.logout} </Button>
         <div className={classes.datepicker}>
           <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
         </div>
         <div className={classes.datepicker}>
           <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
         </div>
-          <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>Filter</Button>
-          <Button><CSVLink className={classes.export} data={this.state.csvData} filename={"Lista-Intrati.csv"}>Export</CSVLink></Button>
+          <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>{RO.filter}</Button>
+          <Button><CSVLink className={classes.export} data={this.state.csvData} filename={"Lista-Intrati.csv"}>{RO.export}</CSVLink></Button>
         </div>
        
         <fieldset>
@@ -185,7 +185,7 @@ class EntriesList extends React.Component {
                             <TableCell>
                               <div className={classes.actions}>
                               <Dialog entry={entry} function={this.onChange} getEntries={this.getEntries}/>
-                              <Button color="secondary" variant="contained" onClick={ () => { this.onDeleteButton(entry._id)} } >Delete</Button>
+                              <Button color="secondary" variant="contained" onClick={ () => { this.onDeleteButton(entry._id)} } >{RO.clear}</Button>
                               </div>
                             </TableCell>
                     </TableRow> )} 
