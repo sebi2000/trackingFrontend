@@ -37,19 +37,7 @@ class UserView extends React.Component{
   }
 
   handleEntries = () =>{
-    let entry = {entries : {
-      name : this.state.name,
-      surname : this.state.surname,
-      email : this.state.email,
-      phone : this.state.phone,
-      company : this.state.company,
-      signature : this.state.signature,
-      date: new Date()
-    }}
-    axios.post("/entries", entry).then(response => {
-        console.log(response.data)
-    })
-
+    
     let surnameIsValid = validator.isAlpha(this.state.surname)
     let nameIsValid = validator.isAlpha(this.state.name)
     let emailIsValid = validator.isEmail(this.state.email)
@@ -59,15 +47,16 @@ class UserView extends React.Component{
     
     if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && companyIsValid && signatureIsValid)
     {
-      let entry = {entries : {
+      let entry = {
         name : this.state.name,
         surname : this.state.surname,
         email : this.state.email,
         phone : this.state.phone,
         company : this.state.company,
         signature : this.state.signature,
-      }}
-      axios.post("/entries", entry).then(response => {
+        date: new Date()
+      }
+      axios.post("/entries", {entry}).then(response => {
           console.log(response.data)
           toast.success(RO.notifications.ENTRY_REGISTRATION)
       })

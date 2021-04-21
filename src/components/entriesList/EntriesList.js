@@ -15,7 +15,32 @@ import Button  from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
 import TablePagination from '@material-ui/core/TablePagination'
 import { CSVLink} from 'react-csv'
+import Dialog from '../common/Dialog'
+import { withStyles } from '@material-ui/core/styles'
 const RO = require('../../utils/language/RO.json')
+
+const styles = theme => ({
+  root: {
+    justifyContent: 'flex-end', 
+    display: 'flex',
+    paddingBottom: '20px'
+  },
+  datepicker: {
+    zIndex: '100',
+    marginTop: '17px',
+    marginRight: '10px'
+  },
+  actions:{
+    display: 'flex'
+  },
+  export: {
+    color: 'white',
+    textDecoration: 'none'
+  },
+  logout: {
+    marginRight: 'auto'
+  }
+})
 
 const columns = [
   { label: RO.entries.index, },
@@ -25,7 +50,8 @@ const columns = [
   { label: RO.entries.date, minWidth: 100},
   { label: RO.entries.company, minWidth: 100},
   { label: RO.entries.phone, minWidth: 100 },
-  { label: RO.entries.signature, minWidth: 100}
+  { label: RO.entries.signature, minWidth: 100},
+  { label: RO.entries.actions, minWidth: 100}
 ];
 
 class EntriesList extends React.Component {
@@ -42,7 +68,7 @@ class EntriesList extends React.Component {
  
   getEntries = (page, rows) =>{
     axios.get('/entries/?page='+ page + '&rows=' + rows + '&start=' + this.state.startDate + '&end=' + this.state.endDate).then(response => {
-     
+      
       let aux=[]
       response.data[0].map((entry, index)=>{
         
@@ -93,23 +119,29 @@ class EntriesList extends React.Component {
     })
   }
 
+  onDeleteButton = id => {
+    axios.delete(`/entries/${id}`).then(resp => {
+      this.getEntries(this.state.page, this.state.rowsPerPage)
+    })
+  }
+
   render() {
-    const styles= {
-      justifyContent: 'flex-end', 
-      display: 'flex',
-      paddingBottom: '20px'
-    }
-    
+    const { classes } = this.props
     return (
      <div>
         <Header/>
-        <div style={styles}>
-        <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>{RO.filter}</Button>
-        <Button><CSVLink data={this.state.csvData} filename={"Lista-Intrati.csv"}>{RO.export}</CSVLink></Button>
-        <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}}/>
-        <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}}/>
+        <div className={classes.root}>
+          <Button className={classes.logout} onClick={() => this.onLogOutButton()}> {RO.logout} </Button>
+        <div className={classes.datepicker}>
+          <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
         </div>
-        <Button onClick={() => this.onLogOutButton()} >{RO.logout}</Button>
+        <div className={classes.datepicker}>
+          <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
+        </div>
+          <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>{RO.filter}</Button>
+          <Button><CSVLink className={classes.export} data={this.state.csvData} filename={"Lista-Intrati.csv"}>{RO.export}</CSVLink></Button>
+        </div>
+       
         <fieldset>
         <TableContainer >
           <Table entriesList>
@@ -129,8 +161,8 @@ class EntriesList extends React.Component {
                   {this.state.entries.map((entry, index) => 
                     <TableRow>
                             <TableCell>{this.state.page * this.state.rowsPerPage + index + 1}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
                             <TableCell>{entry.surname}</TableCell>
+                            <TableCell>{entry.name}</TableCell>
                             <TableCell>{entry.email}</TableCell>
                             <TableCell>
                                <Moment format = {CONSTANTS.DATE_FORMAT}> 
@@ -148,6 +180,12 @@ class EntriesList extends React.Component {
                                 saveData={entry.signature}
                                 loadTimeOffset={1}
                             />                                                   
+                            </TableCell>
+                            <TableCell>
+                              <div className={classes.actions}>
+                              <Dialog entry={entry} function={this.onChange} getEntries={this.getEntries}/>
+                              <Button color="secondary" variant="contained" onClick={ () => { this.onDeleteButton(entry._id)} } >{RO.clear}</Button>
+                              </div>
                             </TableCell>
                     </TableRow> )} 
               </TableBody> 
@@ -168,4 +206,4 @@ class EntriesList extends React.Component {
   }
 }
 
-export default EntriesList;
+export default (withStyles)(styles)(EntriesList);
