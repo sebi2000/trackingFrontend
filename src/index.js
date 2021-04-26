@@ -41,13 +41,13 @@ function Root() {
                     <Route exact path="/" render={(props) => ( <Login {...props} logIn={() => { logIn() }}/> )} />
                     <Route exact path="/register" component={Register} />
                     <Route exact path="/tablet" component={UserView} />
-                    <Route exact path="/reset" component={ResetPass}/>
+                    <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/>
                     <Route exact path="/entries" render={(props) => ( <EntriesList {...props} logOut={() => { logOut() }}/> )}/>
                 </Switch> :
                 <Switch>
                     <Route exact path="/" render={(props) => ( <Login {...props} logIn={() => { logIn() }}/> )}/>
                     <Route exact path="/register" component={Register} />
-                    <Route exact path="/reset" component={ResetPass}/> 
+                    <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/> 
                     <Route exact path="/tablet" component={UserView} />
                 </Switch> 
             } 

@@ -10,6 +10,11 @@
     "clear": "Sterge",
     "edit": "Edit",
     "cancel":"Anuleaza",
+    "reset":"Reseteaza parola",
+    "send":"Trimite",
+    "resetMessage":"Introdu email-ul unde vrei sa iti trimitem link-ul de verificare",
+    "newPass": "Introdu noua parola",
+    "linkExpired": "Link-ul nu mai este valabil",
     "entries": {
         "index":"Index",
         "name": "Prenume",
@@ -24,7 +29,8 @@
     },
     "auth":{
         "email": "Adresa de email",
-        "password": "Parola"
+        "password": "Parola",
+        "new_password": "Parola noua"
     },
     "notifications": {
         "USER_NOT_FOUND": "Utilizatorul nu a fost gasit",
@@ -34,6 +40,9 @@
         "EMAIL_INCORRECT": "Email necorespunzator",
         "PASS_INCORRECT": "Parola trebuie sa contina minim un caracter",
         "ENTRY_ERROR": "Introdu datele in mod corespunzator",
-        "ENTRY_REGISTRATION": "Te-ai inregistrat cu succes"
+        "ENTRY_REGISTRATION": "Te-ai inregistrat cu succes",
+        "EMAIL_SENT": "Ti-am trimis link-ul de resetare pe mail",
+        "IDENTICAL_PASS": "Parolele trebuie sa fie identice",
+        "SUCCESS_PASS": "Ai schimbat parola cu succes"
       }
 }
