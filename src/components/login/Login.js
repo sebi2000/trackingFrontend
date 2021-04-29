@@ -105,9 +105,9 @@ toast.configure()
                 autoComplete="current-password"
                 onChange = { this.onChange }
               />
-              <div className={classes.button}>
+               <div className={classes.button}> 
                 <Button onClick={this.onRegisterButtonClick}>{RO.register}</Button>
-                <DialogReset/>
+                <DialogReset />
               </div>
               <Button fullWidth onClick={ this.handleLogin }>{RO.login}</Button>
               

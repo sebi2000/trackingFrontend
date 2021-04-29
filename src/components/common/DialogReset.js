@@ -34,14 +34,16 @@ export default function FormDialog() {
         const {status, code} = resp.data
         if(status === RO.notifications.USER_NOT_FOUND && code === StatusCodes.FORBIDDEN)
           toast.error(RO.notifications.USER_NOT_FOUND)
-        else toast.success(RO.notifications.EMAIL_SENT)
+        else if(status === RO.notifications.AUTH_SUCCESS && code === StatusCodes.OK)
+          toast.success(RO.notifications.EMAIL_SENT)
+        else toast.error(RO.notifications.SERVER_ERROR)
       
     })
   }
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button style={{marginRight: '0'}} variant="contained" color="primary" onClick={handleClickOpen}>
         {RO.reset}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

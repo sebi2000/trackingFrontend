@@ -48,7 +48,6 @@ function ResetPass(){
             let password = firstPass
             axios.put(`/users/${ID}`, {password}).then(resp => {
                 history.push('/')
-                console.log(resp)
             })
         }
     }
