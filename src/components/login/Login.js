@@ -12,8 +12,17 @@ import { StatusCodes } from 'http-status-codes'
 import validator from 'validator'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { withStyles } from '@material-ui/core/styles'
+import DialogReset from '../../components/common/DialogReset'
 const RO = require('../../utils/language/RO.json')
 toast.configure()
+
+  const styles = theme => ({
+    button : {
+        display: 'flex',
+        justifyContent: 'space-between'
+    }
+  })
   
   class Login extends React.Component {
     
@@ -21,7 +30,7 @@ toast.configure()
         email: "",
         password: ""
     }
-    
+
     onChange = event => {
       this.setState({ [event.target.name] : event.target.value})
     }
@@ -61,6 +70,7 @@ toast.configure()
     }
 
     render(){
+      const {classes} = this.props
       return (
         <div>
         <Header/>
@@ -95,8 +105,11 @@ toast.configure()
                 autoComplete="current-password"
                 onChange = { this.onChange }
               />
-              <Button  onClick={this.onRegisterButtonClick}>{RO.register}</Button>
-              <Button  fullWidth onClick={ this.handleLogin }>{RO.login}</Button>
+               <div className={classes.button}> 
+                <Button onClick={this.onRegisterButtonClick}>{RO.register}</Button>
+                <DialogReset />
+              </div>
+              <Button fullWidth onClick={ this.handleLogin }>{RO.login}</Button>
               
               <Grid container>
                 <Grid item>
@@ -110,5 +123,5 @@ toast.configure()
     }
   }
 
-export default withRouter(Login);
+export default (withStyles)(styles)(Login);
   
