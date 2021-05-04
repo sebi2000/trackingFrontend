@@ -32,11 +32,11 @@ const theme = createMuiTheme({
             
          },
 
-        MuiPaper: {
-            root : {
-                background: 'Linear-gradient(45deg, #E0F2F1 30%, #E0F7FA 90%)',
-            },
-        }
+        // MuiPaper: {
+        //     root : {
+        //         background: 'Linear-gradient(45deg, #E0F2F1 30%, #E0F7FA 90%)',
+        //     },
+        // }
         
 
     }

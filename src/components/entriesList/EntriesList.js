@@ -17,6 +17,7 @@ import TablePagination from '@material-ui/core/TablePagination'
 import { CSVLink} from 'react-csv'
 import Dialog from '../common/Dialog'
 import { withStyles } from '@material-ui/core/styles'
+import Navbar from '../common/Navbar'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -137,7 +138,7 @@ class EntriesList extends React.Component {
     const { classes } = this.props
     return (
      <div>
-        <Header/>
+        <Navbar/>
         <div className={classes.root}>
           <Button className={classes.logout} onClick={() => this.onLogOutButton()}> {RO.logout} </Button>
         <div className={classes.datepicker}>
