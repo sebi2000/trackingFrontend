@@ -7,6 +7,7 @@ import TabletAndroidIcon from '@material-ui/icons/TabletAndroid';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import {useHistory} from 'react-router'
 import Header from '../common/Header'
+const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   button: {
-      marginBottom : '10px'
+      marginBottom : '10px',
+      backgroundColor: 'inherit'
   }
 }));
 
@@ -32,13 +34,13 @@ export default function ButtonAppBar() {
           <div className={classes.title}>
             <Header/>
           </div>
-          <Button className={classes.button} onClick={() => history.push('/entries')} color="default" variant="contained">
+          <Button className={classes.button} onClick={() => history.push('/entries')} color="inherit">
             <ListAltIcon />
-                Intrari
+                {RO.entriesNav}
           </Button>
-          <Button className={classes.button} onClick={() => history.push('/tablet')} color="default" variant="contained">
+          <Button className={classes.button} onClick={() => history.push('/tablet')} color="inherit">
             <TabletAndroidIcon />
-                Tableta
+                {RO.tablet}
           </Button> 
         </Toolbar>
       </AppBar>
