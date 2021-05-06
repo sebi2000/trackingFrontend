@@ -64,6 +64,7 @@ const columns = [
 ];
 
 class EntriesList extends React.Component {
+  
   state = {
     classes : "",
     page : 0,
@@ -135,6 +136,7 @@ class EntriesList extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     const { classes } = this.props
     return (
      <div>

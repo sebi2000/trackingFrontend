@@ -6,11 +6,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import axios from '../../utils/Axios'
-import CONSTANTS from '../../utils/Constants'
 import Header from '../common/Header'
 import validator from 'validator'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 const RO = require('../../utils/language/RO.json')
 toast.configure()
 
@@ -21,18 +23,21 @@ class Register extends React.Component {
         surname : "",
         email : "",
         phone : "",
-        password: ""
+        password: "",
+        role: ""
     }
 
     handleRegister = () => {
 
+        console.log(this.state)
         let surnameIsValid = validator.isAlpha(this.state.surname)
         let nameIsValid = validator.isAlpha(this.state.name)
         let emailIsValid = validator.isEmail(this.state.email)
         let phoneIsValid = validator.isNumeric(this.state.phone)
         let passwordIsValid = !validator.isEmpty(this.state.password)
+        let roleIsValid = !validator.isEmpty(this.state.role)
 
-        if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && passwordIsValid)
+        if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && passwordIsValid && roleIsValid)
         {
             let user = {user : this.state}
             axios.post('/users', user).then(response =>{
@@ -44,6 +49,7 @@ class Register extends React.Component {
     }
 
     onChange = event =>{
+        console.log(event.target.value)
         this.setState({ [event.target.name] : event.target.value })
     }
 
@@ -117,6 +123,19 @@ class Register extends React.Component {
                             autoComplete="current-password"
                             onChange={ this.onChange }
                         />
+
+                        <FormControl fullWidth variant="outlined" required>
+                                <InputLabel htmlFor="outlined-age-native-simple">Rol</InputLabel>
+                                <Select
+                                native
+                                onChange={this.onChange}
+                                name="role"
+                                >
+                                <option aria-label="None" value="" />
+                                <option value={"super"}>Super Admin</option>
+                                <option value={"user"}>User</option>
+                                </Select>
+                        </FormControl>
 
                         <Button variant="contained" color="primary" fullWidth onClick={ this.handleRegister }> {RO.register}</Button>
 

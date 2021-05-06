@@ -14,7 +14,9 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { withStyles } from '@material-ui/core/styles'
 import DialogReset from '../../components/common/DialogReset'
+import store from '../../redux/store/store'
 const RO = require('../../utils/language/RO.json')
+//const store= createStore(loginReducer)
 toast.configure()
 
   const styles = theme => ({
@@ -43,14 +45,18 @@ toast.configure()
         if(emailIsValid && passIsValid){
           let user = {user : this.state}
           axios.post('/auth', user).then(response => {
-            const { status, code } = response.data
-            if(code === StatusCodes.OK && status === RO.notifications.AUTH_SUCCESS){
+            let user = response.data.userFound
+            if(user){
+              store.dispatch({type: "LOGIN", payload: user})
               this.props.logIn()
-              this.props.history.push("/entries")
+              if(user.role === 'super')
+                this.props.history.push("/register")
+              else if(user.role === 'user')
+                this.props.history.push("/entries")
             }
-            else if(code=== StatusCodes.FORBIDDEN && status === RO.notifications.USER_NOT_FOUND)
+            else if(response.data.code=== StatusCodes.FORBIDDEN && response.data.status === RO.notifications.USER_NOT_FOUND)
                 toast.error(RO.notifications.USER_NOT_FOUND)
-            else if(code === StatusCodes.FORBIDDEN && status === RO.notifications.INCORRECT_PASS)
+            else if(response.data.code === StatusCodes.FORBIDDEN && response.data.status === RO.notifications.INCORRECT_PASS)
                 toast.error(RO.notifications.INCORRECT_PASS)
             else toast.error(RO.notifications.SERVER_ERROR)
           })

@@ -9,16 +9,20 @@ import EntriesList from './components/entriesList/EntriesList'
 import theme from '../src/utils/Theme'
 import {ThemeProvider} from '@material-ui/core/styles'
 import axios from '../src/utils/Axios'
+import store from './redux/store/store'
+import {useHistory} from 'react-router'
+import { Provider } from 'react-redux'
 
 function Root() {
-    const [isLogged, setIsLogged] = useState(false)
-
+    const [isLogged, setIsLogged] = useState('')
+    
     const logIn = () => {
-        setIsLogged(true)
+        let role = store.getState().user.role
+        setIsLogged(role)
     }
 
     const logOut = () => {
-        setIsLogged(false)
+        setIsLogged('')
     }
 
     useEffect(() => {
@@ -30,29 +34,42 @@ function Root() {
         .catch((error) => {
             console.log(error)
         })
-
+        console.log("GETSTATE: ", store.getState().user.role)
     })
 
     return (
-        <ThemeProvider theme={theme}>
-        <BrowserRouter>
-            {isLogged ? 
-                <Switch>
-                    <Route exact path="/" render={(props) => ( <Login {...props} logIn={() => { logIn() }}/> )} />
-                    <Route exact path="/register" component={Register} />
-                    <Route exact path="/tablet" component={UserView} />
-                    <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/>
-                    <Route exact path="/entries" render={(props) => ( <EntriesList {...props} logOut={() => { logOut() }}/> )}/>
-                </Switch> :
-                <Switch>
-                    <Route exact path="/" render={(props) => ( <Login {...props} logIn={() => { logIn() }}/> )}/>
-                    <Route exact path="/register" component={Register} />
-                    <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/> 
-                    <Route exact path="/tablet" component={UserView} />
-                </Switch> 
-            } 
-        </BrowserRouter>
-        </ThemeProvider>
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                {console.log("Route: ", isLogged)}
+                {isLogged === 'user' ?
+
+                    <Switch>
+                        <Route exact path="/" render={(props) => ( <Login {...props} logIn={() => { logIn() }}/> )} />
+                        <Route exact path="/register" component={Register} />
+                        <Route exact path="/tablet" component={UserView} />
+                        <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/>
+                        <Route exact path="/entries" render={(props) => ( <EntriesList {...props} logOut={() => { logOut() }}/> )}/>
+                    </Switch> 
+                    :
+                isLogged === 'super' ?
+                    <Switch>
+                        <Route exact path="/" render={(props) => ( <Login {...props} logIn={() => { logIn() }}/> )}/>
+                        <Route exact path="/register" component={Register} />
+                        <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/> 
+                    </Switch> 
+                    :
+                    <Switch>
+                        <Route exact path="/" render={(props) => ( <Login {...props} logIn={() => { logIn() }}/> )} />
+                        <Route exact path="/tablet" component={UserView} />
+                        <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/>
+                        {/* <Redirect to="/" ></Redirect> */}
+                    </Switch>
+                    
+                } 
+            </BrowserRouter>
+            </ThemeProvider>
+        </Provider>
     )
 }
 
