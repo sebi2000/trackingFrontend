@@ -7,6 +7,13 @@ export default (state=initialState, action) => {
                 user : action.payload
            }
         }
+        case 'LOGOUT':{
+            return {
+                ...state,
+                user : ''
+           }
+        }
+
         default: return state  
     }
     

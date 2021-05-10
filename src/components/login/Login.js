@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import { Route, withRouter } from 'react-router-dom'
 import Container from '@material-ui/core/Container'
 import axios from '../../utils/Axios.js'
 import Header from '../common/Header'
@@ -14,9 +13,9 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { withStyles } from '@material-ui/core/styles'
 import DialogReset from '../../components/common/DialogReset'
-import store from '../../redux/store/store'
+import { connect } from 'react-redux'
+
 const RO = require('../../utils/language/RO.json')
-//const store= createStore(loginReducer)
 toast.configure()
 
   const styles = theme => ({
@@ -30,7 +29,8 @@ toast.configure()
     
     state = {
         email: "",
-        password: ""
+        password: "",
+        role: ""
     }
 
     onChange = event => {
@@ -47,8 +47,8 @@ toast.configure()
           axios.post('/auth', user).then(response => {
             let user = response.data.userFound
             if(user){
-              store.dispatch({type: "LOGIN", payload: user})
-              this.props.logIn()
+              this.props.login(user)
+          
               if(user.role === 'super')
                 this.props.history.push("/register")
               else if(user.role === 'user')
@@ -77,6 +77,7 @@ toast.configure()
 
     render(){
       const {classes} = this.props
+     
       return (
         <div>
         <Header/>
@@ -129,5 +130,11 @@ toast.configure()
     }
   }
 
-export default (withStyles)(styles)(Login);
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      login: (user) => dispatch({ type: 'LOGIN' , payload: user})
+    }
+  }
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Login));
   

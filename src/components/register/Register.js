@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import {connect} from 'react-redux'
 const RO = require('../../utils/language/RO.json')
 toast.configure()
 
@@ -53,12 +54,18 @@ class Register extends React.Component {
         this.setState({ [event.target.name] : event.target.value })
     }
 
+    onLogOut = () => {
+        this.props.logout()
+        this.props.history.push('/')
+    }
+
     render() {
         return (
             <div>
                  <Header/>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                 <Button  onClick={this.onLogOut}> {RO.logout} </Button>
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline />
                 <div>
                     <Typography component="h1" variant="h5">
                         {RO.register}
@@ -151,4 +158,10 @@ class Register extends React.Component {
     }
 }
 
-export default Register
+const mapDispatchToProps = (dispatch) => {
+    return {
+      logout: () => dispatch({ type: 'LOGOUT' })
+    }
+  }
+
+export default connect(null, mapDispatchToProps)(Register)
