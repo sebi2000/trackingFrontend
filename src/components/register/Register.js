@@ -30,7 +30,6 @@ class Register extends React.Component {
 
     handleRegister = () => {
 
-        console.log(this.state)
         let surnameIsValid = validator.isAlpha(this.state.surname)
         let nameIsValid = validator.isAlpha(this.state.name)
         let emailIsValid = validator.isEmail(this.state.email)
@@ -50,7 +49,6 @@ class Register extends React.Component {
     }
 
     onChange = event =>{
-        console.log(event.target.value)
         this.setState({ [event.target.name] : event.target.value })
     }
 

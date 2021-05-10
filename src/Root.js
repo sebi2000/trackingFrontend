@@ -1,9 +1,9 @@
-import React, { useEffect, useState} from 'react'
+import React from 'react'
 import Login from './components/login/Login'
 import UserView from './components/tablet/UserView'
 import ResetPass from './components/resetPass/ResetPass'
 import Register from './components/register/Register'
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom'
 import EntriesList from './components/entriesList/EntriesList'
 import theme from '../src/utils/Theme'
 import {ThemeProvider} from '@material-ui/core/styles'
@@ -21,6 +21,7 @@ function Root(props) {
                         <Route exact path="/tablet" component={UserView} />
                         <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/>
                         <Route exact path="/entries" component={EntriesList}/>
+                        <Redirect to="/entries" />
                     </Switch> 
                     :
                 props.user.role === 'super' ?
@@ -28,12 +29,14 @@ function Root(props) {
                         <Route exact path="/" component={Login}/>
                         <Route exact path="/register" component={Register} />
                         <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/> 
+                        <Redirect to="/register" />
                     </Switch> 
                     :
                     <Switch>
                         <Route exact path="/" component={Login} />
                         <Route exact path="/tablet" component={UserView} />
                         <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/>
+                        <Redirect to="/" />
                     </Switch>
                     
                 } 
