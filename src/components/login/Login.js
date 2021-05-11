@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import { Route, withRouter } from 'react-router-dom'
 import Container from '@material-ui/core/Container'
 import axios from '../../utils/Axios.js'
 import Header from '../common/Header'
@@ -14,6 +13,8 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { withStyles } from '@material-ui/core/styles'
 import DialogReset from '../../components/common/DialogReset'
+import { connect } from 'react-redux'
+
 const RO = require('../../utils/language/RO.json')
 toast.configure()
 
@@ -28,7 +29,8 @@ toast.configure()
     
     state = {
         email: "",
-        password: ""
+        password: "",
+        role: ""
     }
 
     onChange = event => {
@@ -43,14 +45,18 @@ toast.configure()
         if(emailIsValid && passIsValid){
           let user = {user : this.state}
           axios.post('/auth', user).then(response => {
-            const { status, code } = response.data
-            if(code === StatusCodes.OK && status === RO.notifications.AUTH_SUCCESS){
-              this.props.logIn()
-              this.props.history.push("/entries")
+            let user = response.data.userFound
+            if(user){
+              this.props.login(user)
+          
+              if(user.role === 'super')
+                this.props.history.push("/register")
+              else if(user.role === 'user')
+                this.props.history.push("/entries")
             }
-            else if(code=== StatusCodes.FORBIDDEN && status === RO.notifications.USER_NOT_FOUND)
+            else if(response.data.code=== StatusCodes.FORBIDDEN && response.data.status === RO.notifications.USER_NOT_FOUND)
                 toast.error(RO.notifications.USER_NOT_FOUND)
-            else if(code === StatusCodes.FORBIDDEN && status === RO.notifications.INCORRECT_PASS)
+            else if(response.data.code === StatusCodes.FORBIDDEN && response.data.status === RO.notifications.INCORRECT_PASS)
                 toast.error(RO.notifications.INCORRECT_PASS)
             else toast.error(RO.notifications.SERVER_ERROR)
           })
@@ -71,6 +77,7 @@ toast.configure()
 
     render(){
       const {classes} = this.props
+     
       return (
         <div>
         <Header/>
@@ -123,5 +130,11 @@ toast.configure()
     }
   }
 
-export default (withStyles)(styles)(Login);
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      login: (user) => dispatch({ type: 'LOGIN' , payload: user})
+    }
+  }
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(Login));
   

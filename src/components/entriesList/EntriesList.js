@@ -18,6 +18,7 @@ import { CSVLink} from 'react-csv'
 import Dialog from '../common/Dialog'
 import { withStyles } from '@material-ui/core/styles'
 import Navbar from '../common/Navbar'
+import {connect} from 'react-redux'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -64,6 +65,7 @@ const columns = [
 ];
 
 class EntriesList extends React.Component {
+  
   state = {
     classes : "",
     page : 0,
@@ -123,7 +125,7 @@ class EntriesList extends React.Component {
 
   onLogOutButton = () => {
     axios.get('/logout').then(response => {
-      this.props.logOut()
+      this.props.logout()
       this.props.history.push('/')
     })
   }
@@ -135,6 +137,7 @@ class EntriesList extends React.Component {
   }
 
   render() {
+    
     const { classes } = this.props
     return (
      <div>
@@ -218,4 +221,10 @@ class EntriesList extends React.Component {
   }
 }
 
-export default (withStyles)(styles)(EntriesList);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch({ type: 'LOGOUT' })
+  }
+}
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(EntriesList));
