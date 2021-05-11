@@ -14,6 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {connect} from 'react-redux'
+import MenuItem from '@material-ui/core/MenuItem'
 const RO = require('../../utils/language/RO.json')
 toast.configure()
 
@@ -24,7 +25,7 @@ class Register extends React.Component {
         surname : "",
         email : "",
         phone : "",
-        password: "",
+        password:"",
         role: ""
     }
 
@@ -34,18 +35,26 @@ class Register extends React.Component {
         let nameIsValid = validator.isAlpha(this.state.name)
         let emailIsValid = validator.isEmail(this.state.email)
         let phoneIsValid = validator.isNumeric(this.state.phone)
-        let passwordIsValid = !validator.isEmpty(this.state.password)
         let roleIsValid = !validator.isEmpty(this.state.role)
 
-        if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && passwordIsValid && roleIsValid)
+        if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && roleIsValid)
         {
             let user = {user : this.state}
             axios.post('/users', user).then(response =>{
                 console.log(response)
             })
-            this.props.history.push("/")
+            toast.success('Ai inregistrat utilizatorul cu succes')
+            this.setState({
+                name : "",
+                surname : "",
+                email : "",
+                phone : "",
+                password:"",
+                role: ""
+            })
         }
         else toast.error('Introdu datele in mod corespunzator')
+
     }
 
     onChange = event =>{
@@ -81,6 +90,7 @@ class Register extends React.Component {
                             autoComplete="surname"
                             autoFocus
                             onChange={ this.onChange }
+                            value={this.state.surname}
                         />
                         <TextField
                             variant="outlined"
@@ -93,6 +103,7 @@ class Register extends React.Component {
                             id="name"
                             autoComplete="name"
                             onChange={ this.onChange }
+                            value={this.state.name}
                         />
                         <TextField
                             variant="outlined"
@@ -104,6 +115,7 @@ class Register extends React.Component {
                             name="email"
                             autoComplete="email"
                             onChange={ this.onChange }
+                            value={this.state.email}
                         />
                         <TextField
                             variant="outlined"
@@ -115,31 +127,23 @@ class Register extends React.Component {
                             id="phone"
                             autoComplete="phone"
                             onChange={ this.onChange }
+                            value={this.state.phone}
                         />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label={RO.entries.password}
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            onChange={ this.onChange }
-                        />
-
-                        <FormControl fullWidth variant="outlined" required>
-                                <InputLabel htmlFor="outlined-age-native-simple">Rol</InputLabel>
-                                <Select
-                                native
-                                onChange={this.onChange}
-                                name="role"
-                                >
-                                <option aria-label="None" value="" />
-                                <option value={"super"}>Super Admin</option>
-                                <option value={"user"}>User</option>
-                                </Select>
+                        
+                        <FormControl variant="outlined" fullWidth required margin="normal">
+                            <InputLabel id="demo-simple-select-outlined-label">Rol</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-outlined-label"
+                            id="demo-simple-select-outlined"
+                            value={this.state.role}
+                            onChange={this.onChange}
+                            name="role"
+                            label="Age"
+                            >
+                            {/* <MenuItem value=""></MenuItem> */}
+                            <MenuItem value={'super'}>Super Admin</MenuItem>
+                            <MenuItem value={'user'}>User</MenuItem>
+                            </Select>
                         </FormControl>
 
                         <Button variant="contained" color="primary" fullWidth onClick={ this.handleRegister }> {RO.register}</Button>
