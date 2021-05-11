@@ -17,6 +17,7 @@ import TablePagination from '@material-ui/core/TablePagination'
 import { CSVLink} from 'react-csv'
 import Dialog from '../common/Dialog'
 import { withStyles } from '@material-ui/core/styles'
+import Navbar from '../common/Navbar'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -31,7 +32,10 @@ const styles = theme => ({
     marginRight: '10px'
   },
   actions:{
-    display: 'flex'
+    display: 'flex',
+    ['@media (max-width: 1300px)']:{
+      display: 'block',
+    }
   },
   export: {
     color: 'white',
@@ -39,19 +43,24 @@ const styles = theme => ({
   },
   logout: {
     marginRight: 'auto'
+  },
+  table:{
+    ['@media (min-width: 1200px)']:{
+      width: '100%'
+    }
   }
 })
 
 const columns = [
-  { label: RO.entries.index, },
-  { label: RO.entries.name, minWidth: 170 },
-  { label: RO.entries.surname, minWidth: 100 },
-  { label: RO.entries.email, minWidth: 100 },
-  { label: RO.entries.date, minWidth: 100},
-  { label: RO.entries.company, minWidth: 100},
-  { label: RO.entries.phone, minWidth: 100 },
-  { label: RO.entries.signature, minWidth: 100},
-  { label: RO.entries.actions, minWidth: 100}
+  { label: RO.entries.index, minWidth:20},
+  { label: RO.entries.name, minWidth:20},
+  { label: RO.entries.surname, minWidth:20 },
+  { label: RO.entries.email, minWidth:20 },
+  { label: RO.entries.date, minWidth:20},
+  { label: RO.entries.company, minWidth:20},
+  { label: RO.entries.phone, minWidth:20 },
+  { label: RO.entries.signature, minWidth:20},
+  { label: RO.entries.actions, minWidth:20}
 ];
 
 class EntriesList extends React.Component {
@@ -129,7 +138,7 @@ class EntriesList extends React.Component {
     const { classes } = this.props
     return (
      <div>
-        <Header/>
+        <Navbar/>
         <div className={classes.root}>
           <Button className={classes.logout} onClick={() => this.onLogOutButton()}> {RO.logout} </Button>
         <div className={classes.datepicker}>
@@ -142,6 +151,7 @@ class EntriesList extends React.Component {
           <Button><CSVLink className={classes.export} data={this.state.csvData} filename={"Lista-Intrati.csv"}>{RO.export}</CSVLink></Button>
         </div>
        
+      <div className={classes.table}> 
         <fieldset>
         <TableContainer >
           <Table entriesList>
@@ -149,6 +159,7 @@ class EntriesList extends React.Component {
               <TableRow>
                 {columns.map((column) => (
                   <TableCell
+                    size={'small'}
                     key={column.id}
                     align={column.align}
                     style={{ minWidth: column.minWidth }}>
@@ -160,18 +171,18 @@ class EntriesList extends React.Component {
               <TableBody>
                   {this.state.entries.map((entry, index) => 
                     <TableRow>
-                            <TableCell>{this.state.page * this.state.rowsPerPage + index + 1}</TableCell>
-                            <TableCell>{entry.surname}</TableCell>
-                            <TableCell>{entry.name}</TableCell>
-                            <TableCell>{entry.email}</TableCell>
-                            <TableCell>
+                            <TableCell size={'small'} >{this.state.page * this.state.rowsPerPage + index + 1}</TableCell>
+                            <TableCell size={'small'}>{entry.surname}</TableCell>
+                            <TableCell size={'small'}>{entry.name}</TableCell>
+                            <TableCell size={'small'}>{entry.email}</TableCell>
+                            <TableCell size={'small'}>
                                <Moment format = {CONSTANTS.DATE_FORMAT}> 
                                 {entry.date}
                              </Moment> 
                             </TableCell>
-                            <TableCell>{entry.company}</TableCell>
-                            <TableCell>{entry.phone}</TableCell>
-                            <TableCell align="center">
+                            <TableCell size={'small'}>{entry.company}</TableCell>
+                            <TableCell size={'small'}>{entry.phone}</TableCell>
+                            <TableCell size={'small'} align="center">
                             <CanvasDraw
                                 canvasHeight={50}
                                 canvasWidth={50}
@@ -181,7 +192,7 @@ class EntriesList extends React.Component {
                                 loadTimeOffset={1}
                             />                                                   
                             </TableCell>
-                            <TableCell>
+                            <TableCell size={'small'}>
                               <div className={classes.actions}>
                               <Dialog entry={entry} function={this.onChange} getEntries={this.getEntries}/>
                               <Button color="secondary" variant="contained" onClick={ () => { this.onDeleteButton(entry._id)} } >{RO.clear}</Button>
@@ -201,6 +212,7 @@ class EntriesList extends React.Component {
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
           </fieldset>
+      </div>
     </div>
     )
   }

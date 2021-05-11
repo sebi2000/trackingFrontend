@@ -12,6 +12,8 @@
     "cancel":"Anuleaza",
     "reset":"Reseteaza parola",
     "send":"Trimite",
+    "entriesNav": "Intrari",
+    "tablet": "Tableta",
     "resetMessage":"Introdu email-ul unde vrei sa iti trimitem link-ul de verificare",
     "newPass": "Introdu noua parola",
     "linkExpired": "Link-ul nu mai este valabil",

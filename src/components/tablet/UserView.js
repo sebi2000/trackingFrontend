@@ -10,6 +10,7 @@ import CONSTANTS from '../../utils/Constants'
 import validator from 'validator'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Navbar from '../common/Navbar'
 const RO = require('../../utils/language/RO.json')
 toast.configure()
 
@@ -78,7 +79,7 @@ class UserView extends React.Component{
   render(){
     return(
            <div>
-            <Header/>
+            <Navbar />
           <fieldset>
             <div>
             <TextField  variant="outlined" margin="normal" required fullWidth id="name" label={RO.entries.name} name="surname" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
