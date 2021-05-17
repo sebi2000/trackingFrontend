@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Login from './components/login/Login'
 import UserView from './components/tablet/UserView'
 import ResetPass from './components/resetPass/ResetPass'
@@ -8,19 +8,26 @@ import EntriesList from './components/entriesList/EntriesList'
 import theme from '../src/utils/Theme'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {connect} from 'react-redux'
+import axios from './utils/Axios'
 
 function Root(props) {
+   console.log("REDUX:", props.user)
+
+   useEffect(() => {
+       axios.get('/isLogged').then(resp => {
+           console.log("IS LOGGED:", resp.data)
+       })
+   })
    
     return (
             <ThemeProvider theme={theme}>
             <BrowserRouter>
                 {props.user.role === 'user' ?
-
                     <Switch>
                         <Route exact path="/" component={Login} />
+                        <Route exact path="/entries" component={EntriesList}/>
                         <Route exact path="/tablet" component={UserView} />
                         <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/>
-                        <Route exact path="/entries" component={EntriesList}/>
                         <Redirect to="/entries" />
                     </Switch> 
                     :

@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
-import axios from '../../utils/Axios.js'
 import Header from '../common/Header'
 import { StatusCodes } from 'http-status-codes'
 import validator from 'validator'
@@ -14,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { withStyles } from '@material-ui/core/styles'
 import DialogReset from '../../components/common/DialogReset'
 import { connect } from 'react-redux'
-
+import {auth} from '../../redux/actions/index'
 const RO = require('../../utils/language/RO.json')
 toast.configure()
 
@@ -44,25 +43,23 @@ toast.configure()
             
         if(emailIsValid && passIsValid){
           let user = {user : this.state}
-          axios.post('/auth', user).then(response => {
-            let user = response.data.userFound
-            if(user){
-              this.props.login(user)
-          
-              if(user.role === 'super')
-                this.props.history.push("/register")
-              else if(user.role === 'user')
-                this.props.history.push("/entries")
+         
+          this.props.login(user).then(response => {
+            if(response.userFound){
+              if(response.userFound.role === 'super')
+                  this.props.history.push("/register")
+              else this.props.history.push("/entries")
+             
+              localStorage.setItem('token', response.token)
+              console.log(localStorage.getItem('token'))
             }
-            else if(response.data.code=== StatusCodes.FORBIDDEN && response.data.status === RO.notifications.USER_NOT_FOUND)
+            else if(response.code=== StatusCodes.FORBIDDEN && response.status === RO.notifications.USER_NOT_FOUND)
                 toast.error(RO.notifications.USER_NOT_FOUND)
-            else if(response.data.code === StatusCodes.FORBIDDEN && response.data.status === RO.notifications.INCORRECT_PASS)
+            else if(response.code === StatusCodes.FORBIDDEN && response.status === RO.notifications.INCORRECT_PASS)
                 toast.error(RO.notifications.INCORRECT_PASS)
-            else toast.error(RO.notifications.SERVER_ERROR)
+            else toast.error(RO.notifications.SERVER_ERROR) 
           })
-          .catch(err =>{
-            console.log(err)
-          })
+         
         }
         else{
           if(!emailIsValid)
@@ -132,7 +129,7 @@ toast.configure()
 
   const mapDispatchToProps = (dispatch) => {
     return {
-      login: (user) => dispatch({ type: 'LOGIN' , payload: user})
+      login: (user) => dispatch(auth(user))
     }
   }
 

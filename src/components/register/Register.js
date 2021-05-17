@@ -15,6 +15,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import {connect} from 'react-redux'
 import MenuItem from '@material-ui/core/MenuItem'
+import {logout} from '../../redux/actions/index'
 const RO = require('../../utils/language/RO.json')
 toast.configure()
 
@@ -162,7 +163,7 @@ class Register extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      logout: () => dispatch({ type: 'LOGOUT' })
+      logout: () => dispatch(logout())
     }
   }
 
