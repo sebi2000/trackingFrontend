@@ -19,6 +19,7 @@ import Dialog from '../common/Dialog'
 import { withStyles } from '@material-ui/core/styles'
 import Navbar from '../common/Navbar'
 import {connect} from 'react-redux'
+import {logout} from '../../redux/actions/index'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -127,6 +128,7 @@ class EntriesList extends React.Component {
     axios.get('/logout').then(response => {
       this.props.logout()
       this.props.history.push('/')
+      
     })
   }
 
@@ -223,7 +225,7 @@ class EntriesList extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout: () => dispatch({ type: 'LOGOUT' })
+    logout: () => dispatch(logout())
   }
 }
 
