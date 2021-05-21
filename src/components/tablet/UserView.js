@@ -5,14 +5,23 @@ import Header from '../common/Header'
 import Modal from '../common/Modal'
 import CanvasDraw from 'react-canvas-draw'
 import axios from '../../utils/Axios'
-import { withRouter } from 'react-router-dom'
-import CONSTANTS from '../../utils/Constants'
 import validator from 'validator'
-import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import Navbar from '../common/Navbar'
+import {connect} from 'react-redux'
+import Notifications from '../../utils/Notifications'
+import { withStyles } from '@material-ui/core/styles'
 const RO = require('../../utils/language/RO.json')
-toast.configure()
+
+const styles = theme => ({
+  nextButton: {
+    backgroundColor: '#336600',
+    '&:hover': {
+      backgroundColor: '#264d00',
+    },
+  },
+  
+})
+
 
 class UserView extends React.Component{
 
@@ -23,8 +32,18 @@ class UserView extends React.Component{
     phone : "",
     company : "",
     signature : "",
-    show: false
+    show: false,
+    render: false
   }
+
+  initialFields= [
+    {name: 'surname', error: false},
+    {name: 'name', error: false},
+    {name: 'email', error: false},
+    {name: 'phone', error: false},
+    {name: 'company', error: false},
+    {name: 'signature', error: false}
+  ]
 
   showDrawing = () =>{
     this.setState({
@@ -38,15 +57,51 @@ class UserView extends React.Component{
   }
 
   handleEntries = () =>{
-    
-    let surnameIsValid = validator.isAlpha(this.state.surname)
-    let nameIsValid = validator.isAlpha(this.state.name)
-    let emailIsValid = validator.isEmail(this.state.email)
-    let phoneIsValid = validator.isNumeric(this.state.phone)
-    let companyIsValid = !validator.isEmpty(this.state.company)
-    let signatureIsValid = !validator.isEmpty(this.state.signature)
-    
-    if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && companyIsValid && signatureIsValid)
+    let isOk = true
+
+  this.initialFields.forEach(value=>{
+    value.error = false
+    switch(value.name){
+      case 'surname': 
+        if(!validator.isAlpha(this.state.surname)){
+          isOk=false
+          value.error = true
+        }
+        break
+      case 'name': 
+        if(!validator.isAlpha(this.state.name)){
+          isOk=false
+          value.error = true
+        } 
+        break
+      case 'email': 
+        if(!validator.isEmail(this.state.email)){
+          isOk=false
+          value.error = true
+        }
+        break
+      case 'phone': 
+        if(!validator.isNumeric(this.state.phone)){
+          isOk=false
+          value.error = true
+        }
+        break
+      case 'company': 
+        if(validator.isEmpty(this.state.company)){
+          isOk=false
+          value.error = true
+        }
+        break
+      case 'signature': 
+        if(validator.isEmpty(this.state.signature)){
+          isOk=false
+          value.error = true
+        }
+        break
+    }
+  })  
+      
+    if(isOk)
     {
       let entry = {
         name : this.state.name,
@@ -57,44 +112,51 @@ class UserView extends React.Component{
         signature : this.state.signature,
         date: new Date()
       }
+
+      this.setState({ 
+        name : "" ,
+        surname : "",
+        email : "",
+        phone : "",
+        company : "",
+        show: false
+    })
       axios.post("/entries", {entry}).then(response => {
-          console.log(response.data)
-          toast.success(RO.notifications.ENTRY_REGISTRATION)
+          if(response.data.entry)
+            Notifications.success(RO.notifications.ENTRY_REGISTRATION)
+          else Notifications.error(RO.notifications.SERVER_ERROR)
       })
     }
-    else toast.error(RO.notifications.ENTRY_ERROR)
-  }
-
-  onNextClick = () =>{
-    this.setState({ 
-      name : "" ,
-      surname : "",
-      email : "",
-      phone : "",
-      company : "",
-      show: false
-  })
+    else {
+        Notifications.error(RO.notifications.ENTRY_ERROR)
+        this.setState({render: true})
+    }
   }
 
   render(){
+    const {classes} = this.props
     return(
            <div>
-            <Navbar />
+             {this.props.user ?
+                <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/> :
+                <Header/>
+            }
+            
           <fieldset>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="name" label={RO.entries.name} name="surname" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
+            <TextField variant="outlined" error={this.initialFields[0].error} margin="normal" required fullWidth id="name" label={RO.entries.name} name={this.initialFields[0].name} autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="name" autoComplete="surname"  onChange={ this.onChange }  value={this.state.name}/>
+            <TextField  variant="outlined" error={this.initialFields[1].error} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name={this.initialFields[1].name} autoComplete="surname"  onChange={ this.onChange }  value={this.state.name}/>
             </div>
             <div>
-              <TextField  variant="outlined" margin="normal" required fullWidth id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
+              <TextField  variant="outlined"  error={this.initialFields[2].error} margin="normal" required fullWidth id="email" label={RO.entries.email} name={this.initialFields[2].name} autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
+            <TextField  variant="outlined" error={this.initialFields[3].error}  margin="normal" required fullWidth id="phone" label={RO.entries.phone} name={this.initialFields[3].name} autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
             </div>
             <div>
-            <TextField  variant="outlined" margin="normal" required fullWidth id="company" label={RO.entries.company} name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
+            <TextField  variant="outlined"  error={this.initialFields[4].error} margin="normal" required fullWidth id="company" label={RO.entries.company} name={this.initialFields[4].name} autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
             </div>
             
           <div>
@@ -116,7 +178,7 @@ class UserView extends React.Component{
        
           </div>
             <div>
-            <Button onClick={() => {this.handleEntries(); this.onNextClick();}}  >
+            <Button  className={classes.nextButton} onClick={() => {this.handleEntries()}}  >
               {RO.next}
             </Button>
             </div>
@@ -125,4 +187,9 @@ class UserView extends React.Component{
       )
   }
 }
-export default withRouter(UserView)
+
+const mapStateToProps = state => {
+  return {user: state.user}
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(UserView))

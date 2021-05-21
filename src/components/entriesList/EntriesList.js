@@ -1,5 +1,4 @@
 import React from 'react'
-import Header from '../common/Header'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -14,12 +13,13 @@ import "react-datepicker/dist/react-datepicker.css"
 import Button  from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
 import TablePagination from '@material-ui/core/TablePagination'
-import { CSVLink} from 'react-csv'
-import Dialog from '../common/Dialog'
+import EditDialog from '../common/DialogEdit'
 import { withStyles } from '@material-ui/core/styles'
 import Navbar from '../common/Navbar'
-import {connect} from 'react-redux'
-import {logout} from '../../redux/actions/index'
+import Notifications from '../../utils/Notifications'
+import ConfirmDialog from '../common/ConfirmDialog'
+import CloseIcon from '@material-ui/icons/Close';
+import CancelIcon from '@material-ui/icons/Cancel';
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -50,6 +50,16 @@ const styles = theme => ({
     ['@media (min-width: 1200px)']:{
       width: '100%'
     }
+  },
+  filterCloseButton:{
+    margin: '0',
+    marginLeft: '0.3rem',
+    height: '1rem',
+    width: '1rem',
+    minWidth: '1rem'
+  },
+  filterCloseIcon: {
+    height: '1.2rem',
   }
 })
 
@@ -66,20 +76,28 @@ const columns = [
 ];
 
 class EntriesList extends React.Component {
+
+  initialDate = new Date()
   
   state = {
     classes : "",
     page : 0,
     rowsPerPage : 5,
     entries: [],
-    startDate : new Date(2021,0,1),
+    startDate : this.initialDate,
     endDate : new Date(),
     count : 0,
-    csvData : []
+    csvData : [],
+    showFilterIcon: false
 }
+
+  componentDidMount() {
+    this.setInitialDate()
+    this.getEntries()
+  }
  
-  getEntries = (page, rows) =>{
-    axios.get('/entries/?page='+ page + '&rows=' + rows + '&start=' + this.state.startDate + '&end=' + this.state.endDate).then(response => {
+  getEntries = () =>{
+    axios.get('/entries/?page='+ this.state.page + '&rows=' + this.state.rowsPerPage + '&start=' + this.state.startDate + '&end=' + this.state.endDate).then(response => {
       
       let aux=[]
       response.data[0].map((entry, index)=>{
@@ -104,13 +122,15 @@ class EntriesList extends React.Component {
     })
   }
 
-  componentDidMount() {
-    this.getEntries(this.state.page, this.state.rowsPerPage)
+  setInitialDate = () => {
+    this.initialDate.setHours(0)
+    this.initialDate.setMinutes(0)
+    this.initialDate.setSeconds(0)
   }
 
   handleChangePage = (event, newPage) =>{
     this.setState({page : newPage}, () => {
-      this.getEntries(this.state.page, this.state.rowsPerPage)
+      this.getEntries()
      })
   }
 
@@ -119,41 +139,62 @@ class EntriesList extends React.Component {
       rowsPerPage : parseInt(event.target.value, CONSTANTS.PARSE_INT_RADIX),
       page : 0
     }, () => {
-      this.getEntries(this.state.page, this.state.rowsPerPage)
+      this.getEntries()
     })
     
   }
 
-  onLogOutButton = () => {
-    axios.get('/logout').then(response => {
-      this.props.logout()
-      this.props.history.push('/')
-      
-    })
-  }
-
   onDeleteButton = id => {
     axios.delete(`/entries/${id}`).then(resp => {
-      this.getEntries(this.state.page, this.state.rowsPerPage)
+      this.getEntries()
     })
+    Notifications.success(RO.notifications.SUCCESS_EDIT)
+  }
+
+  onCloseFilter = event => {
+    event.stopPropagation(); 
+    this.setState({
+      showFilterIcon: false, 
+      startDate: this.initialDate, 
+      endDate: new Date()
+    }, () => {
+      this.getEntries()
+    }) 
+  }
+
+  onFilterClick = () => {
+    if(this.state.startDate !== this.initialDate){
+      this.getEntries()
+      this.setState({showFilterIcon: true})
+    }
+      
   }
 
   render() {
     
     const { classes } = this.props
+    
     return (
      <div>
-        <Navbar/>
+        <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/>
         <div className={classes.root}>
-          <Button className={classes.logout} onClick={() => this.onLogOutButton()}> {RO.logout} </Button>
-        <div className={classes.datepicker}>
-          <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
-        </div>
-        <div className={classes.datepicker}>
-          <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
-        </div>
-          <Button onClick = { () => this.getEntries(this.state.page, this.state.rowsPerPage) }>{RO.filter}</Button>
-          <Button><CSVLink className={classes.export} data={this.state.csvData} filename={"Lista-Intrati.csv"}>{RO.export}</CSVLink></Button>
+          <div className={classes.datepicker}>
+            <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
+          </div>
+          <div className={classes.datepicker}>
+            <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
+          </div>
+            <Button onClick={() => this.onFilterClick()}>
+              {RO.filter}
+                {this.state.showFilterIcon === true ? 
+                  
+                  <Button onClick={event => this.onCloseFilter(event)} className={classes.filterCloseButton}>
+                    <CloseIcon className={classes.filterCloseIcon}/> 
+                  </Button> : null
+                }
+                
+            </Button>
+            <ConfirmDialog type='export' data={this.state.csvData}/>
         </div>
        
       <div className={classes.table}> 
@@ -199,8 +240,8 @@ class EntriesList extends React.Component {
                             </TableCell>
                             <TableCell size={'small'}>
                               <div className={classes.actions}>
-                              <Dialog entry={entry} function={this.onChange} getEntries={this.getEntries}/>
-                              <Button color="secondary" variant="contained" onClick={ () => { this.onDeleteButton(entry._id)} } >{RO.clear}</Button>
+                              <EditDialog entry={entry} getEntries={this.getEntries}/>
+                              <ConfirmDialog type={'delete'} action={() => this.onDeleteButton(entry._id)} />
                               </div>
                             </TableCell>
                     </TableRow> )} 
@@ -223,10 +264,4 @@ class EntriesList extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: () => dispatch(logout())
-  }
-}
-
-export default connect(null, mapDispatchToProps)(withStyles(styles)(EntriesList));
+export default  (withStyles(styles)(EntriesList));

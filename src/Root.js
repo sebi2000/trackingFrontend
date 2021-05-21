@@ -11,11 +11,12 @@ import {connect} from 'react-redux'
 import axios from './utils/Axios'
 
 function Root(props) {
-   console.log("REDUX:", props.user)
+
+    const [isLogged, setIsLogged] = React.useState(false)
 
    useEffect(() => {
        axios.get('/isLogged').then(resp => {
-           console.log("IS LOGGED:", resp.data)
+           setIsLogged(true)
        })
    })
    

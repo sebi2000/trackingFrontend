@@ -6,18 +6,14 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import axios from '../../utils/Axios'
-import Header from '../common/Header'
 import validator from 'validator'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {connect} from 'react-redux'
 import MenuItem from '@material-ui/core/MenuItem'
-import {logout} from '../../redux/actions/index'
+import Navbar from '../common/Navbar'
+import Notifications from '../../utils/Notifications'
 const RO = require('../../utils/language/RO.json')
-toast.configure()
 
 class Register extends React.Component {
 
@@ -42,9 +38,8 @@ class Register extends React.Component {
         {
             let user = {user : this.state}
             axios.post('/users', user).then(response =>{
-                console.log(response)
             })
-            toast.success('Ai inregistrat utilizatorul cu succes')
+            Notifications.success(RO.notifications.ADMIN_REGISTRATION)
             this.setState({
                 name : "",
                 surname : "",
@@ -54,7 +49,7 @@ class Register extends React.Component {
                 role: ""
             })
         }
-        else toast.error('Introdu datele in mod corespunzator')
+        else Notifications.error(RO.notifications.ADMIN_FAIL_REGISTRATION)
 
     }
 
@@ -62,16 +57,10 @@ class Register extends React.Component {
         this.setState({ [event.target.name] : event.target.value })
     }
 
-    onLogOut = () => {
-        this.props.logout()
-        this.props.history.push('/')
-    }
-
     render() {
         return (
             <div>
-                 <Header/>
-                 <Button  onClick={this.onLogOut}> {RO.logout} </Button>
+                 <Navbar showLogoutButton={true}/>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                 <div>
@@ -161,10 +150,4 @@ class Register extends React.Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-      logout: () => dispatch(logout())
-    }
-  }
-
-export default connect(null, mapDispatchToProps)(Register)
+export default Register

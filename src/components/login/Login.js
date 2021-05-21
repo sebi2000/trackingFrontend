@@ -8,19 +8,22 @@ import Container from '@material-ui/core/Container'
 import Header from '../common/Header'
 import { StatusCodes } from 'http-status-codes'
 import validator from 'validator'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import { withStyles } from '@material-ui/core/styles'
 import DialogReset from '../../components/common/DialogReset'
 import { connect } from 'react-redux'
 import {auth} from '../../redux/actions/index'
+import Notifications from '../../utils/Notifications'
 const RO = require('../../utils/language/RO.json')
-toast.configure()
 
   const styles = theme => ({
     button : {
         display: 'flex',
         justifyContent: 'space-between'
+    },
+    header :{
+      margin: 'auto',
+      width: '11%',
+      marginBottom : '2%'
     }
   })
   
@@ -49,22 +52,21 @@ toast.configure()
               if(response.userFound.role === 'super')
                   this.props.history.push("/register")
               else this.props.history.push("/entries")
-             
+    
               localStorage.setItem('token', response.token)
-              console.log(localStorage.getItem('token'))
             }
             else if(response.code=== StatusCodes.FORBIDDEN && response.status === RO.notifications.USER_NOT_FOUND)
-                toast.error(RO.notifications.USER_NOT_FOUND)
+                Notifications.error(RO.notifications.USER_NOT_FOUND)
             else if(response.code === StatusCodes.FORBIDDEN && response.status === RO.notifications.INCORRECT_PASS)
-                toast.error(RO.notifications.INCORRECT_PASS)
-            else toast.error(RO.notifications.SERVER_ERROR) 
+                Notifications.error(RO.notifications.INCORRECT_PASS)
+            else Notifications.error(RO.notifications.SERVER_ERROR) 
           })
          
         }
         else{
           if(!emailIsValid)
-            toast.error(RO.notifications.EMAIL_INCORRECT)
-          else toast.error(RO.notifications.PASS_INCORRECT)
+            Notifications.error(RO.notifications.EMAIL_INCORRECT)
+          else Notifications.error(RO.notifications.PASS_INCORRECT)
         }
     }
 
@@ -77,7 +79,9 @@ toast.configure()
      
       return (
         <div>
-        <Header/>
+          <div className={classes.header}>
+          <Header/>
+          </div>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div>
@@ -108,12 +112,13 @@ toast.configure()
                 id="password"
                 autoComplete="current-password"
                 onChange = { this.onChange }
+                onKeyPress= { event => event.key === 'Enter' ? this.handleLogin() : null}
               />
-               <div className={classes.button}> 
-                <Button onClick={this.onRegisterButtonClick}>{RO.register}</Button>
-                <DialogReset />
-              </div>
-              <Button fullWidth onClick={ this.handleLogin }>{RO.login}</Button>
+               {/* <div className={classes.button}> 
+                
+              </div> */}
+              <Button fullWidth onClick={ this.handleLogin } >{RO.login}</Button>
+              <DialogReset />
               
               <Grid container>
                 <Grid item>

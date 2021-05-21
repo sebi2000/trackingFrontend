@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from '../../utils/Axios'
+import Notifications from '../../utils/Notifications'
 const RO = require('../../utils/language/RO.json')
 
 export default function FormDialog(props) {
@@ -38,6 +39,7 @@ export default function FormDialog(props) {
       axios.put(`/entries/${props.entry._id}`, entry).then(resp => {
           props.getEntries()
       })
+      Notifications.success(RO.notifications.SUCCESS_EDIT)
     }
   }
 
