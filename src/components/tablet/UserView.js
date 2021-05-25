@@ -10,6 +10,7 @@ import Navbar from '../common/Navbar'
 import {connect} from 'react-redux'
 import Notifications from '../../utils/Notifications'
 import { withStyles } from '@material-ui/core/styles'
+import {StatusCodes} from 'http-status-codes'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -33,17 +34,15 @@ class UserView extends React.Component{
     company : "",
     signature : "",
     show: false,
-    render: false
+    fields: {
+      errorName: false,
+      errorSurname: false,
+      errorEmail: false,
+      errorCompany: false,
+      errorPhone: false,
+      errorSignature: false
+    }
   }
-
-  initialFields= [
-    {name: 'surname', error: false},
-    {name: 'name', error: false},
-    {name: 'email', error: false},
-    {name: 'phone', error: false},
-    {name: 'company', error: false},
-    {name: 'signature', error: false}
-  ]
 
   showDrawing = () =>{
     this.setState({
@@ -59,48 +58,57 @@ class UserView extends React.Component{
   handleEntries = () =>{
     let isOk = true
 
-  this.initialFields.forEach(value=>{
-    value.error = false
-    switch(value.name){
-      case 'surname': 
-        if(!validator.isAlpha(this.state.surname)){
-          isOk=false
-          value.error = true
-        }
-        break
-      case 'name': 
-        if(!validator.isAlpha(this.state.name)){
-          isOk=false
-          value.error = true
-        } 
-        break
-      case 'email': 
-        if(!validator.isEmail(this.state.email)){
-          isOk=false
-          value.error = true
-        }
-        break
-      case 'phone': 
-        if(!validator.isNumeric(this.state.phone)){
-          isOk=false
-          value.error = true
-        }
-        break
-      case 'company': 
-        if(validator.isEmpty(this.state.company)){
-          isOk=false
-          value.error = true
-        }
-        break
-      case 'signature': 
-        if(validator.isEmpty(this.state.signature)){
-          isOk=false
-          value.error = true
-        }
-        break
+    let auxFields = {
+      errorName: false,
+      errorSurname: false,
+      errorEmail: false,
+      errorCompany: false,
+      errorPhone: false,
+      errorSignature: false
     }
-  })  
-      
+
+    Object.entries(this.state.fields).forEach(([key, value]) =>{
+      switch(key){
+        case 'errorSurname':
+          if(!validator.isAlpha(this.state.surname)){
+              isOk=false
+              auxFields.errorSurname = true
+            }
+        break
+        case 'errorName':
+          if(!validator.isAlpha(this.state.name)){
+              isOk=false
+              auxFields.errorName = true
+            }
+        break
+        case 'errorEmail':
+          if(!validator.isEmail(this.state.email)){
+              isOk=false
+              auxFields.errorEmail= true
+            }
+        break
+        case 'errorCompany':
+          if(validator.isEmpty(this.state.company)){
+              isOk=false
+              auxFields.errorCompany= true
+            }
+        break
+        case 'errorPhone':
+          if(!validator.isMobilePhone(this.state.phone)){
+              isOk=false
+              auxFields.errorPhone= true
+            }
+        break
+        case 'errorSignature':
+          if(validator.isEmpty(this.state.signature)){
+              isOk=false
+              auxFields.errorSignature= false
+            }
+        break
+      }
+    })
+    this.setState({fields: auxFields})
+     
     if(isOk)
     {
       let entry = {
@@ -121,15 +129,19 @@ class UserView extends React.Component{
         company : "",
         show: false
     })
-      axios.post("/entries", {entry}).then(response => {
-          if(response.data.entry)
-            Notifications.success(RO.notifications.ENTRY_REGISTRATION)
-          else Notifications.error(RO.notifications.SERVER_ERROR)
+      axios.post("/tablet", {entry}).then(response => {
+        if(response.data.entry)
+          Notifications.success(RO.notifications.ENTRY_REGISTRATION)
+        else if(response.data.status.errors && response.data.code === StatusCodes.UNPROCESSABLE_ENTITY)
+          Notifications.error(RO.notifications.VALIDATION_ERROR)
+      })
+      .catch(err => {
+        console.log(err)
+        Notifications.error(RO.notifications.SERVER_ERROR)
       })
     }
     else {
         Notifications.error(RO.notifications.ENTRY_ERROR)
-        this.setState({render: true})
     }
   }
 
@@ -140,23 +152,23 @@ class UserView extends React.Component{
              {this.props.user ?
                 <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/> :
                 <Header/>
-            }
+             }
             
           <fieldset>
             <div>
-            <TextField variant="outlined" error={this.initialFields[0].error} margin="normal" required fullWidth id="name" label={RO.entries.name} name={this.initialFields[0].name} autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.surname}/>
+            <TextField variant="outlined" error={this.state.fields.errorName} margin="normal" required fullWidth id="name" label={RO.entries.name} name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
             </div>
             <div>
-            <TextField  variant="outlined" error={this.initialFields[1].error} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name={this.initialFields[1].name} autoComplete="surname"  onChange={ this.onChange }  value={this.state.name}/>
+            <TextField  variant="outlined" error={this.state.fields.errorSurname} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
             </div>
             <div>
-              <TextField  variant="outlined"  error={this.initialFields[2].error} margin="normal" required fullWidth id="email" label={RO.entries.email} name={this.initialFields[2].name} autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
+              <TextField  variant="outlined"  error={this.state.fields.errorEmail} margin="normal" required fullWidth id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
             </div>
             <div>
-            <TextField  variant="outlined" error={this.initialFields[3].error}  margin="normal" required fullWidth id="phone" label={RO.entries.phone} name={this.initialFields[3].name} autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
+            <TextField  variant="outlined" error={this.state.fields.errorPhone}  margin="normal" required fullWidth id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
             </div>
             <div>
-            <TextField  variant="outlined"  error={this.initialFields[4].error} margin="normal" required fullWidth id="company" label={RO.entries.company} name={this.initialFields[4].name} autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
+            <TextField  variant="outlined"  error={this.state.fields.errorCompany} margin="normal" required fullWidth id="company" label={RO.entries.company} name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
             </div>
             
           <div>

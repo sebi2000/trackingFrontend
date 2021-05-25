@@ -16,10 +16,13 @@
     "tablet": "Tabletă",
     "resetMessage":"Introdu email-ul unde vrei să îți trimitem link-ul de verificare",
     "deleteMessage": "Ești sigur ca vrei să ștergi această intrare?",
-    "newPass": "Introdu noua parola",
+    "newPass": "Introdu noua parolă",
     "linkExpired": "Link-ul nu mai este valabil",
     "exportMessage": "Ești sigur că vrei să exporți?",
     "logoutMessage": "Ești sigur că vrei să te deloghezi?",
+    "startDate": "Dată început",
+    "endDate": "Dată sfârșit",
+    "dateFormat": "yyyy/MM/dd",
     "entries": {
         "index":"#",
         "name": "Prenume",
@@ -44,13 +47,15 @@
         "SERVER_ERROR": "Eroare server",
         "EMAIL_INCORRECT": "Email necorespunzător",
         "PASS_INCORRECT": "Parola trebuie sa conțină minim un caracter",
-        "ENTRY_ERROR": "Introdu datele in mod corespunzător",
-        "ENTRY_REGISTRATION": "Te-ai inregistrat cu succes",
+        "ENTRY_ERROR": "Introdu datele în mod corespunzător",
+        "ENTRY_REGISTRATION": "Te-ai înregistrat cu succes",
         "EMAIL_SENT": "Ți-am trimis link-ul de resetare pe mail",
         "IDENTICAL_PASS": "Parolele trebuie să fie identice",
         "SUCCESS_PASS": "Ai schimbat parola cu succes",
         "SUCCESS_EDIT": "Modificările au fost salvate",
         "ADMIN_REGISTRATION": "Ai inregistrat utilizatorul cu succes",
-        "ADMIN_FAIL_REGISTRATION": "Introdu datele in mod corespunzator"
+        "ADMIN_FAIL_REGISTRATION": "Introdu datele în mod corespunzător",
+        "DATE_ERROR": "Datele de fitrare sunt greșite",
+        "VALIDATION_ERROR": "Eroare la validare"
       }
 }

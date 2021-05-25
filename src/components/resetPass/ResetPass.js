@@ -10,6 +10,7 @@ import axios from '../../utils/Axios'
 import {StatusCodes} from 'http-status-codes'
 import { useHistory } from 'react-router'
 import Notifications from '../../utils/Notifications'
+import validator from 'validator'
 const RO = require('../../utils/language/RO.json')
 
 function ResetPass(){
@@ -39,13 +40,17 @@ function ResetPass(){
     }
 
     const handleReset = () =>{
-        if(firstPass !== secondPass)
+        if(validator.isEmpty(firstPass) || validator.isEmpty(secondPass))
+            Notifications.error(RO.notifications.ENTRY_ERROR)
+        else if(firstPass !== secondPass)
             Notifications.error(RO.notifications.IDENTICAL_PASS)
         else{
             Notifications.success(RO.notifications.SUCCESS_PASS)
             let password = firstPass
             axios.put(`/users/${ID}`, {password}).then(resp => {
                 history.push('/')
+            }).catch(err => {
+                Notifications.error(RO.notifications.SERVER_ERROR)
             })
         }
     }

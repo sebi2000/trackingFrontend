@@ -77,7 +77,7 @@ export default function ConfirmDialog(props) {
           <DialogTitle id="alert-dialog-title">{RO.exportMessage}</DialogTitle>
             <DialogActions>
               <Button onClick={() => {handleClose();}} >
-                <CSVLink data={props.data} className={classes.export} filename={"Lista-Intrati.csv"}>
+                <CSVLink data={props.data} className={classes.export} filename={"Listă-Intrări.csv"}>
                 {RO.export}</CSVLink>
               </Button>
               <Button onClick={handleClose}  autoFocus>

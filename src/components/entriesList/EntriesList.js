@@ -18,8 +18,8 @@ import { withStyles } from '@material-ui/core/styles'
 import Navbar from '../common/Navbar'
 import Notifications from '../../utils/Notifications'
 import ConfirmDialog from '../common/ConfirmDialog'
-import CloseIcon from '@material-ui/icons/Close';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CloseIcon from '@material-ui/icons/Close'
+import Typography from '@material-ui/core/Typography'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -30,8 +30,7 @@ const styles = theme => ({
   },
   datepicker: {
     zIndex: '100',
-    marginTop: '17px',
-    marginRight: '10px'
+    marginRight: '0.3rem'
   },
   actions:{
     display: 'flex',
@@ -60,7 +59,7 @@ const styles = theme => ({
   },
   filterCloseIcon: {
     height: '1.2rem',
-  }
+  },
 })
 
 const columns = [
@@ -118,6 +117,7 @@ class EntriesList extends React.Component {
         csvData : aux
        })
     }).catch(err => {
+      Notifications.error(RO.notifications.SERVER_ERROR)
       console.log(err)
     })
   }
@@ -152,7 +152,7 @@ class EntriesList extends React.Component {
   }
 
   onCloseFilter = event => {
-    event.stopPropagation(); 
+    event.stopPropagation()
     this.setState({
       showFilterIcon: false, 
       startDate: this.initialDate, 
@@ -163,7 +163,9 @@ class EntriesList extends React.Component {
   }
 
   onFilterClick = () => {
-    if(this.state.startDate !== this.initialDate){
+    if(this.state.startDate > this.state.endDate)
+      Notifications.error(RO.notifications.DATE_ERROR)
+    else if(this.state.startDate !== this.initialDate){
       this.getEntries()
       this.setState({showFilterIcon: true})
     }
@@ -177,12 +179,23 @@ class EntriesList extends React.Component {
     return (
      <div>
         <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/>
+        
         <div className={classes.root}>
           <div className={classes.datepicker}>
-            <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
+          <Typography variant="caption" >
+            {RO.startDate}
+          </Typography>
+            <div>
+              <DatePicker dateFormat={RO.dateFormat} selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
+            </div>
           </div>
           <div className={classes.datepicker}>
-            <DatePicker dateFormat="yyyy/MM/dd" selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
+          <Typography variant="caption" >
+            {RO.endDate}
+          </Typography>
+            <div>
+              <DatePicker dateFormat={RO.dateFormat} selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
+            </div>
           </div>
             <Button onClick={() => this.onFilterClick()}>
               {RO.filter}

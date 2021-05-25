@@ -51,9 +51,10 @@ function ResetDialog(props) {
         if(status === RO.notifications.USER_NOT_FOUND && code === StatusCodes.FORBIDDEN)
           Notifications.error(RO.notifications.USER_NOT_FOUND)
         else if(status === RO.notifications.AUTH_SUCCESS && code === StatusCodes.OK)
-          Notifications.success(RO.notifications.EMAIL_SENT)
-        else Notifications.error(RO.notifications.SERVER_ERROR)
-      
+          Notifications.success(RO.notifications.EMAIL_SENT)  
+    })
+    .catch(err =>{
+      Notifications.error(RO.notifications.SERVER_ERROR)
     })
   }
 
