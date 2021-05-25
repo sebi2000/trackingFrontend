@@ -64,7 +64,7 @@ export default function ConfirmDialog(props) {
           <div>
           <DialogTitle id="alert-dialog-title">{RO.deleteMessage}</DialogTitle>
             <DialogActions>
-              <Button color="secondary" variant="contained" onClick={() => {handleClose(); props.action() }} >
+              <Button color="secondary" variant="contained" onClick={() => {handleClose(); props.onDeleteButton() }} >
                 {RO.clear}
               </Button>
               <Button onClick={handleClose}  autoFocus>
@@ -77,7 +77,7 @@ export default function ConfirmDialog(props) {
           <DialogTitle id="alert-dialog-title">{RO.exportMessage}</DialogTitle>
             <DialogActions>
               <Button onClick={() => {handleClose();}} >
-                <CSVLink data={props.data} className={classes.export} filename={"Listă-Intrări.csv"}>
+                <CSVLink data={props.data} className={classes.export} filename={RO.exportFile}>
                 {RO.export}</CSVLink>
               </Button>
               <Button onClick={handleClose}  autoFocus>

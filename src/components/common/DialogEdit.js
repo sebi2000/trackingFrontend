@@ -13,7 +13,7 @@ const RO = require('../../utils/language/RO.json')
 export default function FormDialog(props) {
    
   const [open, setOpen] = React.useState(false)
-  const [entry, setEntry] = React.useState(props.entry)
+  const [entry, setEntry] = React.useState({})
  
   useEffect(() => {
     setEntry(props.entry)

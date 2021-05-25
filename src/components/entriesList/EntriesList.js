@@ -254,7 +254,7 @@ class EntriesList extends React.Component {
                             <TableCell size={'small'}>
                               <div className={classes.actions}>
                               <EditDialog entry={entry} getEntries={this.getEntries}/>
-                              <ConfirmDialog type={'delete'} action={() => this.onDeleteButton(entry._id)} />
+                              <ConfirmDialog type={'delete'} onDeleteButton={() => this.onDeleteButton(entry._id)} />
                               </div>
                             </TableCell>
                     </TableRow> )} 

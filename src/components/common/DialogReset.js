@@ -60,7 +60,7 @@ function ResetDialog(props) {
 
   return (
     <div>
-      <Link className={classes.resetLink} style={{marginRight: '0'}} variant="contained" color="primary" onClick={handleClickOpen}>
+      <Link className={classes.resetLink} variant="contained" color="primary" onClick={handleClickOpen}>
         {RO.reset}
       </Link>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

@@ -23,6 +23,7 @@
     "startDate": "Dată început",
     "endDate": "Dată sfârșit",
     "dateFormat": "yyyy/MM/dd",
+    "exportFile": "Listă-Intrări.csv",
     "entries": {
         "index":"#",
         "name": "Prenume",
