@@ -8,11 +8,10 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Button from '@material-ui/core/Button'
 import axios from '../../utils/Axios'
 import {StatusCodes} from 'http-status-codes'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import { useHistory } from 'react-router'
+import Notifications from '../../utils/Notifications'
+import validator from 'validator'
 const RO = require('../../utils/language/RO.json')
-toast.configure()
 
 function ResetPass(){
 
@@ -41,13 +40,17 @@ function ResetPass(){
     }
 
     const handleReset = () =>{
-        if(firstPass !== secondPass)
-            toast.error(RO.notifications.IDENTICAL_PASS)
+        if(validator.isEmpty(firstPass) || validator.isEmpty(secondPass))
+            Notifications.error(RO.notifications.ENTRY_ERROR)
+        else if(firstPass !== secondPass)
+            Notifications.error(RO.notifications.IDENTICAL_PASS)
         else{
-            toast.success(RO.notifications.SUCCESS_PASS)
+            Notifications.success(RO.notifications.SUCCESS_PASS)
             let password = firstPass
             axios.put(`/users/${ID}`, {password}).then(resp => {
                 history.push('/')
+            }).catch(err => {
+                Notifications.error(RO.notifications.SERVER_ERROR)
             })
         }
     }

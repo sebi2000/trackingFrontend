@@ -6,13 +6,15 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from '../../utils/Axios'
+import Notifications from '../../utils/Notifications'
+import validator from 'validator'
 const RO = require('../../utils/language/RO.json')
 
 export default function FormDialog(props) {
    
   const [open, setOpen] = React.useState(false)
-  const [entry, setEntry] = React.useState(props.entry)
-
+  const [entry, setEntry] = React.useState({})
+ 
   useEffect(() => {
     setEntry(props.entry)
   },[props.entry]);
@@ -34,11 +36,23 @@ export default function FormDialog(props) {
   }
 
   const onSaveClick = () => {
-    if(JSON.stringify(props.entry) !== JSON.stringify(entry)){
-      axios.put(`/entries/${props.entry._id}`, entry).then(resp => {
-          props.getEntries()
-      })
-    }
+
+  if(!validator.isAlpha(entry.surname) || !validator.isAlpha(entry.name) || 
+  !validator.isEmail(entry.email) || !validator.isNumeric(entry.phone) || validator.isEmpty(entry.company))
+    return Notifications.error(RO.notifications.ENTRY_ERROR)
+  else if(JSON.stringify(props.entry) !== JSON.stringify(entry)){
+        axios.put(`/entries/${props.entry._id}`, entry).then(resp => {
+            props.getEntries()
+        })
+        .catch(err => {
+          console.log(err)
+          Notifications.error(RO.notifications.SERVER_ERROR)
+        })
+        Notifications.success(RO.notifications.SUCCESS_EDIT)
+        handleClose()
+      }
+  else handleClose()
+    
   }
 
   return (
@@ -56,7 +70,7 @@ export default function FormDialog(props) {
             <TextField name="phone" margin="dense" id="phone" label="Telefon" fullWidth value={entry.phone} onChange={onChange}/>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleClose(); onSaveClick()}} >
+          <Button onClick={() => {onSaveClick()}} >
             {RO.save}
           </Button>
           <Button onClick={handleClose}>

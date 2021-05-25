@@ -6,18 +6,15 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import axios from '../../utils/Axios'
-import Header from '../common/Header'
 import validator from 'validator'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import {connect} from 'react-redux'
 import MenuItem from '@material-ui/core/MenuItem'
-import {logout} from '../../redux/actions/index'
+import Navbar from '../common/Navbar'
+import Notifications from '../../utils/Notifications'
+import { StatusCodes } from 'http-status-codes'
 const RO = require('../../utils/language/RO.json')
-toast.configure()
 
 class Register extends React.Component {
 
@@ -27,24 +24,87 @@ class Register extends React.Component {
         email : "",
         phone : "",
         password:"",
-        role: ""
+        role: "",
+        fields: {
+            errorName: false,
+            errorSurname: false,
+            errorEmail: false,
+            errorCompany: false,
+            errorPhone: false,
+            errorRole: false
+        }
     }
 
-    handleRegister = () => {
+handleRegister = () => {
 
-        let surnameIsValid = validator.isAlpha(this.state.surname)
-        let nameIsValid = validator.isAlpha(this.state.name)
-        let emailIsValid = validator.isEmail(this.state.email)
-        let phoneIsValid = validator.isNumeric(this.state.phone)
-        let roleIsValid = !validator.isEmpty(this.state.role)
+    let isOk = true
 
-        if(surnameIsValid && nameIsValid && emailIsValid && phoneIsValid && roleIsValid)
+    let auxFields = {
+      errorName: false,
+      errorSurname: false,
+      errorEmail: false,
+      errorCompany: false,
+      errorPhone: false,
+      errorRole: false
+    }
+
+    Object.entries(this.state.fields).forEach(([key, value]) =>{
+      switch(key){
+        case 'errorSurname':
+          if(!validator.isAlpha(this.state.surname)){
+              isOk=false
+              auxFields.errorSurname = true
+            }
+        break
+        case 'errorName':
+          if(!validator.isAlpha(this.state.name)){
+              isOk=false
+              auxFields.errorName = true
+            }
+        break
+        case 'errorEmail':
+          if(!validator.isEmail(this.state.email)){
+              isOk=false
+              auxFields.errorEmail= true
+            }
+        break
+        case 'errorPhone':
+          if(!validator.isMobilePhone(this.state.phone)){
+              isOk=false
+              auxFields.errorPhone= true
+            }
+        break
+        case 'errorRole':
+          if(validator.isEmpty(this.state.role)){
+              isOk=false
+              auxFields.errorRole= true
+            }
+        break
+      }
+    })
+    this.setState({fields: auxFields})
+
+    if(isOk)
         {
-            let user = {user : this.state}
-            axios.post('/users', user).then(response =>{
+            let user = {
+                name: this.state.name,
+                surname: this.state.surname,
+                email: this.state.email,
+                phone: this.state.phone,
+                role: this.state.role,
+                password: this.state.password
+            }
+            axios.post('/users', {user}).then(response =>{
                 console.log(response)
+                if(response.data.user)
+                    Notifications.success(RO.notifications.ADMIN_REGISTRATION)
+                else if(response.data.status.errors && response.data.code === StatusCodes.UNPROCESSABLE_ENTITY)
+                    Notifications.error(RO.notifications.VALIDATION_ERROR)
+            }).catch(err => {
+                console.log(err)
+                Notifications.error(RO.notifications.SERVER_ERROR)
             })
-            toast.success('Ai inregistrat utilizatorul cu succes')
+
             this.setState({
                 name : "",
                 surname : "",
@@ -54,7 +114,7 @@ class Register extends React.Component {
                 role: ""
             })
         }
-        else toast.error('Introdu datele in mod corespunzator')
+        else Notifications.error(RO.notifications.ADMIN_FAIL_REGISTRATION)
 
     }
 
@@ -62,16 +122,10 @@ class Register extends React.Component {
         this.setState({ [event.target.name] : event.target.value })
     }
 
-    onLogOut = () => {
-        this.props.logout()
-        this.props.history.push('/')
-    }
-
     render() {
         return (
             <div>
-                 <Header/>
-                 <Button  onClick={this.onLogOut}> {RO.logout} </Button>
+                 <Navbar showLogoutButton={true}/>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                 <div>
@@ -92,6 +146,7 @@ class Register extends React.Component {
                             autoFocus
                             onChange={ this.onChange }
                             value={this.state.surname}
+                            error={this.state.fields.errorSurname}
                         />
                         <TextField
                             variant="outlined"
@@ -105,6 +160,7 @@ class Register extends React.Component {
                             autoComplete="name"
                             onChange={ this.onChange }
                             value={this.state.name}
+                            error={this.state.fields.errorName}
                         />
                         <TextField
                             variant="outlined"
@@ -117,6 +173,7 @@ class Register extends React.Component {
                             autoComplete="email"
                             onChange={ this.onChange }
                             value={this.state.email}
+                            error={this.state.fields.errorEmail}
                         />
                         <TextField
                             variant="outlined"
@@ -129,9 +186,9 @@ class Register extends React.Component {
                             autoComplete="phone"
                             onChange={ this.onChange }
                             value={this.state.phone}
+                            error={this.state.fields.errorPhone}
                         />
-                        
-                        <FormControl variant="outlined" fullWidth required margin="normal">
+                        <FormControl variant="outlined" fullWidth required margin="normal" error={this.state.fields.errorRole}>
                             <InputLabel id="demo-simple-select-outlined-label">Rol</InputLabel>
                             <Select
                             labelId="demo-simple-select-outlined-label"
@@ -141,7 +198,6 @@ class Register extends React.Component {
                             name="role"
                             label="Age"
                             >
-                            {/* <MenuItem value=""></MenuItem> */}
                             <MenuItem value={'super'}>Super Admin</MenuItem>
                             <MenuItem value={'user'}>User</MenuItem>
                             </Select>
@@ -161,10 +217,4 @@ class Register extends React.Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-      logout: () => dispatch(logout())
-    }
-  }
-
-export default connect(null, mapDispatchToProps)(Register)
+export default Register

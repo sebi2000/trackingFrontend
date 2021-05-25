@@ -28,16 +28,12 @@ const theme = createMuiTheme({
                  marginRight:"10px",
                  backgroundColor: "#3f50b5",
                  color : "white",
+                 '&:hover': {
+                    backgroundColor: '#0e24a1',
+                 }
             },
             
          },
-
-        // MuiPaper: {
-        //     root : {
-        //         background: 'Linear-gradient(45deg, #E0F2F1 30%, #E0F7FA 90%)',
-        //     },
-        // }
-        
 
     }
 });

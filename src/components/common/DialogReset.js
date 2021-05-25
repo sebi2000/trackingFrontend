@@ -4,18 +4,34 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import Link from '@material-ui/core/Link';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from '../../utils/Axios'
 import {StatusCodes} from 'http-status-codes'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
+import Notifications from '../../utils/Notifications'
 const RO = require('../../utils/language/RO.json')
-toast.configure()
 
-export default function FormDialog() {
+const useStyles = makeStyles((theme) => ({
+  resetLink : {
+    color: '#3f50b5',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginTop : '2%',
+    cursor: 'pointer',
+    fontSize : '1.05rem',
+    "&:hover": {
+      color: "#0e24a1"
+    }
+  },
+}));
+
+function ResetDialog(props) {
   const [open, setOpen] = React.useState(false)
   const [email, setEmail] = React.useState('')
+  const classes = useStyles()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,19 +49,20 @@ export default function FormDialog() {
     axios.post('/reset', {email}).then(resp =>{
         const {status, code} = resp.data
         if(status === RO.notifications.USER_NOT_FOUND && code === StatusCodes.FORBIDDEN)
-          toast.error(RO.notifications.USER_NOT_FOUND)
+          Notifications.error(RO.notifications.USER_NOT_FOUND)
         else if(status === RO.notifications.AUTH_SUCCESS && code === StatusCodes.OK)
-          toast.success(RO.notifications.EMAIL_SENT)
-        else toast.error(RO.notifications.SERVER_ERROR)
-      
+          Notifications.success(RO.notifications.EMAIL_SENT)  
+    })
+    .catch(err =>{
+      Notifications.error(RO.notifications.SERVER_ERROR)
     })
   }
 
   return (
     <div>
-      <Button style={{marginRight: '0'}} variant="contained" color="primary" onClick={handleClickOpen}>
+      <Link className={classes.resetLink} variant="contained" color="primary" onClick={handleClickOpen}>
         {RO.reset}
-      </Button>
+      </Link>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{RO.reset}</DialogTitle>
         <DialogContent>
@@ -74,3 +91,5 @@ export default function FormDialog() {
     </div>
   );
 }
+
+export default ResetDialog

@@ -2,9 +2,25 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import CanvasDraw from 'react-canvas-draw'
+import { withStyles } from '@material-ui/core/styles'
+import CloseIcon from '@material-ui/icons/Close';
 const RO = require('../../utils/language/RO.json')
+
+const styles = theme => ({
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  },
+  closeIcon: {
+    backgroundColor: 'inherit',
+    color: 'black',
+    '&:hover': {
+      backgroundColor: '#DADADA',
+    },
+    width: '5%'
+  }
+})
 
 class Modal extends React.Component{
 
@@ -21,9 +37,10 @@ class Modal extends React.Component{
   };
 
   render(){
+    const {classes} = this.props
     return (
       <div>
-        <Button  onClick={() => this.handleClickOpen()}>
+        <Button onClick={() => this.handleClickOpen()}>
           {RO.sign}
         </Button>
         <Dialog
@@ -31,11 +48,23 @@ class Modal extends React.Component{
           onClose={() => this.handleClose()}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
+          maxWidth={'md'}
+          fullWidth={true}
         >
-          <DialogTitle id="alert-dialog-title">{RO.sign}</DialogTitle>
+
+          <div className={classes.buttons}>
+            <Button onClick={this.handleClose} className={classes.closeIcon}><CloseIcon/></Button>
+          </div>
           <DialogContent>
             <div>
-              <div>
+              <CanvasDraw
+                ref={canvasDraw => (this.saveableCanvas = canvasDraw)}
+                brushColor={"#009933"}
+                brushRadius={3}
+                canvasWidth={900}
+                canvasHeight={400}
+              /> 
+              <div className={classes.buttons}>
                 <Button
                   color="primary"
                   variant="contained"
@@ -60,13 +89,6 @@ class Modal extends React.Component{
                   {RO.clear}
                 </Button> 
               </div>
-              <CanvasDraw
-                ref={canvasDraw => (this.saveableCanvas = canvasDraw)}
-                brushColor={"#009933"}
-                brushRadius={3}
-                canvasWidth={400}
-                canvasHeight={400}
-              /> 
             </div>
           </DialogContent>
         </Dialog>
@@ -74,5 +96,5 @@ class Modal extends React.Component{
     );
   }
 }
-export default Modal
+export default withStyles(styles)(Modal)
 
