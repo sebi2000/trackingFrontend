@@ -1,16 +1,49 @@
-import React, { useEffect } from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import React, { useEffect } from 'react'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
 import axios from '../../utils/Axios'
 import Notifications from '../../utils/Notifications'
 import validator from 'validator'
+import EditIcon from '@material-ui/icons/Edit'
+import { makeStyles } from '@material-ui/core/styles'
+import CloseIcon from '@material-ui/icons/Close'
 const RO = require('../../utils/language/RO.json')
 
+const useStyles = makeStyles((theme) => ({
+  editButton: {
+      backgroundColor: 'inherit',
+      '&:hover': {
+        backgroundColor: '#DADADA',
+        
+      },
+      color: "black",
+      height: '1.5rem',
+      width: '1.5rem',
+      minWidth: '1rem',
+    },
+  closeIcon: {
+      backgroundColor: 'inherit',
+      color: 'black',
+      '&:hover': {
+        backgroundColor: '#DADADA',
+      },
+      height: '2.3rem',
+      width: '2.3rem',
+      minWidth: '1rem',
+    },
+  buttonContainer: {
+    display: 'flex', 
+    justifyContent: 'space-between'
+  }
+}));
+
 export default function FormDialog(props) {
+
+  const classes = useStyles()
    
   const [open, setOpen] = React.useState(false)
   const [entry, setEntry] = React.useState({})
@@ -57,11 +90,14 @@ export default function FormDialog(props) {
 
   return (
     <div>
-      <Button onClick={handleClickOpen}>
-        {RO.edit}
+      <Button className={classes.editButton} onClick={handleClickOpen}>
+        <EditIcon/>
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{RO.edit}</DialogTitle>
+      <Dialog open={open} aria-labelledby="form-dialog-title">
+        <div className={classes.buttonContainer}>
+          <DialogTitle id="form-dialog-title">{RO.edit}</DialogTitle>
+          <Button onClick={handleClose} className={classes.closeIcon}><CloseIcon/></Button>
+        </div>
         <DialogContent>
             <TextField name="surname" margin="dense" id="surname" label="Nume" fullWidth value={entry.surname} onChange={onChange}/>
             <TextField name="name" margin="dense" id="name" label="Prenume" fullWidth value={entry.name} onChange={onChange}/>
@@ -70,11 +106,11 @@ export default function FormDialog(props) {
             <TextField name="phone" margin="dense" id="phone" label="Telefon" fullWidth value={entry.phone} onChange={onChange}/>
         </DialogContent>
         <DialogActions>
+          <Button color="default" variant="contained" onClick={handleClose}>
+            {RO.cancel}
+          </Button>
           <Button onClick={() => {onSaveClick()}} >
             {RO.save}
-          </Button>
-          <Button onClick={handleClose}>
-            {RO.cancel}
           </Button>
         </DialogActions>
       </Dialog>

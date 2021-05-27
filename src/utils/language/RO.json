@@ -24,6 +24,9 @@
     "endDate": "Dată sfârșit",
     "dateFormat": "yyyy/MM/dd",
     "exportFile": "Listă-Intrări.csv",
+    "yes": "DA",
+    "no": "NU",
+    "sort": "Sortează",
     "entries": {
         "index":"#",
         "name": "Prenume",
@@ -57,6 +60,8 @@
         "ADMIN_REGISTRATION": "Ai inregistrat utilizatorul cu succes",
         "ADMIN_FAIL_REGISTRATION": "Introdu datele în mod corespunzător",
         "DATE_ERROR": "Datele de fitrare sunt greșite",
-        "VALIDATION_ERROR": "Eroare la validare"
+        "VALIDATION_ERROR": "Eroare la validare",
+        "EMAIL_ALREADY_EXIST": "Email-ul există deja",
+        "PHONE_ALREADY_EXIST": "Numărul de telefon există deja"
       }
 }

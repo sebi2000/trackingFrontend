@@ -20,27 +20,33 @@ import Notifications from '../../utils/Notifications'
 import ConfirmDialog from '../common/ConfirmDialog'
 import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
+import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft'
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
+import setHours from "date-fns/setHours"
+import setMinutes from "date-fns/setMinutes"
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
   root: {
     justifyContent: 'flex-end', 
     display: 'flex',
-    paddingBottom: '20px'
+    paddingBottom: '1.7em',
+    marginRight: '1.5em',
   },
   datepicker: {
     zIndex: '100',
     marginRight: '0.3rem'
   },
+  dateSelector: { 
+    display: 'flex',
+    marginRight: 'auto', 
+    marginLeft: '3em'
+  },
   actions:{
     display: 'flex',
     ['@media (max-width: 1300px)']:{
       display: 'block',
-    }
-  },
-  export: {
-    color: 'white',
-    textDecoration: 'none'
+    },
   },
   logout: {
     marginRight: 'auto'
@@ -59,6 +65,22 @@ const styles = theme => ({
   },
   filterCloseIcon: {
     height: '1.2rem',
+  },
+  filter: {
+    marginLeft: '0.4rem'
+  },
+  arrowButton: {
+    marginTop: '1.4em',
+    marginLeft: '0.2em',
+    marginRight: '0.2em',
+    backgroundColor: 'inherit',
+    '&:hover': {
+      backgroundColor: '#DADADA',
+    },
+    color: "black",
+    height: '1.5rem',
+    width: '1.5rem',
+    minWidth: '1rem'
   },
 })
 
@@ -158,6 +180,7 @@ class EntriesList extends React.Component {
       startDate: this.initialDate, 
       endDate: new Date()
     }, () => {
+      this.handleChangePage(event, 0)
       this.getEntries()
     }) 
   }
@@ -165,12 +188,45 @@ class EntriesList extends React.Component {
   onFilterClick = () => {
     if(this.state.startDate > this.state.endDate)
       Notifications.error(RO.notifications.DATE_ERROR)
-    else if(this.state.startDate !== this.initialDate){
-      this.getEntries()
-      this.setState({showFilterIcon: true})
-    }
-      
+    else {
+      if(this.initialDate.getDate() !== this.state.startDate.getDate()){
+        this.getEntries()
+        this.setState({showFilterIcon: true})
+      }
+      else {
+        this.setState({showFilterIcon: false})
+        this.getEntries()
+      }
+    } 
   }
+
+  onArrowClick = (step) => {
+  
+    let startDate = this.state.startDate
+    startDate.setHours(0)
+    startDate.setMinutes(0)
+    startDate.setSeconds(0)
+    startDate.setDate(startDate.getDate() + step)
+   
+    if(startDate.getDate() > new Date().getDate()){
+      startDate.setDate(startDate.getDate() - 1)
+      return Notifications.error(RO.notifications.DATE_ERROR)
+    }
+    else{
+      let endDate = this.state.endDate
+      endDate.setHours(23)
+      endDate.setMinutes(59)
+      endDate.setSeconds(59)
+      endDate.setDate(endDate.getDate() + step)
+    
+      this.setState({startDate: startDate, endDate: endDate})
+
+      this.initialDate = new Date()
+      this.setInitialDate()
+      this.onFilterClick()
+    }
+
+  } 
 
   render() {
     
@@ -181,23 +237,42 @@ class EntriesList extends React.Component {
         <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/>
         
         <div className={classes.root}>
+          
+          <div className={classes.dateSelector}>
+            <Button className={classes.arrowButton} >
+              <KeyboardArrowLeftIcon onClick={() => this.onArrowClick(-1)} />
+            </Button>
+            <div>
+            <Typography variant="caption" >
+              {RO.sort}
+            </Typography>
+              <div>
+                <DatePicker maxDate={new Date()} dateFormat={RO.dateFormat} selected={this.state.startDate} onChange={date => {this.setState({ startDate : date, endDate: setHours(setMinutes(date, 59), 23)})}} /> 
+              </div>
+            </div>
+            <Button className={classes.arrowButton}>
+              <KeyboardArrowRightIcon  onClick={() => this.onArrowClick(1)} />
+            </Button>
+          </div>
+
           <div className={classes.datepicker}>
           <Typography variant="caption" >
             {RO.startDate}
           </Typography>
             <div>
-              <DatePicker dateFormat={RO.dateFormat} selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} />
+              <DatePicker maxDate={new Date()} dateFormat={RO.dateFormat} selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} /> 
             </div>
           </div>
+
           <div className={classes.datepicker}>
           <Typography variant="caption" >
             {RO.endDate}
           </Typography>
             <div>
-              <DatePicker dateFormat={RO.dateFormat} selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} />
+              <DatePicker maxDate={new Date()} dateFormat={RO.dateFormat} selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} /> 
             </div>
           </div>
-            <Button onClick={() => this.onFilterClick()}>
+            <Button className={classes.filter} onClick={() => this.onFilterClick()}>
               {RO.filter}
                 {this.state.showFilterIcon === true ? 
                   
@@ -208,7 +283,8 @@ class EntriesList extends React.Component {
                 
             </Button>
             <ConfirmDialog type='export' data={this.state.csvData}/>
-        </div>
+          </div>
+        
        
       <div className={classes.table}> 
         <fieldset>
