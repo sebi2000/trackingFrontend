@@ -24,7 +24,7 @@ function Root(props) {
     return (
             <ThemeProvider theme={theme}>
             <BrowserRouter>
-                {props.user.role === 'user' ?
+                {props.user.role === 'user'?
                     <Switch>
                         <Route exact path="/" component={Login} />
                         <Route exact path="/entries" component={EntriesList}/>
@@ -33,7 +33,7 @@ function Root(props) {
                         <Redirect to="/entries" />
                     </Switch> 
                     :
-                props.user.role === 'super' ?
+                props.user.role === 'super'?
                     <Switch>
                         <Route exact path="/" component={Login}/>
                         <Route exact path="/register" component={Register} />
@@ -56,7 +56,7 @@ function Root(props) {
 }
 
 const mapStateToProps = state => {
-        return {user: state.user}
+    return {user: state.user}
 }
-   
+ 
 export default connect(mapStateToProps)(Root)

@@ -20,7 +20,37 @@ const styles = theme => ({
       backgroundColor: '#264d00',
     },
   },
-  
+  flexContainer: {
+    display: 'flex',
+  },
+  gridContainer: {
+    display: 'grid',
+    width: '100%',
+    height: '10em',
+    gridTemplateAreas : `
+                          'email sign'
+                          'phone sign'
+                        `,
+    gridTemplateColumns: '1fr 250px',
+    gridTemplateRows: '1fr 1fr'
+  },
+  email: {
+    gridArea: 'email',
+  },
+  phone: {
+    gridArea: 'phone',
+  },
+  sign: {
+    gridArea: 'sign',
+    marginTop: '1em',
+    marginLeft: '3.5em',
+  },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '2em',
+    marginBottom: '2em'
+  }
 })
 
 
@@ -156,43 +186,41 @@ class UserView extends React.Component{
             
           <fieldset>
             <div>
-            <TextField variant="outlined" error={this.state.fields.errorName} margin="normal" required fullWidth id="name" label={RO.entries.name} name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
+              <TextField variant="outlined" error={this.state.fields.errorName} margin="normal" required fullWidth id="name" label={RO.entries.name} name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
             </div>
             <div>
-            <TextField  variant="outlined" error={this.state.fields.errorSurname} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
+              <TextField  variant="outlined" error={this.state.fields.errorSurname} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
             </div>
             <div>
-              <TextField  variant="outlined"  error={this.state.fields.errorEmail} margin="normal" required fullWidth id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
+              <TextField  variant="outlined"  error={this.state.fields.errorCompany} margin="normal" required fullWidth id="company" label={RO.entries.company} name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
             </div>
-            <div>
-            <TextField  variant="outlined" error={this.state.fields.errorPhone}  margin="normal" required fullWidth id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
-            </div>
-            <div>
-            <TextField  variant="outlined"  error={this.state.fields.errorCompany} margin="normal" required fullWidth id="company" label={RO.entries.company} name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
-            </div>
-            
-          <div>
-            <Modal showDrawing={ this.showDrawing }/> 
-
-            {this.state.show ?
-              <CanvasDraw
-              canvasHeight={200}
-              canvasWidth={200}
-              disabled={true}
-              hideGrid={true}
-              ref={canvasDraw => (this.loadableCanvas = canvasDraw)}
-              saveData={localStorage.getItem("savedDrawing")}
-              loadTimeOffset={2}
-            />
-            : null
-          } 
            
-       
-          </div>
-            <div>
-            <Button  className={classes.nextButton} onClick={() => {this.handleEntries()}}  >
-              {RO.next}
-            </Button>
+        <div className={this.state.show ? classes.gridContainer : null}>
+          <TextField className={classes.email} variant="outlined"  error={this.state.fields.errorEmail} margin="normal" fullWidth required id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
+    
+          {this.state.show ?
+                <CanvasDraw
+                canvasHeight={150}
+                canvasWidth={150}
+                disabled={true}
+                hideGrid={true}
+                ref={canvasDraw => (this.loadableCanvas = canvasDraw)}
+                saveData={localStorage.getItem("savedDrawing")}
+                loadTimeOffset={2}
+                className={classes.sign}
+              />
+              : null
+            } 
+         
+          <TextField className={classes.phone} variant="outlined" error={this.state.fields.errorPhone} fullWidth margin="normal" required id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
+        </div>
+            <div className={classes.buttons}>
+            <Modal showDrawing={ this.showDrawing }/> 
+              <div>
+              <Button className={classes.nextButton} onClick={() => {this.handleEntries()}}  >
+                {RO.next}
+              </Button>
+              </div>
             </div>
           </fieldset>
           </div>
