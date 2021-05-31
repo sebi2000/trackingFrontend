@@ -24,6 +24,15 @@ import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 import setHours from "date-fns/setHours"
 import setMinutes from "date-fns/setMinutes"
+import moment from 'moment'
+//import DateSelector from '../common/DateSelector'
+import 'date-fns';
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -35,12 +44,15 @@ const styles = theme => ({
   },
   datepicker: {
     zIndex: '100',
-    marginRight: '0.3rem'
+    marginRight: '0.3rem',
+    width: '11em',
+    marginLeft: '1em'
   },
   dateSelector: { 
     display: 'flex',
     marginRight: 'auto', 
-    marginLeft: '3em'
+    marginLeft: '3em',
+    width: '14em'
   },
   actions:{
     display: 'flex',
@@ -67,11 +79,11 @@ const styles = theme => ({
     height: '1.2rem',
   },
   filter: {
-    marginLeft: '0.4rem'
+    marginLeft: '0.7rem',
+    marginTop: '2em'
   },
   arrowButton: {
-    marginTop: '1.4em',
-    marginLeft: '0.2em',
+    marginTop: '2.5em',
     marginRight: '0.2em',
     backgroundColor: 'inherit',
     '&:hover': {
@@ -98,19 +110,19 @@ const columns = [
 
 class EntriesList extends React.Component {
 
-  initialDate = new Date()
+  initialDate
   
   state = {
     classes : "",
     page : 0,
     rowsPerPage : 5,
     entries: [],
-    startDate : this.initialDate,
-    endDate : new Date(),
+    startDate : moment().startOf('day').toDate(),
+    endDate : moment().endOf('day').toDate(),
     count : 0,
     csvData : [],
-    showFilterIcon: false
-}
+    showFilterIcon: false,
+  }
 
   componentDidMount() {
     this.setInitialDate()
@@ -119,7 +131,6 @@ class EntriesList extends React.Component {
  
   getEntries = () =>{
     axios.get('/entries/?page='+ this.state.page + '&rows=' + this.state.rowsPerPage + '&start=' + this.state.startDate + '&end=' + this.state.endDate).then(response => {
-      
       let aux=[]
       response.data[0].map((entry, index)=>{
         
@@ -145,9 +156,7 @@ class EntriesList extends React.Component {
   }
 
   setInitialDate = () => {
-    this.initialDate.setHours(0)
-    this.initialDate.setMinutes(0)
-    this.initialDate.setSeconds(0)
+    this.initialDate = moment().startOf('day').toDate()
   }
 
   handleChangePage = (event, newPage) =>{
@@ -168,9 +177,13 @@ class EntriesList extends React.Component {
 
   onDeleteButton = id => {
     axios.delete(`/entries/${id}`).then(resp => {
+      Notifications.success(RO.notifications.SUCCESS_EDIT)
       this.getEntries()
     })
-    Notifications.success(RO.notifications.SUCCESS_EDIT)
+    .catch(err => {
+      Notifications.error(RO.notifications.SERVER_ERROR)
+      console.log(err)
+    })
   }
 
   onCloseFilter = event => {
@@ -178,7 +191,7 @@ class EntriesList extends React.Component {
     this.setState({
       showFilterIcon: false, 
       startDate: this.initialDate, 
-      endDate: new Date()
+      endDate: moment().endOf('day').toDate(),
     }, () => {
       this.handleChangePage(event, 0)
       this.getEntries()
@@ -189,7 +202,7 @@ class EntriesList extends React.Component {
     if(this.state.startDate > this.state.endDate)
       Notifications.error(RO.notifications.DATE_ERROR)
     else {
-      if(this.initialDate.getDate() !== this.state.startDate.getDate()){
+      if(!moment(this.initialDate).isSame(this.state.startDate)){
         this.getEntries()
         this.setState({showFilterIcon: true})
       }
@@ -201,31 +214,23 @@ class EntriesList extends React.Component {
   }
 
   onArrowClick = (step) => {
-  
-    let startDate = this.state.startDate
-    startDate.setHours(0)
-    startDate.setMinutes(0)
-    startDate.setSeconds(0)
-    startDate.setDate(startDate.getDate() + step)
-   
-    if(startDate.getDate() > new Date().getDate()){
-      startDate.setDate(startDate.getDate() - 1)
+
+    let startDate, endDate
+
+    if(step === 1){
+      startDate = moment(this.state.startDate).add(1, 'days').toDate()
+      endDate = moment(this.state.endDate).add(1,'days').toDate()
+    }
+    else {
+      startDate = moment(this.state.startDate).subtract(1, 'days').toDate()
+      endDate = moment(this.state.endDate).subtract(1,'days').toDate()
+    }
+
+    if(moment(startDate).isAfter(this.initialDate))
       return Notifications.error(RO.notifications.DATE_ERROR)
-    }
-    else{
-      let endDate = this.state.endDate
-      endDate.setHours(23)
-      endDate.setMinutes(59)
-      endDate.setSeconds(59)
-      endDate.setDate(endDate.getDate() + step)
+
+    this.setState({startDate: startDate, endDate: endDate}, () => {this.getEntries(); this.onFilterClick()})
     
-      this.setState({startDate: startDate, endDate: endDate})
-
-      this.initialDate = new Date()
-      this.setInitialDate()
-      this.onFilterClick()
-    }
-
   } 
 
   render() {
@@ -237,53 +242,55 @@ class EntriesList extends React.Component {
         <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/>
         
         <div className={classes.root}>
-          
+            
           <div className={classes.dateSelector}>
-            <Button className={classes.arrowButton} >
-              <KeyboardArrowLeftIcon onClick={() => this.onArrowClick(-1)} />
-            </Button>
-            <div>
-            <Typography variant="caption" >
-              {RO.sort}
-            </Typography>
-              <div>
-                <DatePicker maxDate={new Date()} dateFormat={RO.dateFormat} selected={this.state.startDate} onChange={date => {this.setState({ startDate : date, endDate: setHours(setMinutes(date, 59), 23)})}} /> 
-              </div>
-            </div>
             <Button className={classes.arrowButton}>
-              <KeyboardArrowRightIcon  onClick={() => this.onArrowClick(1)} />
+              <KeyboardArrowLeftIcon onClick={() => {this.onArrowClick(-1)}}/>
             </Button>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Grid container >
+                <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format="MM/dd/yyyy" margin="normal" id="date-picker-inline" 
+                label={RO.sort} value={this.state.startDate} onChange={date => {this.setState({startDate: date})}} KeyboardButtonProps={{'aria-label': 'change date',}}
+                />
+              </Grid>
+            </MuiPickersUtilsProvider>
+            <Button className={classes.arrowButton}>
+                <KeyboardArrowRightIcon onClick={() => {this.onArrowClick(1)}}/>
+            </Button> 
           </div>
 
           <div className={classes.datepicker}>
-          <Typography variant="caption" >
-            {RO.startDate}
-          </Typography>
-            <div>
-              <DatePicker maxDate={new Date()} dateFormat={RO.dateFormat} selected={this.state.startDate} onChange={date => {this.setState({ startDate : date})}} /> 
-            </div>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Grid container >
+                <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format="MM/dd/yyyy" margin="normal" id="date-picker-inline" 
+                label={RO.startDate} value={this.state.startDate} onChange={date => {this.setState({startDate: date})}} KeyboardButtonProps={{'aria-label': 'change date',}}
+                />
+              </Grid>
+            </MuiPickersUtilsProvider>
           </div>
 
           <div className={classes.datepicker}>
-          <Typography variant="caption" >
-            {RO.endDate}
-          </Typography>
-            <div>
-              <DatePicker maxDate={new Date()} dateFormat={RO.dateFormat} selected={this.state.endDate} onChange={date => {this.setState({ endDate : date})}} /> 
-            </div>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Grid container >
+                <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format="MM/dd/yyyy" margin="normal" id="date-picker-inline" 
+                  label={RO.endDate} value={this.state.endDate} onChange={date => {this.setState({endDate: date})}} KeyboardButtonProps={{'aria-label': 'change date',}}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
           </div>
+
+          <div>
             <Button className={classes.filter} onClick={() => this.onFilterClick()}>
               {RO.filter}
                 {this.state.showFilterIcon === true ? 
-                  
                   <Button onClick={event => this.onCloseFilter(event)} className={classes.filterCloseButton}>
                     <CloseIcon className={classes.filterCloseIcon}/> 
                   </Button> : null
                 }
-                
             </Button>
-            <ConfirmDialog type='export' data={this.state.csvData}/>
           </div>
+            <ConfirmDialog type='export' data={this.state.csvData}/>
+        </div>
         
        
       <div className={classes.table}> 

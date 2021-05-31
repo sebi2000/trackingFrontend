@@ -17,7 +17,7 @@ const RO = require('../../utils/language/RO.json')
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginBottom: '2em'
+    marginBottom: '1em'
   },
   title: {
     flexGrow: 1,

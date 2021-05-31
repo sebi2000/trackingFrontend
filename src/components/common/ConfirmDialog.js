@@ -50,7 +50,10 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
       display: 'flex', 
       justifyContent: 'space-between'
-    }
+    },
+  exportButton: {
+    marginTop: '2em'
+  }
 }));
 
 export default function ConfirmDialog(props) {
@@ -74,7 +77,7 @@ export default function ConfirmDialog(props) {
           <DeleteIcon/>
         </Button>
         : props.type === 'export' ? 
-          <Button onClick={handleClickOpen}>{RO.export}</Button>
+          <Button onClick={handleClickOpen} className={classes.exportButton} >{RO.export}</Button>
         : props.type === 'logout' ?
         <Button onClick={handleClickOpen} className={classes.logout}>
           <PowerSettingsNewIcon className={classes.powerIcon}/>
