@@ -16,7 +16,7 @@ function Root(props) {
     const [isLogged, setIsLogged] = React.useState(false)
 
    useEffect(() => {
-       axios.get('/isLogged').then(response => {
+       axios.get('/isLogged').then(resp => {
             setIsLogged(true)
        })
    })
