@@ -56,7 +56,6 @@ function Navbar(props) {
   const onLogOutButton = () => {
     axios.get('/logout').then(response => {
       props.logout()
-      history.push('/') 
     })
   }
 
