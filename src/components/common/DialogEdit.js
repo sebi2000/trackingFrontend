@@ -78,7 +78,7 @@ export default function FormDialog(props) {
             props.getEntries()
         })
         .catch(err => {
-          console.log(err)
+          console.error(err)
           Notifications.error(RO.notifications.SERVER_ERROR)
         })
         Notifications.success(RO.notifications.SUCCESS_EDIT)

@@ -8,7 +8,7 @@ export const auth = user => dispatch => axios.post('/auth', user)
     return response.data
 })
 .catch(err =>{
-    console.log(err)
+    console.error(err)
 })
 
 export const logout = () => dispatch => {

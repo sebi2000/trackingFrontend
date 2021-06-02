@@ -8,7 +8,6 @@ import TableRow from '@material-ui/core/TableRow'
 import axios from '../../utils/Axios'
 import Moment from 'react-moment'
 import CanvasDraw from 'react-canvas-draw'
-import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import Button  from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
@@ -22,10 +21,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
-import setHours from "date-fns/setHours"
-import setMinutes from "date-fns/setMinutes"
 import moment from 'moment'
-//import DateSelector from '../common/DateSelector'
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -151,7 +147,7 @@ class EntriesList extends React.Component {
        })
     }).catch(err => {
       Notifications.error(RO.notifications.SERVER_ERROR)
-      console.log(err)
+      console.error(err)
     })
   }
 
@@ -182,7 +178,7 @@ class EntriesList extends React.Component {
     })
     .catch(err => {
       Notifications.error(RO.notifications.SERVER_ERROR)
-      console.log(err)
+      console.error(err)
     })
   }
 
@@ -216,7 +212,7 @@ class EntriesList extends React.Component {
 
     let startDate, endDate
 
-    if(step === 1){
+    if(step === RO.NEXT){
       startDate = moment(this.state.startDate).add(1,'days').toDate()
       endDate = moment(this.state.endDate).add(1,'days').toDate()
     }
@@ -244,24 +240,24 @@ class EntriesList extends React.Component {
             
           <div className={classes.dateSelector}>
             <Button className={classes.arrowButton}>
-              <KeyboardArrowLeftIcon onClick={() => {this.onArrowClick(-1)}}/>
+              <KeyboardArrowLeftIcon onClick={() => {this.onArrowClick(RO.PREV)}}/>
             </Button>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container >
-                <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format="MM/dd/yyyy" margin="normal" id="date-picker-inline" 
+                <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format={RO.dateFormat} margin="normal" id="date-picker-inline" 
                 label={RO.sort} value={this.state.startDate} onChange={date => {this.setState({startDate: date, endDate: moment(date).endOf('day').toDate()}, this.onFilterClick())}} KeyboardButtonProps={{'aria-label': 'change date',}}
                 />
               </Grid>
             </MuiPickersUtilsProvider>
             <Button className={classes.arrowButton}>
-                <KeyboardArrowRightIcon onClick={() => {this.onArrowClick(1)}}/>
+                <KeyboardArrowRightIcon onClick={() => {this.onArrowClick(RO.NEXT)}}/>
             </Button> 
           </div>
 
           <div className={classes.datepicker}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container >
-                <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format="MM/dd/yyyy" margin="normal" id="date-picker-inline" 
+                <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format={RO.dateFormat} margin="normal" id="date-picker-inline" 
                 label={RO.startDate} value={this.state.startDate} onChange={date => {this.setState({startDate: date})}} KeyboardButtonProps={{'aria-label': 'change date',}}
                 />
               </Grid>
@@ -271,7 +267,7 @@ class EntriesList extends React.Component {
           <div className={classes.datepicker}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container >
-                <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format="MM/dd/yyyy" margin="normal" id="date-picker-inline" 
+                <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format={RO.dateFormat} margin="normal" id="date-picker-inline" 
                   label={RO.endDate} value={this.state.endDate} onChange={date => {this.setState({endDate: date})}} KeyboardButtonProps={{'aria-label': 'change date',}}
                   />
                 </Grid>

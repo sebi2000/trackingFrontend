@@ -113,7 +113,7 @@ handleRegister = () => {
                 else if(response.data.status.errors && response.data.code === StatusCodes.UNPROCESSABLE_ENTITY)
                     Notifications.error(RO.notifications.VALIDATION_ERROR)
             }).catch(err => {
-                console.log(err)
+                console.error(err)
                 Notifications.error(RO.notifications.SERVER_ERROR)
             })
 
