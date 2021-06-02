@@ -17,13 +17,14 @@ const RO = require('../../utils/language/RO.json')
 
   const styles = theme => ({
     button : {
-        display: 'flex',
-        justifyContent: 'space-between'
+      display: 'flex',
+      justifyContent: 'space-between'
     },
     header :{
       margin: 'auto',
       width: '11%',
-      marginBottom : '2%'
+      marginBottom : '2%',
+      marginTop: '2%'
     }
   })
   
@@ -114,9 +115,6 @@ const RO = require('../../utils/language/RO.json')
                 onChange = { this.onChange }
                 onKeyPress= { event => event.key === 'Enter' ? this.handleLogin() : null}
               />
-               {/* <div className={classes.button}> 
-                
-              </div> */}
               <Button fullWidth onClick={ this.handleLogin } >{RO.login}</Button>
               <DialogReset />
               

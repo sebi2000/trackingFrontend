@@ -136,7 +136,7 @@ class UserView extends React.Component{
           Notifications.error(RO.notifications.VALIDATION_ERROR)
       })
       .catch(err => {
-        console.log(err)
+        console.error(err)
         Notifications.error(RO.notifications.SERVER_ERROR)
       })
     }

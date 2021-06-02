@@ -9,9 +9,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from '../../utils/Axios'
 import {StatusCodes} from 'http-status-codes'
-import { withStyles } from '@material-ui/core/styles'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
 import Notifications from '../../utils/Notifications'
+import CloseIcon from '@material-ui/icons/Close'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -26,6 +26,20 @@ const useStyles = makeStyles((theme) => ({
       color: "#0e24a1"
     }
   },
+  closeIcon: {
+      backgroundColor: 'inherit',
+      color: 'black',
+      '&:hover': {
+        backgroundColor: '#DADADA',
+      },
+      height: '2.3rem',
+      width: '2.3rem',
+      minWidth: '1rem',
+  },
+  buttonContainer: {
+      display: 'flex', 
+      justifyContent: 'space-between'
+    }
 }));
 
 function ResetDialog(props) {
@@ -63,8 +77,11 @@ function ResetDialog(props) {
       <Link className={classes.resetLink} variant="contained" color="primary" onClick={handleClickOpen}>
         {RO.reset}
       </Link>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{RO.reset}</DialogTitle>
+      <Dialog open={open} aria-labelledby="form-dialog-title">
+        <div className={classes.buttonContainer}>
+          <DialogTitle id="form-dialog-title">{RO.reset}</DialogTitle>
+          <Button onClick={handleClose} className={classes.closeIcon}><CloseIcon/></Button>
+        </div>
         <DialogContent>
          <DialogContentText>
             {RO.resetMessage}
@@ -80,11 +97,11 @@ function ResetDialog(props) {
           />
         </DialogContent>
         <DialogActions>
+          <Button color="default" variant="contained" onClick={handleClose}>
+            {RO.cancel}
+          </Button>
           <Button onClick={() => {handleClose(); handleEmail();}} color="primary" variant="contained">
             {RO.send}
-          </Button>
-          <Button onClick={handleClose} color="primary" variant="contained">
-            {RO.cancel}
           </Button>
         </DialogActions>
       </Dialog>

@@ -95,24 +95,28 @@ handleRegister = () => {
                 password: this.state.password
             }
             axios.post('/users', {user}).then(response =>{
-                console.log(response)
-                if(response.data.user)
+                if(response.data.user){
                     Notifications.success(RO.notifications.ADMIN_REGISTRATION)
+                    this.setState({
+                        name : "",
+                        surname : "",
+                        email : "",
+                        phone : "",
+                        password:"",
+                        role: ""
+                    })
+                }   
+                else if(response.data.keyPattern.email)
+                    Notifications.error(RO.notifications.EMAIL_ALREADY_EXIST)
+                else if(response.data.keyPattern.phone)
+                    Notifications.error(RO.notifications.PHONE_ALREADY_EXIST)
                 else if(response.data.status.errors && response.data.code === StatusCodes.UNPROCESSABLE_ENTITY)
                     Notifications.error(RO.notifications.VALIDATION_ERROR)
             }).catch(err => {
-                console.log(err)
+                console.error(err)
                 Notifications.error(RO.notifications.SERVER_ERROR)
             })
 
-            this.setState({
-                name : "",
-                surname : "",
-                email : "",
-                phone : "",
-                password:"",
-                role: ""
-            })
         }
         else Notifications.error(RO.notifications.ADMIN_FAIL_REGISTRATION)
 

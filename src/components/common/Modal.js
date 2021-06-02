@@ -45,7 +45,6 @@ class Modal extends React.Component{
         </Button>
         <Dialog
           open={this.state.open}
-          onClose={() => this.handleClose()}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
           maxWidth={'md'}
@@ -66,6 +65,14 @@ class Modal extends React.Component{
               /> 
               <div className={classes.buttons}>
                 <Button
+                  variant="contained"
+                  onClick={() => {
+                    this.saveableCanvas.clear();
+                  }}
+                >
+                  {RO.clear}
+                </Button>
+                <Button
                   color="primary"
                   variant="contained"
                   onClick={() => {
@@ -78,15 +85,6 @@ class Modal extends React.Component{
                   }}
                 >
                   {RO.save}
-                </Button>
-
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    this.saveableCanvas.clear();
-                  }}
-                >
-                  {RO.clear}
                 </Button> 
               </div>
             </div>
