@@ -212,13 +212,12 @@ class EntriesList extends React.Component {
       }
     } 
   }
-
   onArrowClick = (step) => {
 
     let startDate, endDate
 
     if(step === 1){
-      startDate = moment(this.state.startDate).add(1, 'days').toDate()
+      startDate = moment(this.state.startDate).add(1,'days').toDate()
       endDate = moment(this.state.endDate).add(1,'days').toDate()
     }
     else {
@@ -250,7 +249,7 @@ class EntriesList extends React.Component {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container >
                 <KeyboardDatePicker autoOk={true} maxDate={new Date()} variant="inline" format="MM/dd/yyyy" margin="normal" id="date-picker-inline" 
-                label={RO.sort} value={this.state.startDate} onChange={date => {this.setState({startDate: date})}} KeyboardButtonProps={{'aria-label': 'change date',}}
+                label={RO.sort} value={this.state.startDate} onChange={date => {this.setState({startDate: date, endDate: moment(date).endOf('day').toDate()}, this.onFilterClick())}} KeyboardButtonProps={{'aria-label': 'change date',}}
                 />
               </Grid>
             </MuiPickersUtilsProvider>
