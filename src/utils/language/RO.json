@@ -29,6 +29,17 @@
     "yes": "DA",
     "no": "NU",
     "sort": "Sortează",
+    "companiesNav": "Companii",
+    "addCompany": "Adaugă o companie",
+    "add": "Adaugă",
+    "companies": {
+        "index": "#",
+        "name": "Nume",
+        "representative": "Reprezentant",
+        "phone": "Telefon",
+        "email": "Email",
+        "actions": "Acțiuni"
+    },
     "entries": {
         "index":"#",
         "name": "Prenume",
@@ -53,7 +64,7 @@
         "SERVER_ERROR": "Eroare server",
         "EMAIL_INCORRECT": "Email necorespunzător",
         "PASS_INCORRECT": "Parola trebuie sa conțină minim un caracter",
-        "ENTRY_ERROR": "Introdu datele în mod corespunzător",
+        "DATA_ERROR": "Introdu datele în mod corespunzător",
         "ENTRY_REGISTRATION": "Te-ai înregistrat cu succes",
         "EMAIL_SENT": "Ți-am trimis link-ul de resetare pe mail",
         "IDENTICAL_PASS": "Parolele trebuie să fie identice",
@@ -64,6 +75,7 @@
         "DATE_ERROR": "Datele de fitrare sunt greșite",
         "VALIDATION_ERROR": "Eroare la validare",
         "EMAIL_ALREADY_EXIST": "Email-ul există deja",
-        "PHONE_ALREADY_EXIST": "Numărul de telefon există deja"
+        "PHONE_ALREADY_EXIST": "Numărul de telefon există deja",
+        "SUCCESS_ADD_COMPANY": "Ai adăugat compania cu succes"
       }
 }

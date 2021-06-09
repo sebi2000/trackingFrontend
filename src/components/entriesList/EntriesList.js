@@ -18,7 +18,6 @@ import Navbar from '../common/Navbar'
 import Notifications from '../../utils/Notifications'
 import ConfirmDialog from '../common/ConfirmDialog'
 import CloseIcon from '@material-ui/icons/Close'
-import Typography from '@material-ui/core/Typography'
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 import moment from 'moment'
@@ -111,7 +110,7 @@ class EntriesList extends React.Component {
   state = {
     classes : "",
     page : 0,
-    rowsPerPage : 5,
+    rowsPerPage : CONSTANTS.INITIAL_ROWS_PER_PAGE,
     entries: [],
     startDate : moment().startOf('day').toDate(),
     endDate : moment().endOf('day').toDate(),
@@ -234,7 +233,7 @@ class EntriesList extends React.Component {
     
     return (
      <div>
-        <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/>
+        <Navbar path={this.props.location.pathname}/>
         
         <div className={classes.root}>
             
@@ -331,7 +330,7 @@ class EntriesList extends React.Component {
                             </TableCell>
                             <TableCell size={'small'}>
                               <div className={classes.actions}>
-                              <EditDialog entry={entry} getEntries={this.getEntries}/>
+                              <EditDialog type={'entry'} data={entry} getEntries={this.getEntries} />
                               <ConfirmDialog type={'delete'} onDeleteButton={() => this.onDeleteButton(entry._id)} />
                               </div>
                             </TableCell>
@@ -355,4 +354,4 @@ class EntriesList extends React.Component {
   }
 }
 
-export default  (withStyles(styles)(EntriesList));
+export default (withStyles(styles)(EntriesList));

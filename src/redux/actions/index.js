@@ -1,7 +1,6 @@
 import axios from '../../utils/Axios'
 
-export const auth = user => dispatch => axios.post('/auth', user)
-.then(response => {
+export const auth = user => dispatch => axios.post('/auth', user).then(response => {
     if(response.data.userFound){
         dispatch({type: 'LOGIN', payload: response.data.userFound})
     }
@@ -11,8 +10,13 @@ export const auth = user => dispatch => axios.post('/auth', user)
     console.error(err)
 })
 
-export const logout = () => dispatch => {
+export const logout = () => dispatch => axios.get('/logout').then(response => {
     localStorage.removeItem('token')
     dispatch({ type: 'LOGOUT' })
-}
+})
+
+
+    
+    
+
 

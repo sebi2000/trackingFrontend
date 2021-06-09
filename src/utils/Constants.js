@@ -7,7 +7,8 @@ const CONSTANTS = {
     FORBIDDEN : 403
   },
   PARSE_INT_RADIX: 10,
-  ROWS_PER_PAGE_ARRAY : [5, 10, 25] 
+  ROWS_PER_PAGE_ARRAY : [5, 10, 25],
+  INITIAL_ROWS_PER_PAGE : 5
 }
 export default CONSTANTS
     
