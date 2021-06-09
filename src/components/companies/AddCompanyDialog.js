@@ -58,10 +58,6 @@ function ResetDialog(props) {
   
   const classes = useStyles()
 
-  useEffect(() => {
-    console.log("COMPANY: ", company)
-  },[company])
-
   const handleClickOpen = () => {
     setOpen(true);
   };
