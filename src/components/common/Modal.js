@@ -4,7 +4,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import CanvasDraw from 'react-canvas-draw'
 import { withStyles } from '@material-ui/core/styles'
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/Close'
+import Notifications from '../../utils/Notifications'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -76,12 +77,17 @@ class Modal extends React.Component{
                   color="primary"
                   variant="contained"
                   onClick={() => {
-                    localStorage.setItem(
-                      "savedDrawing",
-                      this.saveableCanvas.getSaveData()
-                    );
-                    this.handleClose()
-                    this.props.showDrawing()
+                    console.log(this.saveableCanvas.getSaveData()['width'])
+                    if(this.saveableCanvas.getSaveData().lines.length){
+                      localStorage.setItem(
+                        "savedDrawing",
+                        this.saveableCanvas.getSaveData()
+                      );
+                      this.handleClose()
+                      this.props.showDrawing()
+                    }
+                    else Notifications.error(RO.notifications.SIGNATURE_ERROR)
+                    
                   }}
                 >
                   {RO.save}
