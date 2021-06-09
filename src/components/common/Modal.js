@@ -20,6 +20,9 @@ const styles = theme => ({
       backgroundColor: '#DADADA',
     },
     width: '5%'
+  },
+  errorButton: {
+    border: '3px solid red'
   }
 })
 
@@ -41,7 +44,7 @@ class Modal extends React.Component{
     const {classes} = this.props
     return (
       <div>
-        <Button onClick={() => this.handleClickOpen()}>
+        <Button className={this.props.error ? classes.errorButton : null} onClick={() => this.handleClickOpen()}>
           {RO.sign}
         </Button>
         <Dialog
@@ -65,6 +68,28 @@ class Modal extends React.Component{
                 canvasHeight={400}
               /> 
               <div className={classes.buttons}>
+<<<<<<< HEAD
+=======
+                <div>
+                  <Button
+                    onClick={() => {
+                      if(JSON.parse(this.saveableCanvas.getSaveData()).lines.length){
+                        localStorage.setItem(
+                          "savedDrawing",
+                          this.saveableCanvas.getSaveData()
+                        );
+                        this.handleClose()
+                        this.props.showDrawing()
+                      }
+                      else Notifications.error(RO.notifications.SIGNATURE_ERROR)
+                      
+                    }}
+                  >
+                    {RO.save}
+                  </Button>
+                </div>
+
+>>>>>>> 323236f (refactor: set red border signature is empty)
                 <Button
                   variant="contained"
                   onClick={() => {
@@ -72,6 +97,7 @@ class Modal extends React.Component{
                   }}
                 >
                   {RO.clear}
+<<<<<<< HEAD
                 </Button>
                 <Button
                   color="primary"
@@ -91,6 +117,8 @@ class Modal extends React.Component{
                   }}
                 >
                   {RO.save}
+=======
+>>>>>>> 323236f (refactor: set red border signature is empty)
                 </Button> 
               </div>
             </div>

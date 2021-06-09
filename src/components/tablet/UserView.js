@@ -75,7 +75,6 @@ class UserView extends React.Component{
     email : "",
     phone : "",
     company : "",
-    signature : "",
     show: false,
     fields: {
       errorName: false,
@@ -88,10 +87,7 @@ class UserView extends React.Component{
   }
 
   showDrawing = () =>{
-    this.setState({
-      signature: localStorage.getItem("savedDrawing"),
-      show : true,
-  })
+    this.setState({show : true})
   }
 
   onChange = event => {
@@ -143,9 +139,9 @@ class UserView extends React.Component{
             }
         break
         case 'errorSignature':
-          if(validator.isEmpty(this.state.signature)){
+          if(this.state.show === false){
               isOk=false
-              auxFields.errorSignature= false
+              auxFields.errorSignature= true
             }
         break
       }
@@ -160,7 +156,7 @@ class UserView extends React.Component{
         email : this.state.email,
         phone : this.state.phone,
         company : this.state.company,
-        signature : this.state.signature,
+        signature : localStorage.getItem("savedDrawing"),
         date: new Date()
       }
 
@@ -229,10 +225,9 @@ class UserView extends React.Component{
             </div>
 
         </div>
-        
         <div className={classes.buttonsContainer}>
             <div className={classes.buttons}>
-              <Modal showDrawing={ this.showDrawing }/>  
+              <Modal showDrawing={ this.showDrawing } error={this.state.fields.errorSignature}/>  
               <Button className={classes.nextButton} onClick={() => {this.handleEntries()}}  >
                 {RO.next}
               </Button> 
