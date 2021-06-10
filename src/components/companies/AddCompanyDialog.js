@@ -100,10 +100,14 @@ function ResetDialog(props) {
         phone: company.phone.value,
         email: company.email.value
       }
-      axios.post('/companies', {newCompany}).then(resp => {
-        Notifications.success(RO.notifications.SUCCESS_ADD_COMPANY)
-        props.getCompanies()
-        handleClose()
+      axios.post('/companies', {newCompany}).then(response => {
+        if(response.data.name === 'MongoError')
+          Notifications.error(RO.notifications.COMPANY_ALREADY_EXISTS)
+        else{
+          Notifications.success(RO.notifications.SUCCESS_ADD_COMPANY)
+          props.getCompanies()
+          handleClose()
+        } 
       })
       .catch(err => {
         Notifications.error(RO.notifications.SERVER_ERROR)
