@@ -11,6 +11,10 @@ import {connect} from 'react-redux'
 import Notifications from '../../utils/Notifications'
 import { withStyles } from '@material-ui/core/styles'
 import {StatusCodes} from 'http-status-codes'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -83,7 +87,18 @@ class UserView extends React.Component{
       errorCompany: false,
       errorPhone: false,
       errorSignature: false
-    }
+    },
+    companies: []
+  }
+
+  componentDidMount() {
+    axios.get('/companies').then(resp => {
+      this.setState({companies: resp.data[0]})
+    })
+    .catch(err => {
+      console.error(err)
+      Notifications.error(RO.notifications.SERVER_ERROR)
+    })
   }
 
   showDrawing = () =>{
@@ -92,6 +107,10 @@ class UserView extends React.Component{
 
   onChange = event => {
     this.setState({ [event.target.name] : event.target.value})
+  }
+
+  handleChange = event => {
+    this.setState({ company: event.target.value })
   }
 
   handleEntries = () =>{
@@ -195,17 +214,34 @@ class UserView extends React.Component{
             
           <div className={classes.tabletForm}>
               <div>
-                <TextField variant="outlined" error={this.state.fields.errorName} margin="normal" required fullWidth id="name" label={RO.entries.name} name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
+                <TextField error={this.state.fields.errorName} margin="normal" required fullWidth id="name" label={RO.entries.name} name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
               </div>
               <div>
-                <TextField  variant="outlined" error={this.state.fields.errorSurname} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
+                <TextField error={this.state.fields.errorSurname} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
               </div>
-              <div>
-                <TextField  variant="outlined"  error={this.state.fields.errorCompany} margin="normal" required fullWidth id="company" label={RO.entries.company} name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
-              </div>
-           
+              
+              <FormControl fullWidth required margin="normal" error={this.state.fields.errorCompany}>
+                <InputLabel id="demo-simple-select-outlined-label">{RO.entries.company}</InputLabel>
+                  <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={this.state.company}
+                  onChange={this.onChange}
+                  name="company"
+                  >
+              
+                    {this.state.companies.length ? 
+                      this.state.companies.map((company, index) => {
+                        return (<MenuItem style={{justifyContent: 'space-evenly'}} value={company.name}>{company.name}</MenuItem>)
+                      })
+                      : null
+                    }
+
+                  </Select>
+              </FormControl>
+              
             <div className={this.state.show ? classes.gridContainer : null}>
-              <TextField className={classes.email} variant="outlined"  error={this.state.fields.errorEmail} margin="normal" fullWidth required id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
+              <TextField className={classes.email} error={this.state.fields.errorEmail} margin="normal" fullWidth required id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
         
               {this.state.show ?
                     <CanvasDraw
@@ -221,7 +257,7 @@ class UserView extends React.Component{
                   : null
                 } 
             
-              <TextField className={classes.phone} variant="outlined" error={this.state.fields.errorPhone} fullWidth margin="normal" required id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
+              <TextField className={classes.phone} error={this.state.fields.errorPhone} fullWidth margin="normal" required id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
             </div>
 
         </div>
