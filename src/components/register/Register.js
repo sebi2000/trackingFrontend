@@ -129,7 +129,7 @@ handleRegister = () => {
     render() {
         return (
             <div>
-                 <Navbar showLogoutButton={true}/>
+                 <Navbar path={this.props.location.pathname} />
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                 <div>

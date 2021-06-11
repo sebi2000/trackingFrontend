@@ -9,6 +9,7 @@ import theme from '../src/utils/Theme'
 import {ThemeProvider} from '@material-ui/core/styles'
 import {connect} from 'react-redux'
 import axios from './utils/Axios'
+import Companies from './components/companies/Companies'
 
 function Root(props) {
 
@@ -36,6 +37,7 @@ function Root(props) {
                     <Switch>
                         <Route exact path="/" component={Login}/>
                         <Route exact path="/register" component={Register} />
+                        <Route exact path="/companies" component={Companies} />
                         <Route exact path="/reset/:TOKEN/:ID" component={ResetPass}/> 
                         <Redirect to="/register" />
                     </Switch> 

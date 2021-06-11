@@ -7,11 +7,11 @@ import TabletAndroidIcon from '@material-ui/icons/TabletAndroid';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import {useHistory} from 'react-router'
 import Header from '../common/Header'
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
 import axios from '../../utils/Axios'
 import {connect} from 'react-redux'
 import {logout} from '../../redux/actions/index'
 import ConfirmationDialog from '../common/ConfirmDialog'
+import BusinessIcon from '@material-ui/icons/Business'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -46,18 +46,20 @@ const useStyles = makeStyles((theme) => ({
   entriesIcon: {
     fontSize: '1.2rem',
     marginRight: '5%'
+  },
+  companyIcon: {
+    fontSize: '1.2rem',
+    marginRight: '5%'
+  },
+  registerIcon: {
+    fontSize: '1.2rem',
+    marginRight: '5%'
   }
 }));
 
 function Navbar(props) {
   const classes = useStyles()
   const history = useHistory()
-
-  const onLogOutButton = () => {
-    axios.get('/logout').then(response => {
-      props.logout()
-    })
-  }
 
   return (
     <div className={classes.root}>
@@ -66,7 +68,8 @@ function Navbar(props) {
           <div className={classes.title}>
             <Header/>
           </div>
-          {props.showTabletButton ?
+
+          {props.user.role === 'user' ?
           <div>
           <Button className={props.path === '/entries' ? classes.selectedButton : classes.button} onClick={() => history.push('/entries')} color="inherit">
             <ListAltIcon className={classes.entriesIcon}/>
@@ -76,14 +79,21 @@ function Navbar(props) {
             <TabletAndroidIcon className={classes.tabletIcon}/>
                 {RO.tablet}
           </Button>
-          </div> : null
-
+          </div> 
+          : props.user.role === 'super' ? 
+          <div>
+          <Button className={props.path === '/register' ? classes.selectedButton : classes.button} onClick={() => history.push('/register')} color="inherit">
+            <ListAltIcon className={classes.registerIcon}/>
+              {RO.register}
+          </Button>
+          <Button className={props.path === '/companies' ? classes.selectedButton : classes.button} onClick={() => history.push('/companies')} color="inherit">
+            <BusinessIcon className={classes.companyIcon}/>
+              {RO.companiesNav}
+          </Button>
+          </div>
+          : null
           }
-          {
-            props.showLogoutButton ?
-            <ConfirmationDialog type='logout' onLogOutButton={onLogOutButton}/> : null
-            
-          }
+          <ConfirmationDialog type='logout' onLogOutButton={() => props.logout()}/>
         </Toolbar>
       </AppBar>
     </div>
@@ -95,5 +105,8 @@ const mapDispatchToProps = (dispatch) => {
     logout: () => dispatch(logout())
   }
 }
+const mapStateToProps = state => {
+  return {user: state.user}
+}
 
-export default connect(null, mapDispatchToProps)(Navbar)
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
