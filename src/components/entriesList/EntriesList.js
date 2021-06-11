@@ -94,13 +94,17 @@ const styles = theme => ({
 const columns = [
   { label: RO.entries.index, minWidth:20},
   { label: RO.entries.name, minWidth:20},
-  { label: RO.entries.surname, minWidth:20 },
-  { label: RO.entries.email, minWidth:20 },
+  { label: RO.entries.surname, minWidth:20},
+  { label: RO.entries.series, minWidth:10},
+  { label: RO.entries.number, minWidth:10},
+  { label: RO.entries.email, minWidth:20},
   { label: RO.entries.date, minWidth:20},
   { label: RO.entries.company, minWidth:20},
   { label: RO.entries.phone, minWidth:20 },
+  { label: RO.entries.duration, minWidth:20},
+  { label: RO.entries.observations, minWidth:20},
   { label: RO.entries.signature, minWidth:20},
-  { label: RO.entries.actions, minWidth:20}
+  { label: RO.entries.actions, minWidth:10}
 ];
 
 class EntriesList extends React.Component {
@@ -126,6 +130,7 @@ class EntriesList extends React.Component {
  
   getEntries = () =>{
     axios.get('/entries/?page='+ this.state.page + '&rows=' + this.state.rowsPerPage + '&start=' + this.state.startDate + '&end=' + this.state.endDate).then(response => {
+      console.log(response.data[0])
       let aux=[]
       response.data[0].map((entry, index)=>{
         
@@ -289,7 +294,7 @@ class EntriesList extends React.Component {
        
       <div className={classes.table}> 
         <fieldset>
-        <TableContainer >
+        <TableContainer>
           <Table entriesList>
             <TableHead>
               <TableRow>
@@ -318,6 +323,10 @@ class EntriesList extends React.Component {
                             </TableCell>
                             <TableCell size={'small'}>{entry.company}</TableCell>
                             <TableCell size={'small'}>{entry.phone}</TableCell>
+                            <TableCell size={'small'}>{entry.series}</TableCell>
+                            <TableCell size={'small'}>{entry.number}</TableCell>
+                            <TableCell size={'small'}>{entry.duration}</TableCell>
+                            <TableCell size={'small'}>{entry.observations}</TableCell>
                             <TableCell size={'small'} align="center">
                             <CanvasDraw
                                 canvasHeight={50}

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'flex-end',
         margin: '1.3em',
-    }
+    },
 }));
   
 
@@ -50,7 +50,7 @@ function Companies(props) {
     },[page, rows, count])
 
     const getCompanies = () => {
-        axios.get('/companies/?page='+ page + '&rows=' + rows ).then(resp => {
+        axios.get(`/companies/?page=${page}&rows=${rows}`).then(resp => {
             setCompanies(resp.data[0])
             setCount(resp.data[1])
         }).catch(err => {
@@ -101,6 +101,7 @@ function Companies(props) {
                     <TableCell
                         key={column.id}
                         align={column.align}
+                        className = {}
                         style={{ minWidth: column.minWidth }}>
                         {column.label}
                     </TableCell>

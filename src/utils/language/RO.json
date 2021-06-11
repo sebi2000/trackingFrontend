@@ -50,7 +50,11 @@
         "phone": "Telefon",
         "signature": "Semnătură",
         "password": "Parola",
-        "actions": "Acțiuni"
+        "actions": "Acțiuni",
+        "series": "Seria",
+        "number": "Număr",
+        "duration": "Durată",
+        "observations": "Observații"
     },
     "auth":{
         "email": "Adresa de email",

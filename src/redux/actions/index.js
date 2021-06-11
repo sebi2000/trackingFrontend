@@ -14,9 +14,3 @@ export const logout = () => dispatch => axios.get('/logout').then(response => {
     localStorage.removeItem('token')
     dispatch({ type: 'LOGOUT' })
 })
-
-
-    
-    
-
-

@@ -101,7 +101,7 @@ function ResetDialog(props) {
         email: company.email.value
       }
       axios.post('/companies', {newCompany}).then(response => {
-        if(response.data.name === 'MongoError')
+        if(response.data.keyValue.name)
           Notifications.error(RO.notifications.COMPANY_ALREADY_EXISTS)
         else{
           Notifications.success(RO.notifications.SUCCESS_ADD_COMPANY)
