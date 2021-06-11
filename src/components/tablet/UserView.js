@@ -11,6 +11,11 @@ import {connect} from 'react-redux'
 import Notifications from '../../utils/Notifications'
 import { withStyles } from '@material-ui/core/styles'
 import {StatusCodes} from 'http-status-codes'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import CONSTANTS from '../../utils/Constants'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -19,8 +24,61 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: '#264d00',
     },
+    marginRight: '0 '
   },
-  
+  flexContainer: {
+    display: 'flex',
+  },
+  gridContainer: {
+    display: 'grid',
+    width: '100%',
+    height: '10em',
+    gridTemplateAreas : `
+                          'email sign'
+                          'phone sign'
+                        `,
+    gridTemplateColumns: '1fr 250px',
+    gridTemplateRows: '1fr 1fr'
+  },
+  email: {
+    gridArea: 'email',
+  },
+  phone: {
+    gridArea: 'phone',
+  },
+  sign: {
+    gridArea: 'sign',
+    marginTop: '1em',
+    marginLeft: '3.5em',
+  },
+  buttonsContainer:{
+    position: 'absolute',
+    bottom: '1em',
+    left: '2.5%',
+    right: '2.5%',
+  },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  tabletForm: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    WebkitTransform: 'translate(-50%, -50%)',
+    width: '95%'
+  },
+  identityFields: {
+    width: '10%',
+    marginRight: '2%'
+  },
+  fullHeight: {
+    height: '100%'
+  },
+  menuItem: {
+    justifyContent: 'space-evenly'
+  }
 })
 
 
@@ -32,27 +90,46 @@ class UserView extends React.Component{
     email : "",
     phone : "",
     company : "",
-    signature : "",
     show: false,
+    series: "",
+    number: "",
+    duration: "",
+    observations: "",
     fields: {
       errorName: false,
       errorSurname: false,
       errorEmail: false,
       errorCompany: false,
       errorPhone: false,
-      errorSignature: false
-    }
+      errorSignature: false,
+      errorSeries: false,
+      errorNumber: false,
+      errorDuration: false,
+      errorObservations: false,
+    },
+    companies: []
+  }
+
+  componentDidMount() {
+    axios.get('/companies').then(resp => {
+      this.setState({companies: resp.data[0]})
+    })
+    .catch(err => {
+      console.error(err)
+      Notifications.error(RO.notifications.SERVER_ERROR)
+    })
   }
 
   showDrawing = () =>{
-    this.setState({
-      signature: localStorage.getItem("savedDrawing"),
-      show : true,
-  })
+    this.setState({show : true})
   }
 
   onChange = event => {
     this.setState({ [event.target.name] : event.target.value})
+  }
+
+  handleChange = event => {
+    this.setState({ company: event.target.value })
   }
 
   handleEntries = () =>{
@@ -64,7 +141,10 @@ class UserView extends React.Component{
       errorEmail: false,
       errorCompany: false,
       errorPhone: false,
-      errorSignature: false
+      errorSignature: false,
+      errorSeries: false,
+      errorNumber: false,
+      errorDuraion: false
     }
 
     Object.entries(this.state.fields).forEach(([key, value]) =>{
@@ -100,9 +180,27 @@ class UserView extends React.Component{
             }
         break
         case 'errorSignature':
-          if(validator.isEmpty(this.state.signature)){
+          if(this.state.show === false){
               isOk=false
-              auxFields.errorSignature= false
+              auxFields.errorSignature= true
+            }
+        break
+        case 'errorSeries':
+          if(!validator.isAlpha(this.state.series) || !(this.state.series.length >0 && this.state.series.length <3)){
+              isOk=false
+              auxFields.errorSeries= true
+            }
+        break
+        case 'errorNumber':
+          if(!validator.isNumeric(this.state.number) || this.state.number.length !=6){
+              isOk=false
+              auxFields.errorNumber= true
+            }
+        break
+        case 'errorDuration':
+          if(validator.isEmpty(this.state.duration)){
+              isOk=false
+              auxFields.errorDuration= true
             }
         break
       }
@@ -117,7 +215,11 @@ class UserView extends React.Component{
         email : this.state.email,
         phone : this.state.phone,
         company : this.state.company,
-        signature : this.state.signature,
+        signature : localStorage.getItem("savedDrawing"),
+        series: this.state.series,
+        number: this.state.number,
+        duration: this.state.duration,
+        observations: this.state.observations,
         date: new Date()
       }
 
@@ -127,6 +229,10 @@ class UserView extends React.Component{
         email : "",
         phone : "",
         company : "",
+        series: "",
+        number: "",
+        duration: "",
+        observations: "",
         show: false
     })
       axios.post("/tablet", {entry}).then(response => {
@@ -148,54 +254,95 @@ class UserView extends React.Component{
   render(){
     const {classes} = this.props
     return(
-           <div>
+           <div className={classes.fullHeight}>
              {this.props.user ?
                 <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/> :
                 <Header/>
              }
             
-          <fieldset>
-            <div>
-            <TextField variant="outlined" error={this.state.fields.errorName} margin="normal" required fullWidth id="name" label={RO.entries.name} name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
-            </div>
-            <div>
-            <TextField  variant="outlined" error={this.state.fields.errorSurname} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
-            </div>
-            <div>
-              <TextField  variant="outlined"  error={this.state.fields.errorEmail} margin="normal" required fullWidth id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
-            </div>
-            <div>
-            <TextField  variant="outlined" error={this.state.fields.errorPhone}  margin="normal" required fullWidth id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
-            </div>
-            <div>
-            <TextField  variant="outlined"  error={this.state.fields.errorCompany} margin="normal" required fullWidth id="company" label={RO.entries.company} name="company" autoComplete="company"  onChange={ this.onChange }  value={this.state.company}/>
-            </div>
-            
-          <div>
-            <Modal showDrawing={ this.showDrawing }/> 
+          <div className={classes.tabletForm}>
+              
+              <TextField error={this.state.fields.errorName} margin="normal" required fullWidth id="name" label={RO.entries.name} name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
+              <TextField error={this.state.fields.errorSurname} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
+              
+              <div className={classes.flexContainer}>
+                <TextField className={classes.identityFields} error={this.state.fields.errorSeries} margin="normal" required fullWidth id="name" label={RO.entries.series} name="series" autoComplete="name" onChange={ this.onChange }  value={this.state.series}/>
+                <TextField error={this.state.fields.errorNumber} margin="normal" required fullWidth id="name" label={RO.entries.number} name="number" autoComplete="name" onChange={ this.onChange }  value={this.state.number}/>
+              </div>
+              
+              <FormControl fullWidth required margin="normal" error={this.state.fields.errorDuration}>
+                <InputLabel id="demo-simple-select-outlined-label">{RO.entries.duration}</InputLabel>
+                  <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={this.state.duration}
+                  onChange={this.onChange}
+                  name="duration"
+                  >
+              
+                  {CONSTANTS.DURATION_ARRAY.map((time, index) => {
+                      return (<MenuItem value={time}>{time}</MenuItem>)
+                      })
+                  }
 
-            {this.state.show ?
-              <CanvasDraw
-              canvasHeight={200}
-              canvasWidth={200}
-              disabled={true}
-              hideGrid={true}
-              ref={canvasDraw => (this.loadableCanvas = canvasDraw)}
-              saveData={localStorage.getItem("savedDrawing")}
-              loadTimeOffset={2}
-            />
-            : null
-          } 
-           
-       
-          </div>
-            <div>
-            <Button  className={classes.nextButton} onClick={() => {this.handleEntries()}}  >
-              {RO.next}
-            </Button>
+                  </Select>
+              </FormControl>
+              
+              <FormControl fullWidth required margin="normal" error={this.state.fields.errorCompany}>
+                <InputLabel id="demo-simple-select-outlined-label">{RO.entries.company}</InputLabel>
+                  <Select
+                  labelId="demo-simple-select-outlined-label"
+                  id="demo-simple-select-outlined"
+                  value={this.state.company}
+                  onChange={this.onChange}
+                  name="company"
+                  >
+              
+                    {this.state.companies.length ? 
+                      this.state.companies.map((company, index) => {
+                        return (<MenuItem className={classes.menuItem} value={company.name}>{company.name}</MenuItem>)
+                      })
+                      : null
+                    }
+
+                  </Select>
+              </FormControl>
+              
+            <div className={this.state.show ? classes.gridContainer : null}>
+              <TextField className={classes.email} error={this.state.fields.errorEmail} margin="normal" fullWidth required id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
+        
+              {this.state.show ?
+                    <CanvasDraw
+                    canvasHeight={CONSTANTS.CANVAS.HEIGHT}
+                    canvasWidth={CONSTANTS.CANVAS.WIDTH}
+                    disabled={true}
+                    hideGrid={true}
+                    ref={canvasDraw => (this.loadableCanvas = canvasDraw)}
+                    saveData={localStorage.getItem("savedDrawing")}
+                    loadTimeOffset={2}
+                    className={classes.sign}
+                  />
+                  : null
+                } 
+            
+              <TextField className={classes.phone} error={this.state.fields.errorPhone} fullWidth margin="normal" required id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
             </div>
-          </fieldset>
-          </div>
+
+            <TextField margin="normal" fullWidth id="name" label={RO.entries.observations} name="observations" autoComplete="name" onChange={ this.onChange }  value={this.state.observations}/>
+           
+
+        </div>
+        <div className={classes.buttonsContainer}>
+            <div className={classes.buttons}>
+              <Modal showDrawing={ this.showDrawing } error={this.state.fields.errorSignature}/>  
+              <Button className={classes.nextButton} onClick={() => {this.handleEntries()}}  >
+                {RO.next}
+              </Button> 
+            </div>
+        </div>
+
+        </div>
+      
       )
   }
 }

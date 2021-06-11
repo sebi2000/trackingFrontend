@@ -4,7 +4,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import CanvasDraw from 'react-canvas-draw'
 import { withStyles } from '@material-ui/core/styles'
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/Close'
+import Notifications from '../../utils/Notifications'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -19,6 +20,9 @@ const styles = theme => ({
       backgroundColor: '#DADADA',
     },
     width: '5%'
+  },
+  errorButton: {
+    border: '3px solid red'
   }
 })
 
@@ -40,7 +44,7 @@ class Modal extends React.Component{
     const {classes} = this.props
     return (
       <div>
-        <Button onClick={() => this.handleClickOpen()}>
+        <Button className={this.props.error ? classes.errorButton : null} onClick={() => this.handleClickOpen()}>
           {RO.sign}
         </Button>
         <Dialog
@@ -64,6 +68,25 @@ class Modal extends React.Component{
                 canvasHeight={400}
               /> 
               <div className={classes.buttons}>
+                <div>
+                  <Button
+                    onClick={() => {
+                      if(JSON.parse(this.saveableCanvas.getSaveData()).lines.length){
+                        localStorage.setItem(
+                          "savedDrawing",
+                          this.saveableCanvas.getSaveData()
+                        );
+                        this.handleClose()
+                        this.props.showDrawing()
+                      }
+                      else Notifications.error(RO.notifications.SIGNATURE_ERROR)
+                      
+                    }}
+                  >
+                    {RO.save}
+                  </Button>
+                </div>
+
                 <Button
                   variant="contained"
                   onClick={() => {
@@ -71,20 +94,6 @@ class Modal extends React.Component{
                   }}
                 >
                   {RO.clear}
-                </Button>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => {
-                    localStorage.setItem(
-                      "savedDrawing",
-                      this.saveableCanvas.getSaveData()
-                    );
-                    this.handleClose()
-                    this.props.showDrawing()
-                  }}
-                >
-                  {RO.save}
                 </Button> 
               </div>
             </div>
