@@ -15,6 +15,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
+import CONSTANTS from '../../utils/Constants'
 const RO = require('../../utils/language/RO.json')
 
 const styles = theme => ({
@@ -71,14 +72,17 @@ const styles = theme => ({
   identityFields: {
     width: '10%',
     marginRight: '2%'
+  },
+  fullHeight: {
+    height: '100%'
+  },
+  menuItem: {
+    justifyContent: 'space-evenly'
   }
 })
 
 
 class UserView extends React.Component{
-
-  durationArray=['00:30 ore', '01:00 ore', '01:30 ore', '02:00 ore', '02:30 ore', '03:00 ore', '03:30 ore', '04.00 ore', 
-                '04:30 ore', '05:00 ore', '05:30 ore', '06:00 ore', '06:30 ore', '07:00 ore', '07:30 ore', '08:00 ore']
 
   state ={
     name : "",
@@ -250,7 +254,7 @@ class UserView extends React.Component{
   render(){
     const {classes} = this.props
     return(
-           <div style={{height: "100%"}} >
+           <div className={classes.fullHeight}>
              {this.props.user ?
                 <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/> :
                 <Header/>
@@ -266,7 +270,6 @@ class UserView extends React.Component{
                 <TextField error={this.state.fields.errorNumber} margin="normal" required fullWidth id="name" label={RO.entries.number} name="number" autoComplete="name" onChange={ this.onChange }  value={this.state.number}/>
               </div>
               
-              {/* <TextField error={this.state.fields.errorDuration} margin="normal" required fullWidth id="name" label={RO.entries.duration} name="duration" autoComplete="name" onChange={ this.onChange }  value={this.state.duration}/> */}
               <FormControl fullWidth required margin="normal" error={this.state.fields.errorDuration}>
                 <InputLabel id="demo-simple-select-outlined-label">{RO.entries.duration}</InputLabel>
                   <Select
@@ -277,7 +280,7 @@ class UserView extends React.Component{
                   name="duration"
                   >
               
-                  {this.durationArray.map((time, index) => {
+                  {CONSTANTS.DURATION_ARRAY.map((time, index) => {
                       return (<MenuItem value={time}>{time}</MenuItem>)
                       })
                   }
@@ -297,7 +300,7 @@ class UserView extends React.Component{
               
                     {this.state.companies.length ? 
                       this.state.companies.map((company, index) => {
-                        return (<MenuItem style={{justifyContent: 'space-evenly'}} value={company.name}>{company.name}</MenuItem>)
+                        return (<MenuItem className={classes.menuItem} value={company.name}>{company.name}</MenuItem>)
                       })
                       : null
                     }
@@ -310,8 +313,8 @@ class UserView extends React.Component{
         
               {this.state.show ?
                     <CanvasDraw
-                    canvasHeight={150}
-                    canvasWidth={150}
+                    canvasHeight={CONSTANTS.CANVAS.HEIGHT}
+                    canvasWidth={CONSTANTS.CANVAS.WIDTH}
                     disabled={true}
                     hideGrid={true}
                     ref={canvasDraw => (this.loadableCanvas = canvasDraw)}
