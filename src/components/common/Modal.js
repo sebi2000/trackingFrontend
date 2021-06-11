@@ -68,8 +68,6 @@ class Modal extends React.Component{
                 canvasHeight={400}
               /> 
               <div className={classes.buttons}>
-<<<<<<< HEAD
-=======
                 <div>
                   <Button
                     onClick={() => {
@@ -89,7 +87,6 @@ class Modal extends React.Component{
                   </Button>
                 </div>
 
->>>>>>> 323236f (refactor: set red border signature is empty)
                 <Button
                   variant="contained"
                   onClick={() => {
@@ -97,28 +94,6 @@ class Modal extends React.Component{
                   }}
                 >
                   {RO.clear}
-<<<<<<< HEAD
-                </Button>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => {
-                    console.log(this.saveableCanvas.getSaveData()['width'])
-                    if(this.saveableCanvas.getSaveData().lines.length){
-                      localStorage.setItem(
-                        "savedDrawing",
-                        this.saveableCanvas.getSaveData()
-                      );
-                      this.handleClose()
-                      this.props.showDrawing()
-                    }
-                    else Notifications.error(RO.notifications.SIGNATURE_ERROR)
-                    
-                  }}
-                >
-                  {RO.save}
-=======
->>>>>>> 323236f (refactor: set red border signature is empty)
                 </Button> 
               </div>
             </div>
