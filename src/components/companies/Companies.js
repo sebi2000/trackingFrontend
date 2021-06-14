@@ -101,7 +101,6 @@ function Companies(props) {
                     <TableCell
                         key={column.id}
                         align={column.align}
-                        className = {}
                         style={{ minWidth: column.minWidth }}>
                         {column.label}
                     </TableCell>

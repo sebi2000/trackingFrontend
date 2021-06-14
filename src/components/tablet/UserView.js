@@ -247,7 +247,7 @@ class UserView extends React.Component{
       })
     }
     else {
-        Notifications.error(RO.notifications.ENTRY_ERROR)
+      Notifications.error(RO.notifications.ADMIN_FAIL_REGISTRATION)
     }
   }
 
