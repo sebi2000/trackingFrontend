@@ -106,7 +106,7 @@ function ResetDialog(props) {
           props.getCompanies()
           handleClose()
         }
-        else if(response.data.keyValue.name)
+        else if(response.data.keyPattern.name)
           Notifications.error(RO.notifications.COMPANY_ALREADY_EXISTS)
       })
       .catch(err => {
