@@ -101,13 +101,13 @@ function ResetDialog(props) {
         email: company.email.value
       }
       axios.post('/companies', {newCompany}).then(response => {
-        if(response.data.keyValue.name)
-          Notifications.error(RO.notifications.COMPANY_ALREADY_EXISTS)
-        else{
+        if(response.data.company){
           Notifications.success(RO.notifications.SUCCESS_ADD_COMPANY)
           props.getCompanies()
           handleClose()
-        } 
+        }
+        else if(response.data.keyPattern.name)
+          Notifications.error(RO.notifications.COMPANY_ALREADY_EXISTS)
       })
       .catch(err => {
         Notifications.error(RO.notifications.SERVER_ERROR)

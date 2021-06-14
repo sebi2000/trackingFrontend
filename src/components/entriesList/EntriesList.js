@@ -130,7 +130,6 @@ class EntriesList extends React.Component {
  
   getEntries = () =>{
     axios.get('/entries/?page='+ this.state.page + '&rows=' + this.state.rowsPerPage + '&start=' + this.state.startDate + '&end=' + this.state.endDate).then(response => {
-      console.log(response.data[0])
       let aux=[]
       response.data[0].map((entry, index)=>{
         
