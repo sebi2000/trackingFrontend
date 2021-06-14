@@ -24,8 +24,8 @@ const theme = createMuiTheme({
 
          MuiButton :{
              root: {
-                 marginTop:"10px",
-                 marginRight:"10px",
+                 marginTop:"1em",
+                 marginRight:"1em",
                  backgroundColor: "#3f50b5",
                  color : "white",
                  '&:hover': {
