@@ -92,7 +92,6 @@ function Companies(props) {
         <div className={classes.table}>
             <Navbar path={props.location.pathname}/>
             <AddCompanyDialog getCompanies={getCompanies}/>
-            <fieldset>
             <TableContainer>
             <Table>
                 <TableHead>
@@ -134,7 +133,6 @@ function Companies(props) {
                     rowsPerPage={rows}
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
-            </fieldset>
         </div>
     )
 }

@@ -46,7 +46,7 @@ const styles = theme => ({
   dateSelector: { 
     display: 'flex',
     marginRight: 'auto', 
-    marginLeft: '3em',
+    marginLeft: '1.5em',
     width: '14em'
   },
   actions:{
@@ -292,7 +292,6 @@ class EntriesList extends React.Component {
         
        
       <div className={classes.table}> 
-        <fieldset>
         <TableContainer>
           <Table entriesList>
             <TableHead>
@@ -355,7 +354,6 @@ class EntriesList extends React.Component {
                 rowsPerPage={this.state.rowsPerPage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
-          </fieldset>
       </div>
     </div>
     )

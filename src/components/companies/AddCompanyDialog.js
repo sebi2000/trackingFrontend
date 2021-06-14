@@ -42,7 +42,12 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       justifyContent: 'flex-end',
       margin: '1.3em',
-  }
+  },
+  actionsContainer: {
+    display: 'flex', 
+    justifyContent: 'space-between',
+    marginLeft: '1em'
+  },
 }));
 
 function ResetDialog(props) {
@@ -135,7 +140,7 @@ function ResetDialog(props) {
           <TextField error={company.phone.error} name="phone" margin="dense" label={RO.companies.phone} fullWidth onChange={onChange}/>
           <TextField error={company.email.error} name="email" margin="dense" label={RO.companies.email} fullWidth onChange={onChange}/>
         </DialogContent>
-        <DialogActions>
+        <DialogActions className={classes.actionsContainer}>
           <Button color="default" variant="contained" onClick={handleClose}>
             {RO.cancel}
           </Button>

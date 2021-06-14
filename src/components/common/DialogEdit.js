@@ -38,7 +38,12 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
     display: 'flex', 
     justifyContent: 'space-between'
-  }
+  },
+  actionsContainer: {
+    display: 'flex', 
+    justifyContent: 'space-between',
+    marginLeft: '1em'
+  },
 }));
 
 export default function FormDialog(props) {
@@ -135,7 +140,7 @@ export default function FormDialog(props) {
             <TextField name="phone" margin="dense" id="phone" label="Telefon" fullWidth value={data.phone} onChange={onChange}/>
         </DialogContent>
         : null }
-        <DialogActions>
+        <DialogActions className={classes.actionsContainer}>
           <Button color="default" variant="contained" onClick={handleClose}>
             {RO.cancel}
           </Button>

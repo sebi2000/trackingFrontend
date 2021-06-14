@@ -49,11 +49,16 @@ const useStyles = makeStyles((theme) => ({
     },
   buttonContainer: {
       display: 'flex', 
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
     },
   exportButton: {
     marginTop: '2em'
-  }
+  },
+  actionsContainer: {
+    display: 'flex', 
+    justifyContent: 'space-between',
+    marginLeft: '1em'
+  },
 }));
 
 export default function ConfirmDialog(props) {
@@ -101,13 +106,13 @@ export default function ConfirmDialog(props) {
                 {RO.deleteMessage}
               </DialogContentText>
           </DialogContent>
-            <DialogActions>
-              <Button color="default" variant="contained" onClick={handleClose}  autoFocus>
-                {RO.no}
-              </Button>
-              <Button onClick={() => {handleClose(); props.onDeleteButton() }} >
-                {RO.yes}
-              </Button>
+            <DialogActions className={classes.actionsContainer}>
+                <Button color="default" variant="contained" onClick={handleClose}  autoFocus>
+                  {RO.no}
+                </Button>
+                <Button onClick={() => {handleClose(); props.onDeleteButton() }} >
+                  {RO.yes}
+                </Button>
               </DialogActions>
           </div> 
             : props.type === 'export' ?
@@ -121,14 +126,14 @@ export default function ConfirmDialog(props) {
                 {RO.exportMessage}
               </DialogContentText>
             </DialogContent>
-            <DialogActions>
+            <DialogActions className={classes.actionsContainer}>
               <Button color="default" variant="contained" onClick={handleClose}  autoFocus>
                 {RO.no}
               </Button>
               <Button onClick={() => {handleClose();}} >
                 <CSVLink data={props.data} className={classes.export} filename={RO.exportFile}>
                 {RO.yes}</CSVLink>
-              </Button>
+               </Button>
               </DialogActions>
           </div> 
           : props.type === 'logout' ?
@@ -142,13 +147,13 @@ export default function ConfirmDialog(props) {
               {RO.logoutMessage}
             </DialogContentText>
           </DialogContent>
-            <DialogActions>
-              <Button color="default" variant="contained" onClick={handleClose} autoFocus>
-                {RO.no}
-              </Button>
-              <Button onClick={() => {handleClose(); props.onLogOutButton()}}>
-                {RO.yes}
-              </Button>
+            <DialogActions className={classes.actionsContainer}>
+                <Button color="default" variant="contained" onClick={handleClose} autoFocus>
+                  {RO.no}
+                </Button>
+                <Button onClick={() => {handleClose(); props.onLogOutButton()}}>
+                  {RO.yes}
+                </Button>
               </DialogActions>
           </div> 
           : null
