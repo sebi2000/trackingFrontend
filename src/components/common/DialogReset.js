@@ -39,7 +39,12 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
       display: 'flex', 
       justifyContent: 'space-between'
-    }
+    },
+  actionsContainer: {
+      display: 'flex', 
+      justifyContent: 'space-between',
+      marginLeft: '1em'
+  },
 }));
 
 function ResetDialog(props) {
@@ -96,7 +101,7 @@ function ResetDialog(props) {
             onChange={onChange}
           />
         </DialogContent>
-        <DialogActions>
+        <DialogActions className={classes.actionsContainer}>
           <Button color="default" variant="contained" onClick={handleClose}>
             {RO.cancel}
           </Button>

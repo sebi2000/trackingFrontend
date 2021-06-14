@@ -42,10 +42,15 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
       justifyContent: 'flex-end',
       margin: '1.3em',
-  }
+  },
+  actionsContainer: {
+    display: 'flex', 
+    justifyContent: 'space-between',
+    marginLeft: '1em'
+  },
 }));
 
-function ResetDialog(props) {
+function AddCompanyDialog(props) {
 
   const initialFields = {
     name:{value: '', error: false}, 
@@ -68,29 +73,41 @@ function ResetDialog(props) {
   };
 
   const onChange = event => {
-    let error = false
-    if(event.target.name === 'name' && validator.isEmpty(event.target.value))
-      error = true
-    else if(event.target.name === 'phone' && !validator.isMobilePhone(event.target.value))
-      error = true
-    else if(event.target.name === 'representative' && !validator.isAlpha(event.target.value))
-      error = true
-    else if(event.target.name === 'email' && !validator.isEmail(event.target.value))
-      error = true
-      
     setCompany({
       ...company,
-      [event.target.name] : {value: event.target.value, error: error}
+      [event.target.name] : {value: event.target.value, error: false}
     })
   };
 
   const addCompany = () => {
 
     let isOk = true
+    let auxFields = {
+      name: company.name,
+      representative: company.representative,
+      phone: company.phone,
+      email: company.email
+    }
+
     Object.entries(company).forEach(([key, field]) =>{
-      if(field.error === true || validator.isEmpty(field.value))
+      if(key === 'name' && validator.isEmpty(field.value)){
         isOk = false
+        auxFields.name = {value: field.value, error: true}
+      }
+      else if(key === 'representative' && !validator.isAlpha(field.value)){
+        isOk = false
+        auxFields.representative = {value: field.value, error: true}
+      }
+      else if(key === 'phone' && !validator.isMobilePhone(field.value)){
+        isOk = false
+        auxFields.phone = {value: field.value, error: true}
+      }
+      else if(key === 'email' && !validator.isEmail(field.value)){
+        isOk = false
+        auxFields.email = {value: field.value, error: true}
+      }
     })
+    setCompany(auxFields)
 
     if(isOk === true)
     {
@@ -114,7 +131,10 @@ function ResetDialog(props) {
         console.error(err)
       })
     }
-    else Notifications.error(RO.notifications.DATA_ERROR)
+    else{
+      Notifications.error(RO.notifications.DATA_ERROR)
+    }
+     
   }
 
   return (
@@ -135,7 +155,7 @@ function ResetDialog(props) {
           <TextField error={company.phone.error} name="phone" margin="dense" label={RO.companies.phone} fullWidth onChange={onChange}/>
           <TextField error={company.email.error} name="email" margin="dense" label={RO.companies.email} fullWidth onChange={onChange}/>
         </DialogContent>
-        <DialogActions>
+        <DialogActions className={classes.actionsContainer}>
           <Button color="default" variant="contained" onClick={handleClose}>
             {RO.cancel}
           </Button>
@@ -148,4 +168,4 @@ function ResetDialog(props) {
   );
 }
 
-export default ResetDialog
+export default AddCompanyDialog

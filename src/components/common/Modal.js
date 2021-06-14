@@ -1,7 +1,8 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
+import React from 'react'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogActions from '@material-ui/core/DialogActions'
 import CanvasDraw from 'react-canvas-draw'
 import { withStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
@@ -23,7 +24,13 @@ const styles = theme => ({
   },
   errorButton: {
     border: '3px solid red'
-  }
+  },
+  actionsContainer: {
+    display: 'flex', 
+    justifyContent: 'space-between',
+    marginLeft: '1em',
+    marginRight: '1em'
+  },
 })
 
 class Modal extends React.Component{
@@ -54,7 +61,6 @@ class Modal extends React.Component{
           maxWidth={'md'}
           fullWidth={true}
         >
-
           <div className={classes.buttons}>
             <Button onClick={this.handleClose} className={classes.closeIcon}><CloseIcon/></Button>
           </div>
@@ -67,37 +73,35 @@ class Modal extends React.Component{
                 canvasWidth={900}
                 canvasHeight={400}
               /> 
-              <div className={classes.buttons}>
-                <div>
-                  <Button
-                    onClick={() => {
-                      if(JSON.parse(this.saveableCanvas.getSaveData()).lines.length){
-                        localStorage.setItem(
-                          "savedDrawing",
-                          this.saveableCanvas.getSaveData()
-                        );
-                        this.handleClose()
-                        this.props.showDrawing()
-                      }
-                      else Notifications.error(RO.notifications.SIGNATURE_ERROR)
-                      
-                    }}
-                  >
-                    {RO.save}
-                  </Button>
-                </div>
-
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    this.saveableCanvas.clear();
-                  }}
-                >
-                  {RO.clear}
-                </Button> 
-              </div>
+              
             </div>
           </DialogContent>
+          <DialogActions className={classes.actionsContainer}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  this.saveableCanvas.clear();
+                }}
+              >
+                {RO.clear}
+              </Button> 
+              <Button
+                onClick={() => {
+                if(JSON.parse(this.saveableCanvas.getSaveData()).lines.length){
+                  localStorage.setItem(
+                    "savedDrawing",
+                    this.saveableCanvas.getSaveData()
+                  );
+                  this.handleClose()
+                  this.props.showDrawing()
+                }
+                else Notifications.error(RO.notifications.SIGNATURE_ERROR)
+                      
+                }}
+                >
+                {RO.save}
+              </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );
