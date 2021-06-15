@@ -15,6 +15,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import CloseIcon from '@material-ui/icons/Close'
+import { connect } from 'react-redux'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -132,6 +133,22 @@ class Register extends React.Component {
               phone: '',
               password: '',
               role: '',
+            })
+            let tracking = {
+              name: this.props.user.name,
+              surname: this.props.user.surname,
+              action: RO.tracking.add,
+              table: RO.tracking.usersTable,
+              date: new Date(),
+            }
+            axios.post(`/tracking`, { tracking }).then((resp) => {
+              if (!resp.data.tracking)
+                Notifications.error(RO.notifications.SERVER_ERROR)
+              else this.props.getTracking()
+            })
+            .catch(err => {
+              console.error(err)
+              Notifications.error(RO.notifications.SERVER_ERROR)
             })
             this.handleClose()
           } else if (response.data.keyPattern.email)
@@ -278,4 +295,8 @@ class Register extends React.Component {
   }
 }
 
-export default withStyles(styles)(Register)
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(Register))

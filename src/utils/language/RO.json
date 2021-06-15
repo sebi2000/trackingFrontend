@@ -34,6 +34,22 @@
   "add": "Adaugă",
   "trackingNav": "Tracking",
   "addUser": "Adaugă un utilizator",
+  "tracking": {
+    "index": "Index",
+    "name": "Prenume",
+    "surname": "Nume",
+    "action": "Acțiune",
+    "date": "Dată",
+    "table": "Tabel",
+    "actions": "Acțiuni",
+    "edit": "Editare",
+    "delete": "Ștergere",
+    "add": "Adăugare",
+    "export": "Exportare",
+    "entriesTable" : "Tabel intrări",
+    "companiesTable" : "Tabel companii",
+    "usersTable" : "Tabel utilizatori"
+  },
   "companies": {
     "index": "#",
     "name": "Nume",

@@ -11,6 +11,7 @@ import validator from 'validator'
 import EditIcon from '@material-ui/icons/Edit'
 import { makeStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
+import {connect} from 'react-redux'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FormDialog(props) {
+function EditDialog(props) {
 
   const classes = useStyles()
    
@@ -82,6 +83,17 @@ export default function FormDialog(props) {
       else if(JSON.stringify(props.data) !== JSON.stringify(data)){
             axios.put(`/entries/${props.data._id}`, data).then(resp => {
                 props.getEntries()
+                let tracking = {
+                  name: props.user.name,
+                  surname: props.user.surname,
+                  action: RO.tracking.edit,
+                  table: RO.tracking.entriesTable,
+                  date: new Date()
+                }
+                axios.post(`/tracking`, {tracking}).then(resp => {
+                  if(!resp.data.tracking)
+                    Notifications.error(RO.notifications.SERVER_ERROR)
+                })
             })
             .catch(err => {
               console.error(err)
@@ -99,6 +111,21 @@ export default function FormDialog(props) {
       else if(JSON.stringify(props.data) !== JSON.stringify(data)){
             axios.put(`/companies/${props.data._id}`, data).then(resp => {
               props.getCompanies()
+              let tracking = {
+                name: props.user.name,
+                surname: props.user.surname,
+                action: RO.tracking.edit,
+                table: RO.tracking.companiesTable,
+                date: new Date()
+              }
+              axios.post(`/tracking`, {tracking}).then(resp => {
+                if(!resp.data.tracking)
+                  Notifications.error(RO.notifications.SERVER_ERROR)
+              })
+              .catch(err => {
+                console.error(err)
+                Notifications.error(RO.notifications.SERVER_ERROR)
+              })
             })
             .catch(err => {
               console.error(err)
@@ -110,8 +137,6 @@ export default function FormDialog(props) {
       else handleClose()
     }
   
- 
-    
   }
 
   return (
@@ -139,7 +164,7 @@ export default function FormDialog(props) {
             <TextField name="representative" margin="dense" id="representative" label="Reprezentant" fullWidth value={data.representative} onChange={onChange}/>
             <TextField name="phone" margin="dense" id="phone" label="Telefon" fullWidth value={data.phone} onChange={onChange}/>
         </DialogContent>
-        : null }
+        : null}
         <DialogActions className={classes.actionsContainer}>
           <Button color="default" variant="contained" onClick={handleClose}>
             {RO.cancel}
@@ -152,3 +177,9 @@ export default function FormDialog(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {user: state.user}
+}
+
+export default connect(mapStateToProps)(EditDialog)
