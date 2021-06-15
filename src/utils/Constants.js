@@ -8,7 +8,7 @@ const CONSTANTS = {
   },
   PARSE_INT_RADIX: 10,
   ROWS_PER_PAGE_ARRAY : [15, 25, 50],
-  INITIAL_ROWS_PER_PAGE : 5,
+  INITIAL_ROWS_PER_PAGE : 15,
   DURATION_ARRAY : ['00:30 ore', '01:00 ore', '01:30 ore', '02:00 ore', '02:30 ore', '03:00 ore', '03:30 ore', '04.00 ore', 
                 '04:30 ore', '05:00 ore', '05:30 ore', '06:00 ore', '06:30 ore', '07:00 ore', '07:30 ore', '08:00 ore'],
   CANVAS: {
