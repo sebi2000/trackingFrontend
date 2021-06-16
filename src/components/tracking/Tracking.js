@@ -1,6 +1,5 @@
-import react from 'react'
+import React from 'react'
 import Navbar from '../common/Navbar'
-import AddUserDialog from '../common/AddUserDialog'
 
 function Tracking(props) {
   return (
