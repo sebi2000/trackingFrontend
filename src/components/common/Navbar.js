@@ -12,6 +12,7 @@ import { logout } from '../../redux/actions/index'
 import ConfirmationDialog from '../common/ConfirmDialog'
 import BusinessIcon from '@material-ui/icons/Business'
 import TrendingUpIcon from '@material-ui/icons/TrendingUp'
+import PeopleIcon from '@material-ui/icons/People'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -134,6 +135,18 @@ function Navbar(props) {
               >
                 <BusinessIcon className={classes.companyIcon} />
                 {RO.companiesNav}
+              </Button>
+              <Button
+                className={
+                  props.path === '/users'
+                    ? classes.selectedButton
+                    : classes.button
+                }
+                onClick={() => history.push('/users')}
+                color="inherit"
+              >
+                <PeopleIcon className={classes.companyIcon} />
+                {RO.usersNav}
               </Button>
             </div>
           ) : null}

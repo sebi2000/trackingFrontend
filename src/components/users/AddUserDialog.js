@@ -126,6 +126,7 @@ class Register extends React.Component {
         .then((response) => {
           if (response.data.user) {
             Notifications.success(RO.notifications.ADMIN_REGISTRATION)
+            this.props.getUsers()
             this.setState({
               name: '',
               surname: '',
@@ -141,15 +142,16 @@ class Register extends React.Component {
               table: RO.tracking.usersTable,
               date: new Date(),
             }
-            axios.post(`/tracking`, { tracking }).then((resp) => {
-              if (!resp.data.tracking)
+            axios
+              .post(`/tracking`, { tracking })
+              .then((resp) => {
+                if (!resp.data.tracking)
+                  Notifications.error(RO.notifications.SERVER_ERROR)
+              })
+              .catch((err) => {
+                console.error(err)
                 Notifications.error(RO.notifications.SERVER_ERROR)
-              else this.props.getTracking()
-            })
-            .catch(err => {
-              console.error(err)
-              Notifications.error(RO.notifications.SERVER_ERROR)
-            })
+              })
             this.handleClose()
           } else if (response.data.keyPattern.email)
             Notifications.error(RO.notifications.EMAIL_ALREADY_EXIST)

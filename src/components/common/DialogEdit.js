@@ -11,175 +11,362 @@ import validator from 'validator'
 import EditIcon from '@material-ui/icons/Edit'
 import { makeStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
   editButton: {
-      backgroundColor: 'inherit',
-      '&:hover': {
-        backgroundColor: '#DADADA',
-        
-      },
-      color: "black",
-      height: '1.5rem',
-      width: '1.5rem',
-      minWidth: '1rem',
+    backgroundColor: 'inherit',
+    '&:hover': {
+      backgroundColor: '#DADADA',
     },
+    color: 'black',
+    height: '1.5rem',
+    width: '1.5rem',
+    minWidth: '1rem',
+  },
   closeIcon: {
-      backgroundColor: 'inherit',
-      color: 'black',
-      '&:hover': {
-        backgroundColor: '#DADADA',
-      },
-      height: '2.3rem',
-      width: '2.3rem',
-      minWidth: '1rem',
+    backgroundColor: 'inherit',
+    color: 'black',
+    '&:hover': {
+      backgroundColor: '#DADADA',
     },
+    height: '2.3rem',
+    width: '2.3rem',
+    minWidth: '1rem',
+  },
   buttonContainer: {
-    display: 'flex', 
-    justifyContent: 'space-between'
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   actionsContainer: {
-    display: 'flex', 
+    display: 'flex',
     justifyContent: 'space-between',
-    marginLeft: '1em'
+    marginLeft: '1em',
   },
-}));
+}))
 
 function EditDialog(props) {
-
   const classes = useStyles()
-   
+
   const [open, setOpen] = React.useState(false)
   const [data, setData] = React.useState({})
- 
+
   useEffect(() => {
     setData(props.data)
-  },[props.data]);
+  }, [props.data])
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false)
     setData(props.data)
-  };
+  }
 
-  const onChange = (event) =>{
+  const onChange = (event) => {
     setData({
       ...data,
-      [event.target.name] : event.target.value
+      [event.target.name]: event.target.value,
     })
   }
 
   const onSaveClick = () => {
-
-    if(props.type === 'entry'){
-      if(!validator.isAlpha(data.surname) || !validator.isAlpha(data.name) || 
-      !validator.isEmail(data.email) || !validator.isMobilePhone(data.phone) || validator.isEmpty(data.company))
+    if (props.type === 'entry') {
+      if (
+        !validator.isAlpha(data.surname) ||
+        !validator.isAlpha(data.name) ||
+        !validator.isEmail(data.email) ||
+        !validator.isMobilePhone(data.phone) ||
+        validator.isEmpty(data.company)
+      )
         return Notifications.error(RO.notifications.DATA_ERROR)
-      else if(JSON.stringify(props.data) !== JSON.stringify(data)){
-            axios.put(`/entries/${props.data._id}`, data).then(resp => {
-                props.getEntries()
-                let tracking = {
-                  name: props.user.name,
-                  surname: props.user.surname,
-                  action: RO.tracking.edit,
-                  table: RO.tracking.entriesTable,
-                  date: new Date()
-                }
-                axios.post(`/tracking`, {tracking}).then(resp => {
-                  if(!resp.data.tracking)
-                    Notifications.error(RO.notifications.SERVER_ERROR)
-                })
+      else if (JSON.stringify(props.data) !== JSON.stringify(data)) {
+        axios
+          .put(`/entries/${props.data._id}`, data)
+          .then((resp) => {
+            props.getEntries()
+            let tracking = {
+              name: props.user.name,
+              surname: props.user.surname,
+              action: RO.tracking.edit,
+              table: RO.tracking.entriesTable,
+              date: new Date(),
+            }
+            axios.post(`/tracking`, { tracking }).then((resp) => {
+              if (!resp.data.tracking)
+                Notifications.error(RO.notifications.SERVER_ERROR)
             })
-            .catch(err => {
-              console.error(err)
-              Notifications.error(RO.notifications.SERVER_ERROR)
-            })
-            Notifications.success(RO.notifications.SUCCESS_EDIT)
-            handleClose()
-          }
-      else handleClose()
-    } 
-    else if(props.type === 'company'){
-      if(validator.isEmpty(data.name) || !validator.isAlpha(data.representative) || 
-      !validator.isEmail(data.email) || !validator.isMobilePhone(data.phone))
+          })
+          .catch((err) => {
+            console.error(err)
+            Notifications.error(RO.notifications.SERVER_ERROR)
+          })
+        Notifications.success(RO.notifications.SUCCESS_EDIT)
+        handleClose()
+      } else handleClose()
+    } else if (props.type === 'company') {
+      if (
+        validator.isEmpty(data.name) ||
+        !validator.isAlpha(data.representative) ||
+        !validator.isEmail(data.email) ||
+        !validator.isMobilePhone(data.phone)
+      )
         return Notifications.error(RO.notifications.DATA_ERROR)
-      else if(JSON.stringify(props.data) !== JSON.stringify(data)){
-            axios.put(`/companies/${props.data._id}`, data).then(resp => {
-              props.getCompanies()
-              let tracking = {
-                name: props.user.name,
-                surname: props.user.surname,
-                action: RO.tracking.edit,
-                table: RO.tracking.companiesTable,
-                date: new Date()
-              }
-              axios.post(`/tracking`, {tracking}).then(resp => {
-                if(!resp.data.tracking)
+      else if (JSON.stringify(props.data) !== JSON.stringify(data)) {
+        axios
+          .put(`/companies/${props.data._id}`, data)
+          .then((resp) => {
+            props.getCompanies()
+            let tracking = {
+              name: props.user.name,
+              surname: props.user.surname,
+              action: RO.tracking.edit,
+              table: RO.tracking.companiesTable,
+              date: new Date(),
+            }
+            axios
+              .post(`/tracking`, { tracking })
+              .then((resp) => {
+                if (!resp.data.tracking)
                   Notifications.error(RO.notifications.SERVER_ERROR)
               })
-              .catch(err => {
+              .catch((err) => {
                 console.error(err)
                 Notifications.error(RO.notifications.SERVER_ERROR)
               })
-            })
-            .catch(err => {
-              console.error(err)
-              Notifications.error(RO.notifications.SERVER_ERROR)
-            })
-            Notifications.success(RO.notifications.SUCCESS_EDIT)
-            handleClose()
-          }
-      else handleClose()
+          })
+          .catch((err) => {
+            console.error(err)
+            Notifications.error(RO.notifications.SERVER_ERROR)
+          })
+        Notifications.success(RO.notifications.SUCCESS_EDIT)
+        handleClose()
+      } else handleClose()
+    } else if (props.type === 'user') {
+      if (
+        !validator.isAlpha(data.surname) ||
+        !validator.isAlpha(data.name) ||
+        !validator.isEmail(data.email) ||
+        !validator.isMobilePhone(data.phone) ||
+        validator.isEmpty(data.role)
+      )
+        return Notifications.error(RO.notifications.DATA_ERROR)
+      else if (JSON.stringify(props.data) !== JSON.stringify(data)) {
+        axios
+          .put(`/users/${props.data._id}`, data)
+          .then((resp) => {
+            props.getUsers()
+            let tracking = {
+              name: props.user.name,
+              surname: props.user.surname,
+              action: RO.tracking.edit,
+              table: RO.tracking.usersTable,
+              date: new Date(),
+            }
+            axios
+              .post(`/tracking`, { tracking })
+              .then((resp) => {
+                if (!resp.data.tracking)
+                  Notifications.error(RO.notifications.SERVER_ERROR)
+              })
+              .catch((err) => {
+                console.error(err)
+                Notifications.error(RO.notifications.SERVER_ERROR)
+              })
+          })
+          .catch((err) => {
+            console.error(err)
+            Notifications.error(RO.notifications.SERVER_ERROR)
+          })
+        Notifications.success(RO.notifications.SUCCESS_EDIT)
+        handleClose()
+      } else handleClose()
     }
-  
   }
 
   return (
     <div>
       <Button className={classes.editButton} onClick={handleClickOpen}>
-        <EditIcon/>
+        <EditIcon />
       </Button>
       <Dialog open={open} aria-labelledby="form-dialog-title">
         <div className={classes.buttonContainer}>
           <DialogTitle id="form-dialog-title">{RO.edit}</DialogTitle>
-          <Button onClick={handleClose} className={classes.closeIcon}><CloseIcon/></Button>
+          <Button onClick={handleClose} className={classes.closeIcon}>
+            <CloseIcon />
+          </Button>
         </div>
-        {props.type === 'entry' ? 
-        <DialogContent>
-            <TextField name="surname" margin="dense" id="surname" label="Nume" fullWidth value={data.surname} onChange={onChange}/>
-            <TextField name="name" margin="dense" id="name" label="Prenume" fullWidth value={data.name} onChange={onChange}/>
-            <TextField name="email" margin="dense" id="email" label="Email" fullWidth value={data.email} onChange={onChange}/>
-            <TextField name="company" margin="dense" id="company" label="Companie" fullWidth value={data.company} onChange={onChange}/>
-            <TextField name="phone" margin="dense" id="phone" label="Telefon" fullWidth value={data.phone} onChange={onChange}/>
-        </DialogContent>
-        : props.type === 'company' ?
-        <DialogContent>
-            <TextField name="name" margin="dense" id="name" label="Nume" fullWidth value={data.name} onChange={onChange}/>
-            <TextField name="email" margin="dense" id="email" label="Email" fullWidth value={data.email} onChange={onChange}/>
-            <TextField name="representative" margin="dense" id="representative" label="Reprezentant" fullWidth value={data.representative} onChange={onChange}/>
-            <TextField name="phone" margin="dense" id="phone" label="Telefon" fullWidth value={data.phone} onChange={onChange}/>
-        </DialogContent>
-        : null}
+        {props.type === 'entry' ? (
+          <DialogContent>
+            <TextField
+              name="surname"
+              margin="dense"
+              id="surname"
+              label="Nume"
+              fullWidth
+              value={data.surname}
+              onChange={onChange}
+            />
+            <TextField
+              name="name"
+              margin="dense"
+              id="name"
+              label="Prenume"
+              fullWidth
+              value={data.name}
+              onChange={onChange}
+            />
+            <TextField
+              name="email"
+              margin="dense"
+              id="email"
+              label="Email"
+              fullWidth
+              value={data.email}
+              onChange={onChange}
+            />
+            <TextField
+              name="company"
+              margin="dense"
+              id="company"
+              label="Companie"
+              fullWidth
+              value={data.company}
+              onChange={onChange}
+            />
+            <TextField
+              name="phone"
+              margin="dense"
+              id="phone"
+              label="Telefon"
+              fullWidth
+              value={data.phone}
+              onChange={onChange}
+            />
+          </DialogContent>
+        ) : props.type === 'company' ? (
+          <DialogContent>
+            <TextField
+              name="name"
+              margin="dense"
+              id="name"
+              label="Nume"
+              fullWidth
+              value={data.name}
+              onChange={onChange}
+            />
+            <TextField
+              name="email"
+              margin="dense"
+              id="email"
+              label="Email"
+              fullWidth
+              value={data.email}
+              onChange={onChange}
+            />
+            <TextField
+              name="representative"
+              margin="dense"
+              id="representative"
+              label="Reprezentant"
+              fullWidth
+              value={data.representative}
+              onChange={onChange}
+            />
+            <TextField
+              name="phone"
+              margin="dense"
+              id="phone"
+              label="Telefon"
+              fullWidth
+              value={data.phone}
+              onChange={onChange}
+            />
+          </DialogContent>
+        ) : props.type === 'user' ? (
+          <DialogContent>
+            <TextField
+              name="surname"
+              margin="dense"
+              id="surname"
+              label="Nume"
+              fullWidth
+              value={data.surname}
+              onChange={onChange}
+            />
+            <TextField
+              name="name"
+              margin="dense"
+              id="name"
+              label="Prenume"
+              fullWidth
+              value={data.name}
+              onChange={onChange}
+            />
+            <TextField
+              name="email"
+              margin="dense"
+              id="email"
+              label="Email"
+              fullWidth
+              value={data.email}
+              onChange={onChange}
+            />
+            <TextField
+              name="phone"
+              margin="dense"
+              id="phone"
+              label="Telefon"
+              fullWidth
+              value={data.phone}
+              onChange={onChange}
+            />
+            <FormControl
+              fullWidth
+              required
+              margin="normal"
+            >
+              <InputLabel id="demo-simple-select-outlined-label">
+                {RO.entries.role}
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-outlined-label"
+                id="demo-simple-select-outlined"
+                value={data.role}
+                onChange={onChange}
+                name="role"
+              >
+                <MenuItem value={'super'}>Super Admin</MenuItem>
+                <MenuItem value={'user'}>User</MenuItem>
+              </Select>
+            </FormControl>
+          </DialogContent>
+        ) : null}
         <DialogActions className={classes.actionsContainer}>
           <Button color="default" variant="contained" onClick={handleClose}>
             {RO.cancel}
           </Button>
-          <Button onClick={() => {onSaveClick()}} >
+          <Button
+            onClick={() => {
+              onSaveClick()
+            }}
+          >
             {RO.save}
           </Button>
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }
 
-const mapStateToProps = state => {
-  return {user: state.user}
+const mapStateToProps = (state) => {
+  return { user: state.user }
 }
 
 export default connect(mapStateToProps)(EditDialog)
