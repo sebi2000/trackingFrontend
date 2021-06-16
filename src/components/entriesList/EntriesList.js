@@ -30,6 +30,13 @@ import {
 } from '@material-ui/pickers'
 import { connect } from 'react-redux'
 import { createLog } from '../../redux/actions/tracking'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import TextField from '@material-ui/core/TextField'
+import InfoModal from './InfoModal'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -91,6 +98,9 @@ const styles = (theme) => ({
     width: '1.5rem',
     minWidth: '1rem',
   },
+  selectableRows: {
+    cursor: 'pointer',
+  },
 })
 
 const columns = [
@@ -122,6 +132,8 @@ class EntriesList extends React.Component {
     count: 0,
     csvData: [],
     showFilterIcon: false,
+    openModal: false,
+    currentRow: {},
   }
 
   componentDidMount() {
@@ -250,13 +262,16 @@ class EntriesList extends React.Component {
     })
   }
 
+  onCloseModal = () => {
+    this.setState({ currentRow: {}, openModal: false })
+  }
+
   render() {
     const { classes } = this.props
 
     return (
       <div>
         <Navbar path={this.props.location.pathname} />
-
         <div className={classes.root}>
           <div className={classes.dateSelector}>
             <Button className={classes.arrowButton}>
@@ -360,6 +375,14 @@ class EntriesList extends React.Component {
           <ConfirmDialog type="export" data={this.state.csvData} />
         </div>
 
+        {Object.keys(this.state.currentRow).length !== 0 ? (
+          <InfoModal
+            row={this.state.currentRow}
+            open={this.state.openModal}
+            onCloseModal={this.onCloseModal}
+          />
+        ) : null}
+
         <div className={classes.table}>
           <TableContainer>
             <Table entriesList>
@@ -379,33 +402,56 @@ class EntriesList extends React.Component {
               </TableHead>
               <TableBody>
                 {this.state.entries.map((entry, index) => (
-                  <TableRow>
-                    <TableCell size={'small'}>
+                  <TableRow hover={true} className={classes.selectableRows}>
+                    <TableCell
+                      onClick={() => {
+                        this.setState({ currentRow: entry, openModal: true })
+                      }}
+                      size={'small'}
+                    >
                       {this.state.page * this.state.rowsPerPage + index + 1}
                     </TableCell>
-                    <TableCell size={'small'}>{entry.surname}</TableCell>
-                    <TableCell size={'small'}>{entry.name}</TableCell>
-                    <TableCell size={'small'}>{entry.email}</TableCell>
-                    <TableCell size={'small'}>
+                    <TableCell
+                      onClick={() => {
+                        this.setState({ currentRow: entry, openModal: true })
+                      }}
+                      size={'small'}
+                    >
+                      {entry.surname}
+                    </TableCell>
+                    <TableCell
+                      onClick={() => {
+                        this.setState({ currentRow: entry, openModal: true })
+                      }}
+                      size={'small'}
+                    >
+                      {entry.name}
+                    </TableCell>
+                    <TableCell
+                      onClick={() => {
+                        this.setState({ currentRow: entry, openModal: true })
+                      }}
+                      size={'small'}
+                    >
+                      {entry.email}
+                    </TableCell>
+                    <TableCell
+                      onClick={() => {
+                        this.setState({ currentRow: entry, openModal: true })
+                      }}
+                      size={'small'}
+                    >
                       <Moment format={CONSTANTS.DATE_FORMAT}>
                         {entry.date}
                       </Moment>
                     </TableCell>
-                    <TableCell size={'small'}>{entry.company}</TableCell>
-                    <TableCell size={'small'}>{entry.phone}</TableCell>
-                    <TableCell size={'small'}>{entry.series}</TableCell>
-                    <TableCell size={'small'}>{entry.number}</TableCell>
-                    <TableCell size={'small'}>{entry.duration}</TableCell>
-                    <TableCell size={'small'}>{entry.observations}</TableCell>
-                    <TableCell size={'small'} align="center">
-                      <CanvasDraw
-                        canvasHeight={50}
-                        canvasWidth={50}
-                        disabled={true}
-                        hideGrid={true}
-                        saveData={entry.signature}
-                        loadTimeOffset={1}
-                      />
+                    <TableCell
+                      onClick={() => {
+                        this.setState({ currentRow: entry, openModal: true })
+                      }}
+                      size={'small'}
+                    >
+                      {entry.company}
                     </TableCell>
                     <TableCell size={'small'}>
                       <div className={classes.actions}>
