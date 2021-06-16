@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import Navbar from '../common/Navbar'
-import AddUserDialog from './AddUserDialog'
 import { makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -92,7 +91,6 @@ function Tracking(props) {
   return (
     <div>
       <Navbar path={props.location.pathname} />
-      <AddUserDialog getTracking={getTracking} />
       <div className={classes.table}>
         <TableContainer>
           <Table>
