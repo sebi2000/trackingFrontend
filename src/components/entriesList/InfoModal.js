@@ -18,6 +18,26 @@ const useStyles = makeStyles((theme) => ({
     width: '15%',
     marginRight: '3%',
   },
+  gridContainer: {
+    display: 'grid',
+    width: '100%',
+    gridTemplateAreas: `
+                          'email sign'
+                          'phone sign'
+                        `,
+    gridTemplateColumns: '1fr 5em',
+    gridTemplateRows: '1fr 1fr',
+  },
+  email: {
+    gridArea: 'email',
+  },
+  phone: {
+    gridArea: 'phone',
+  },
+  sign: {
+    gridArea: 'sign',
+    marginTop: '1em',
+  },
 }))
 
 export default function FormDialog(props) {
@@ -101,26 +121,39 @@ export default function FormDialog(props) {
           fullWidth
           value={props.row.company}
         />
-        <TextField
-          disabled
-          autoFocus
-          margin="dense"
-          id="name"
-          label={RO.entries.phone}
-          type="name"
-          fullWidth
-          value={props.row.phone}
-        />
-        <TextField
-          disabled
-          autoFocus
-          margin="dense"
-          id="name"
-          label={RO.entries.duration}
-          type="name"
-          fullWidth
-          value={props.row.duration}
-        />
+        <div className={classes.gridContainer}>
+          <TextField
+            className={classes.phone}
+            disabled
+            autoFocus
+            margin="dense"
+            id="name"
+            label={RO.entries.phone}
+            type="name"
+            fullWidth
+            value={props.row.phone}
+          />
+          <CanvasDraw
+            className={classes.sign}
+            canvasHeight={100}
+            canvasWidth={100}
+            disabled={true}
+            hideGrid={true}
+            saveData={props.row.signature}
+            loadTimeOffset={1}
+          />
+          <TextField
+            className={classes.email}
+            disabled
+            autoFocus
+            margin="dense"
+            id="name"
+            label={RO.entries.duration}
+            type="name"
+            fullWidth
+            value={props.row.duration}
+          />
+        </div>
         <TextField
           disabled
           autoFocus
@@ -131,16 +164,6 @@ export default function FormDialog(props) {
           fullWidth
           value={props.row.observations}
         />
-        <div>
-          <CanvasDraw
-            canvasHeight={50}
-            canvasWidth={50}
-            disabled={true}
-            hideGrid={true}
-            saveData={props.row.signature}
-            loadTimeOffset={1}
-          />
-        </div>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>{RO.close}</Button>
