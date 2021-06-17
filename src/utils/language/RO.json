@@ -102,6 +102,7 @@
     "PHONE_ALREADY_EXIST": "Numărul de telefon există deja",
     "SUCCESS_ADD_COMPANY": "Ai adăugat compania cu succes",
     "COMPANY_ALREADY_EXISTS": "Compania deja există",
-    "SIGNATURE_ERROR": "Semnătura nu poate fi lăsată goală"
+    "SIGNATURE_ERROR": "Semnătura nu poate fi lăsată goală",
+    "LOG_ERROR_CREATION": "Log-ul nu a putut fi creat"
   }
 }

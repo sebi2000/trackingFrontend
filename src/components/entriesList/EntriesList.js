@@ -29,6 +29,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers'
 import { connect } from 'react-redux'
+import { createLog } from '../../redux/actions/index'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -193,23 +194,7 @@ class EntriesList extends React.Component {
       .then((resp) => {
         Notifications.success(RO.notifications.SUCCESS_EDIT)
         this.getEntries()
-        let tracking = {
-          name: this.props.user.name,
-          surname: this.props.user.surname,
-          action: RO.tracking.delete,
-          table: RO.tracking.entriesTable,
-          date: new Date(),
-        }
-        axios
-          .post(`/tracking`, { tracking })
-          .then((resp) => {
-            if (!resp.data.tracking)
-              Notifications.error(RO.notifications.SERVER_ERROR)
-          })
-          .catch((err) => {
-            console.error(err)
-            Notifications.error(RO.notifications.SERVER_ERROR)
-          })
+        this.props.createLog(this.props.user.name, this.props.user.surname, RO.tracking.delete, RO.tracking.entriesTable)
       })
       .catch((err) => {
         Notifications.error(RO.notifications.SERVER_ERROR)
@@ -459,4 +444,12 @@ const mapStateToProps = (state) => {
   return { user: state.user }
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(EntriesList))
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EntriesList))

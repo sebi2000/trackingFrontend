@@ -10,9 +10,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
 import DeleteIcon from '@material-ui/icons/Delete'
 import CloseIcon from '@material-ui/icons/Close'
-import Notifications from '../../utils/Notifications'
-import axios from '../../utils/Axios'
 import { connect } from 'react-redux'
+import { createLog } from '../../redux/actions/index'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -73,26 +72,6 @@ function ConfirmDialog(props) {
 
   const handleClose = () => {
     setOpen(false)
-  }
-
-  const createExportAction = () => {
-    let tracking = {
-      name: props.user.name,
-      surname: props.user.surname,
-      action: RO.tracking.export,
-      table: RO.tracking.entriesTable,
-      date: new Date(),
-    }
-    axios
-      .post(`/tracking`, { tracking })
-      .then((resp) => {
-        if (!resp.data.tracking)
-          Notifications.error(RO.notifications.SERVER_ERROR)
-      })
-      .catch((err) => {
-        console.error(err)
-        Notifications.error(RO.notifications.SERVER_ERROR)
-      })
   }
 
   const classes = useStyles()
@@ -174,7 +153,12 @@ function ConfirmDialog(props) {
               <Button
                 onClick={() => {
                   handleClose()
-                  createExportAction()
+                  props.createLog(
+                    props.user.name,
+                    props.user.surname,
+                    RO.tracking.export,
+                    RO.tracking.entriesTable
+                  )
                 }}
               >
                 <CSVLink
@@ -229,4 +213,11 @@ const mapStateToProps = (state) => {
   return { user: state.user }
 }
 
-export default connect(mapStateToProps)(ConfirmDialog)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConfirmDialog)

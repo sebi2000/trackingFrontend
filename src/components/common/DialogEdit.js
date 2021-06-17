@@ -16,6 +16,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import { createLog } from '../../redux/actions'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -91,17 +92,12 @@ function EditDialog(props) {
           .put(`/entries/${props.data._id}`, data)
           .then((resp) => {
             props.getEntries()
-            let tracking = {
-              name: props.user.name,
-              surname: props.user.surname,
-              action: RO.tracking.edit,
-              table: RO.tracking.entriesTable,
-              date: new Date(),
-            }
-            axios.post(`/tracking`, { tracking }).then((resp) => {
-              if (!resp.data.tracking)
-                Notifications.error(RO.notifications.SERVER_ERROR)
-            })
+            props.createLog(
+              props.user.name,
+              props.user.surname,
+              RO.tracking.edit,
+              RO.tracking.entriesTable
+            )
           })
           .catch((err) => {
             console.error(err)
@@ -123,23 +119,12 @@ function EditDialog(props) {
           .put(`/companies/${props.data._id}`, data)
           .then((resp) => {
             props.getCompanies()
-            let tracking = {
-              name: props.user.name,
-              surname: props.user.surname,
-              action: RO.tracking.edit,
-              table: RO.tracking.companiesTable,
-              date: new Date(),
-            }
-            axios
-              .post(`/tracking`, { tracking })
-              .then((resp) => {
-                if (!resp.data.tracking)
-                  Notifications.error(RO.notifications.SERVER_ERROR)
-              })
-              .catch((err) => {
-                console.error(err)
-                Notifications.error(RO.notifications.SERVER_ERROR)
-              })
+            props.createLog(
+              props.user.name,
+              props.user.surname,
+              RO.tracking.edit,
+              RO.tracking.companiesTable
+            )
           })
           .catch((err) => {
             console.error(err)
@@ -162,23 +147,12 @@ function EditDialog(props) {
           .put(`/users/${props.data._id}`, data)
           .then((resp) => {
             props.getUsers()
-            let tracking = {
-              name: props.user.name,
-              surname: props.user.surname,
-              action: RO.tracking.edit,
-              table: RO.tracking.usersTable,
-              date: new Date(),
-            }
-            axios
-              .post(`/tracking`, { tracking })
-              .then((resp) => {
-                if (!resp.data.tracking)
-                  Notifications.error(RO.notifications.SERVER_ERROR)
-              })
-              .catch((err) => {
-                console.error(err)
-                Notifications.error(RO.notifications.SERVER_ERROR)
-              })
+            props.createLog(
+              props.user.name,
+              props.user.surname,
+              RO.tracking.edit,
+              RO.tracking.usersTable
+            )
           })
           .catch((err) => {
             console.error(err)
@@ -327,11 +301,7 @@ function EditDialog(props) {
               value={data.phone}
               onChange={onChange}
             />
-            <FormControl
-              fullWidth
-              required
-              margin="normal"
-            >
+            <FormControl fullWidth required margin="normal">
               <InputLabel id="demo-simple-select-outlined-label">
                 {RO.entries.role}
               </InputLabel>
@@ -369,4 +339,11 @@ const mapStateToProps = (state) => {
   return { user: state.user }
 }
 
-export default connect(mapStateToProps)(EditDialog)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditDialog)

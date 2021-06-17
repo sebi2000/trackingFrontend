@@ -16,6 +16,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import CloseIcon from '@material-ui/icons/Close'
 import { connect } from 'react-redux'
+import { createLog } from '../../redux/actions/index'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -135,24 +136,12 @@ class Register extends React.Component {
               password: '',
               role: '',
             })
-            let tracking = {
-              name: this.props.user.name,
-              surname: this.props.user.surname,
-              action: RO.tracking.add,
-              table: RO.tracking.usersTable,
-              date: new Date(),
-            }
-            axios
-              .post(`/tracking`, { tracking })
-              .then((resp) => {
-                if (!resp.data.tracking)
-                  Notifications.error(RO.notifications.SERVER_ERROR)
-              })
-              .catch((err) => {
-                console.error(err)
-                Notifications.error(RO.notifications.SERVER_ERROR)
-              })
-            this.handleClose()
+            this.props.createLog(
+              this.props.user.name,
+              this.props.user.surname,
+              RO.tracking.add,
+              RO.tracking.usersTable
+            )
           } else if (response.data.keyPattern.email)
             Notifications.error(RO.notifications.EMAIL_ALREADY_EXIST)
           else if (response.data.keyPattern.phone)
@@ -184,6 +173,7 @@ class Register extends React.Component {
 
   render() {
     const { classes } = this.props
+
     return (
       <div>
         <div className={classes.createButton}>
@@ -301,4 +291,14 @@ const mapStateToProps = (state) => {
   return { user: state.user }
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(Register))
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Register))

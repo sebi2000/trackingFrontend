@@ -15,6 +15,7 @@ import ConfirmDialog from '../common/ConfirmDialog'
 import Notifications from '../../utils/Notifications'
 import AddCompanyDialog from './AddCompanyDialog'
 import {connect} from 'react-redux'
+import { createLog } from '../../redux/actions/index'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -84,21 +85,7 @@ function Companies(props) {
       .then((resp) => {
         Notifications.success(RO.notifications.SUCCESS_EDIT)
         getCompanies()
-        let tracking = {
-          name: props.user.name,
-          surname: props.user.surname,
-          action: RO.tracking.delete,
-          table: RO.tracking.companiesTable,
-          date: new Date()
-        }
-        axios.post(`/tracking`, {tracking}).then(resp => {
-          if(!resp.data.tracking)
-            Notifications.error(RO.notifications.SERVER_ERROR)
-        })
-        .catch(err => {
-          console.error(err)
-          Notifications.error(RO.notifications.SERVER_ERROR)
-        })
+        props.createLog(props.user.name, props.user.surname, RO.tracking.delete, RO.tracking.companiesTable)
       })
       .catch((err) => {
         Notifications.error(RO.notifications.SERVER_ERROR)
@@ -168,4 +155,11 @@ const mapStateToProps = state => {
   return {user: state.user}
 }
 
-export default connect(mapStateToProps)(Companies)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Companies)

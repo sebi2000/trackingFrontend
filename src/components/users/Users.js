@@ -15,6 +15,8 @@ import Moment from 'react-moment'
 import AddUserDialog from './AddUserDialog'
 import EditDialog from '../common/DialogEdit'
 import ConfirmDialog from '../common/ConfirmDialog'
+import { connect } from 'react-redux'
+import { createLog } from '../../redux/actions/'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -86,6 +88,12 @@ function Users(props) {
       .then((resp) => {
         Notifications.success(RO.notifications.SUCCESS_EDIT)
         getUsers()
+        props.createLog(
+          props.user.name,
+          props.user.surname,
+          RO.tracking.delete,
+          RO.tracking.usersTable
+        )
       })
       .catch((err) => {
         Notifications.error(RO.notifications.SERVER_ERROR)
@@ -161,4 +169,15 @@ function Users(props) {
   )
 }
 
-export default Users
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users)
