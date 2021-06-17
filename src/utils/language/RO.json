@@ -47,9 +47,11 @@
     "delete": "Ștergere",
     "add": "Adăugare",
     "export": "Exportare",
-    "entriesTable" : "Tabel intrări",
-    "companiesTable" : "Tabel companii",
-    "usersTable" : "Tabel utilizatori"
+    "entriesTable": "Tabel intrări",
+    "companiesTable": "Tabel companii",
+    "usersTable": "Tabel utilizatori",
+    "login": "Logare",
+    "logout": "Delogare"
   },
   "companies": {
     "index": "#",

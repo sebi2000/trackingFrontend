@@ -75,18 +75,6 @@ function Tracking(props) {
     setRows(parseInt(event.target.value, CONSTANTS.PARSE_INT_RADIX))
   }
 
-  const onDeleteButton = (id) => {
-    axios
-      .delete(`/tracking/${id}`)
-      .then((resp) => {
-        Notifications.success(RO.notifications.SUCCESS_EDIT)
-        getTracking()
-      })
-      .catch((err) => {
-        Notifications.error(RO.notifications.SERVER_ERROR)
-        console.error(err)
-      })
-  }
 
   return (
     <div>

@@ -13,6 +13,7 @@ import DialogReset from '../../components/common/DialogReset'
 import { connect } from 'react-redux'
 import { auth } from '../../redux/actions/index'
 import Notifications from '../../utils/Notifications'
+import { createLog } from '../../redux/actions/index'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -53,6 +54,7 @@ class Login extends React.Component {
           else this.props.history.push('/entries')
 
           localStorage.setItem('token', response.token)
+          this.props.createLog(this.props.user.name, this.props.user.surname, RO.tracking.login, RO.tracking.usersTable)
         } else if (
           response.code === StatusCodes.FORBIDDEN &&
           response.status === RO.notifications.USER_NOT_FOUND
@@ -133,10 +135,16 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (user) => dispatch(auth(user)),
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
   }
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Login))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login))
