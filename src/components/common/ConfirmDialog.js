@@ -11,7 +11,7 @@ import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
 import DeleteIcon from '@material-ui/icons/Delete'
 import CloseIcon from '@material-ui/icons/Close'
 import { connect } from 'react-redux'
-import { createLog } from '../../redux/actions/index'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({

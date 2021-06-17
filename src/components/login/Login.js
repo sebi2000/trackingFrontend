@@ -11,9 +11,9 @@ import validator from 'validator'
 import { withStyles } from '@material-ui/core/styles'
 import DialogReset from '../../components/common/DialogReset'
 import { connect } from 'react-redux'
-import { auth } from '../../redux/actions/index'
+import { auth } from '../../redux/actions/auth'
 import Notifications from '../../utils/Notifications'
-import { createLog } from '../../redux/actions/index'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({

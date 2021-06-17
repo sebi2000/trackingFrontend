@@ -11,7 +11,7 @@ import Notifications from '../../utils/Notifications'
 import CloseIcon from '@material-ui/icons/Close'
 import validator from 'validator'
 import { connect } from 'react-redux'
-import { createLog } from '../../redux/actions/index'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({

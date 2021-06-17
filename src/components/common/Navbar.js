@@ -8,12 +8,12 @@ import ListAltIcon from '@material-ui/icons/ListAlt'
 import { useHistory } from 'react-router'
 import Header from '../common/Header'
 import { connect } from 'react-redux'
-import { logout } from '../../redux/actions/index'
+import { logout } from '../../redux/actions/auth'
 import ConfirmationDialog from '../common/ConfirmDialog'
 import BusinessIcon from '@material-ui/icons/Business'
 import TrendingUpIcon from '@material-ui/icons/TrendingUp'
 import PeopleIcon from '@material-ui/icons/People'
-import { createLog } from '../../redux/actions/index'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({

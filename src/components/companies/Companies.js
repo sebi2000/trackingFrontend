@@ -15,7 +15,7 @@ import ConfirmDialog from '../common/ConfirmDialog'
 import Notifications from '../../utils/Notifications'
 import AddCompanyDialog from './AddCompanyDialog'
 import {connect} from 'react-redux'
-import { createLog } from '../../redux/actions/index'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({

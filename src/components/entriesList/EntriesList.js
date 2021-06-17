@@ -29,7 +29,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers'
 import { connect } from 'react-redux'
-import { createLog } from '../../redux/actions/index'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({

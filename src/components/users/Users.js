@@ -16,7 +16,7 @@ import AddUserDialog from './AddUserDialog'
 import EditDialog from '../common/DialogEdit'
 import ConfirmDialog from '../common/ConfirmDialog'
 import { connect } from 'react-redux'
-import { createLog } from '../../redux/actions/'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
