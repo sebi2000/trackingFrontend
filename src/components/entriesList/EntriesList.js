@@ -395,57 +395,25 @@ class EntriesList extends React.Component {
               </TableHead>
               <TableBody>
                 {this.state.entries.map((entry, index) => (
-                  <TableRow hover={true} className={classes.selectableRows}>
-                    <TableCell
-                      onClick={() => {
-                        this.setState({ currentRow: entry, openModal: true })
-                      }}
-                      size={'small'}
-                    >
+                  <TableRow
+                    hover={true}
+                    className={classes.selectableRows}
+                    onClick={() => {
+                      this.setState({ currentRow: entry, openModal: true })
+                    }}
+                  >
+                    <TableCell size={'small'}>
                       {this.state.page * this.state.rowsPerPage + index + 1}
                     </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        this.setState({ currentRow: entry, openModal: true })
-                      }}
-                      size={'small'}
-                    >
-                      {entry.surname}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        this.setState({ currentRow: entry, openModal: true })
-                      }}
-                      size={'small'}
-                    >
-                      {entry.name}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        this.setState({ currentRow: entry, openModal: true })
-                      }}
-                      size={'small'}
-                    >
-                      {entry.email}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        this.setState({ currentRow: entry, openModal: true })
-                      }}
-                      size={'small'}
-                    >
+                    <TableCell size={'small'}>{entry.surname}</TableCell>
+                    <TableCell size={'small'}>{entry.name}</TableCell>
+                    <TableCell size={'small'}>{entry.email}</TableCell>
+                    <TableCell size={'small'}>
                       <Moment format={CONSTANTS.DATE_FORMAT}>
                         {entry.date}
                       </Moment>
                     </TableCell>
-                    <TableCell
-                      onClick={() => {
-                        this.setState({ currentRow: entry, openModal: true })
-                      }}
-                      size={'small'}
-                    >
-                      {entry.company}
-                    </TableCell>
+                    <TableCell size={'small'}>{entry.company}</TableCell>
                     <TableCell size={'small'}>
                       <div className={classes.actions}>
                         <EditDialog

@@ -66,11 +66,13 @@ const useStyles = makeStyles((theme) => ({
 function ConfirmDialog(props) {
   const [open, setOpen] = React.useState(false)
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (event) => {
+    event.stopPropagation()
     setOpen(true)
   }
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    event.stopPropagation()
     setOpen(false)
   }
 
