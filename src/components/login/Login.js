@@ -11,86 +11,88 @@ import validator from 'validator'
 import { withStyles } from '@material-ui/core/styles'
 import DialogReset from '../../components/common/DialogReset'
 import { connect } from 'react-redux'
-import {auth} from '../../redux/actions/index'
+import { auth } from '../../redux/actions/auth'
 import Notifications from '../../utils/Notifications'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
-  const styles = theme => ({
-    button : {
-      display: 'flex',
-      justifyContent: 'space-between'
-    },
-    header :{
-      margin: 'auto',
-      width: '11%',
-      marginBottom : '2%',
-      marginTop: '2%'
-    }
-  })
-  
-  class Login extends React.Component {
-    
-    state = {
-        email: "",
-        password: "",
-        role: ""
-    }
+const styles = (theme) => ({
+  button: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  header: {
+    margin: 'auto',
+    width: '11%',
+    marginBottom: '2%',
+    marginTop: '2%',
+  },
+})
 
-    onChange = event => {
-      this.setState({ [event.target.name] : event.target.value})
+class Login extends React.Component {
+  state = {
+    email: '',
+    password: '',
+    role: '',
+  }
+
+  onChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
+  handleLogin = () => {
+    let emailIsValid = validator.isEmail(this.state.email)
+    let passIsValid = !validator.isEmpty(this.state.password)
+
+    if (emailIsValid && passIsValid) {
+      let user = { user: this.state }
+
+      this.props.login(user).then((response) => {
+        if (response.userFound) {
+          if (response.userFound.role === 'super')
+            this.props.history.push('/tracking')
+          else this.props.history.push('/entries')
+
+          localStorage.setItem('token', response.token)
+          this.props.createLog(this.props.user.name, this.props.user.surname, RO.tracking.login, RO.tracking.usersTable)
+        } else if (
+          response.code === StatusCodes.FORBIDDEN &&
+          response.status === RO.notifications.USER_NOT_FOUND
+        )
+          Notifications.error(RO.notifications.USER_NOT_FOUND)
+        else if (
+          response.code === StatusCodes.FORBIDDEN &&
+          response.status === RO.notifications.INCORRECT_PASS
+        )
+          Notifications.error(RO.notifications.INCORRECT_PASS)
+        else Notifications.error(RO.notifications.SERVER_ERROR)
+      })
+    } else {
+      if (!emailIsValid) Notifications.error(RO.notifications.EMAIL_INCORRECT)
+      else Notifications.error(RO.notifications.PASS_INCORRECT)
     }
+  }
 
-    handleLogin = () => {
+  onRegisterButtonClick = () => {
+    this.props.history.push('/register')
+  }
 
-        let emailIsValid = validator.isEmail(this.state.email)
-        let passIsValid = !(validator.isEmpty(this.state.password))
-            
-        if(emailIsValid && passIsValid){
-          let user = {user : this.state}
-         
-          this.props.login(user).then(response => {
-            if(response.userFound){
-              if(response.userFound.role === 'super')
-                  this.props.history.push("/register")
-              else this.props.history.push("/entries")
-    
-              localStorage.setItem('token', response.token)
-            }
-            else if(response.code=== StatusCodes.FORBIDDEN && response.status === RO.notifications.USER_NOT_FOUND)
-                Notifications.error(RO.notifications.USER_NOT_FOUND)
-            else if(response.code === StatusCodes.FORBIDDEN && response.status === RO.notifications.INCORRECT_PASS)
-                Notifications.error(RO.notifications.INCORRECT_PASS)
-            else Notifications.error(RO.notifications.SERVER_ERROR) 
-          })
-         
-        }
-        else{
-          if(!emailIsValid)
-            Notifications.error(RO.notifications.EMAIL_INCORRECT)
-          else Notifications.error(RO.notifications.PASS_INCORRECT)
-        }
-    }
+  render() {
+    const { classes } = this.props
 
-    onRegisterButtonClick = () =>{
-      this.props.history.push("/register")
-    }
-
-    render(){
-      const {classes} = this.props
-     
-      return (
-        <div>
-          <div className={classes.header}>
-          <Header/>
-          </div>
+    return (
+      <div>
+        <div className={classes.header}>
+          <Header />
+        </div>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div>
             <Typography component="h1" variant="h5">
-            {RO.login}
+              {RO.login}
             </Typography>
             <form noValidate>
-              <TextField  
+              <TextField
                 variant="outlined"
                 margin="normal"
                 required
@@ -100,7 +102,7 @@ const RO = require('../../utils/language/RO.json')
                 name="email"
                 autoComplete="email"
                 autoFocus
-                onChange={ this.onChange }
+                onChange={this.onChange}
               />
               <TextField
                 variant="outlined"
@@ -112,29 +114,37 @@ const RO = require('../../utils/language/RO.json')
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange = { this.onChange }
-                onKeyPress= { event => event.key === 'Enter' ? this.handleLogin() : null}
+                onChange={this.onChange}
+                onKeyPress={(event) =>
+                  event.key === 'Enter' ? this.handleLogin() : null
+                }
               />
-              <Button fullWidth onClick={ this.handleLogin } >{RO.login}</Button>
+              <Button fullWidth onClick={this.handleLogin}>
+                {RO.login}
+              </Button>
               <DialogReset />
-              
+
               <Grid container>
-                <Grid item>
-                </Grid>
+                <Grid item></Grid>
               </Grid>
             </form>
           </div>
         </Container>
-        </div>
-      );
-    }
+      </div>
+    )
   }
+}
 
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      login: (user) => dispatch(auth(user))
-    }
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (user) => dispatch(auth(user)),
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
   }
+}
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(Login));
-  
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login))

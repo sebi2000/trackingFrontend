@@ -7,10 +7,10 @@ import CanvasDraw from 'react-canvas-draw'
 import axios from '../../utils/Axios'
 import validator from 'validator'
 import Navbar from '../common/Navbar'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import Notifications from '../../utils/Notifications'
 import { withStyles } from '@material-ui/core/styles'
-import {StatusCodes} from 'http-status-codes'
+import { StatusCodes } from 'http-status-codes'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
@@ -18,13 +18,13 @@ import Select from '@material-ui/core/Select'
 import CONSTANTS from '../../utils/Constants'
 const RO = require('../../utils/language/RO.json')
 
-const styles = theme => ({
+const styles = (theme) => ({
   nextButton: {
     backgroundColor: '#336600',
     '&:hover': {
       backgroundColor: '#264d00',
     },
-    marginRight: '0 '
+    marginRight: '0 ',
   },
   flexContainer: {
     display: 'flex',
@@ -33,12 +33,12 @@ const styles = theme => ({
     display: 'grid',
     width: '100%',
     height: '10em',
-    gridTemplateAreas : `
+    gridTemplateAreas: `
                           'email sign'
                           'phone sign'
                         `,
     gridTemplateColumns: '1fr 250px',
-    gridTemplateRows: '1fr 1fr'
+    gridTemplateRows: '1fr 1fr',
   },
   email: {
     gridArea: 'email',
@@ -51,7 +51,7 @@ const styles = theme => ({
     marginTop: '1em',
     marginLeft: '3.5em',
   },
-  buttonsContainer:{
+  buttonsContainer: {
     position: 'absolute',
     bottom: '1em',
     left: '2.5%',
@@ -67,34 +67,32 @@ const styles = theme => ({
     top: '50%',
     transform: 'translate(-50%, -50%)',
     WebkitTransform: 'translate(-50%, -50%)',
-    width: '95%'
+    width: '95%',
   },
   identityFields: {
     width: '10%',
-    marginRight: '2%'
+    marginRight: '2%',
   },
   fullHeight: {
-    height: '100%'
+    height: '100%',
   },
   menuItem: {
-    justifyContent: 'space-evenly'
-  }
+    justifyContent: 'space-evenly',
+  },
 })
 
-
-class UserView extends React.Component{
-
-  state ={
-    name : "",
-    surname : "",
-    email : "",
-    phone : "",
-    company : "",
+class UserView extends React.Component {
+  state = {
+    name: '',
+    surname: '',
+    email: '',
+    phone: '',
+    company: '',
     show: false,
-    series: "",
-    number: "",
-    duration: "",
-    observations: "",
+    series: '',
+    number: '',
+    duration: '',
+    observations: '',
     fields: {
       errorName: false,
       errorSurname: false,
@@ -107,32 +105,34 @@ class UserView extends React.Component{
       errorDuration: false,
       errorObservations: false,
     },
-    companies: []
+    companies: [],
   }
 
   componentDidMount() {
-    axios.get('/companies').then(resp => {
-      this.setState({companies: resp.data[0]})
-    })
-    .catch(err => {
-      console.error(err)
-      Notifications.error(RO.notifications.SERVER_ERROR)
-    })
+    axios
+      .get('/companies')
+      .then((resp) => {
+        this.setState({ companies: resp.data[0] })
+      })
+      .catch((err) => {
+        console.error(err)
+        Notifications.error(RO.notifications.SERVER_ERROR)
+      })
   }
 
-  showDrawing = () =>{
-    this.setState({show : true})
+  showDrawing = () => {
+    this.setState({ show: true })
   }
 
-  onChange = event => {
-    this.setState({ [event.target.name] : event.target.value})
+  onChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ company: event.target.value })
   }
 
-  handleEntries = () =>{
+  handleEntries = () => {
     let isOk = true
 
     let auxFields = {
@@ -144,211 +144,321 @@ class UserView extends React.Component{
       errorSignature: false,
       errorSeries: false,
       errorNumber: false,
-      errorDuraion: false
+      errorDuraion: false,
     }
 
-    Object.entries(this.state.fields).forEach(([key, value]) =>{
-      switch(key){
+    Object.entries(this.state.fields).forEach(([key, value]) => {
+      switch (key) {
         case 'errorSurname':
-          if(!validator.isAlpha(this.state.surname)){
-              isOk=false
-              auxFields.errorSurname = true
-            }
-        break
+          if (!validator.isAlpha(this.state.surname)) {
+            isOk = false
+            auxFields.errorSurname = true
+          }
+          break
         case 'errorName':
-          if(!validator.isAlpha(this.state.name)){
-              isOk=false
-              auxFields.errorName = true
-            }
-        break
+          if (!validator.isAlpha(this.state.name)) {
+            isOk = false
+            auxFields.errorName = true
+          }
+          break
         case 'errorEmail':
-          if(!validator.isEmail(this.state.email)){
-              isOk=false
-              auxFields.errorEmail= true
-            }
-        break
+          if (!validator.isEmail(this.state.email)) {
+            isOk = false
+            auxFields.errorEmail = true
+          }
+          break
         case 'errorCompany':
-          if(validator.isEmpty(this.state.company)){
-              isOk=false
-              auxFields.errorCompany= true
-            }
-        break
+          if (validator.isEmpty(this.state.company)) {
+            isOk = false
+            auxFields.errorCompany = true
+          }
+          break
         case 'errorPhone':
-          if(!validator.isMobilePhone(this.state.phone)){
-              isOk=false
-              auxFields.errorPhone= true
-            }
-        break
+          if (!validator.isMobilePhone(this.state.phone)) {
+            isOk = false
+            auxFields.errorPhone = true
+          }
+          break
         case 'errorSignature':
-          if(this.state.show === false){
-              isOk=false
-              auxFields.errorSignature= true
-            }
-        break
+          if (this.state.show === false) {
+            isOk = false
+            auxFields.errorSignature = true
+          }
+          break
         case 'errorSeries':
-          if(!validator.isAlpha(this.state.series) || !(this.state.series.length >0 && this.state.series.length <3)){
-              isOk=false
-              auxFields.errorSeries= true
-            }
-        break
+          if (
+            !validator.isAlpha(this.state.series) ||
+            !(this.state.series.length > 0 && this.state.series.length < 3)
+          ) {
+            isOk = false
+            auxFields.errorSeries = true
+          }
+          break
         case 'errorNumber':
-          if(!validator.isNumeric(this.state.number) || this.state.number.length !=6){
-              isOk=false
-              auxFields.errorNumber= true
-            }
-        break
+          if (
+            !validator.isNumeric(this.state.number) ||
+            this.state.number.length != 6
+          ) {
+            isOk = false
+            auxFields.errorNumber = true
+          }
+          break
         case 'errorDuration':
-          if(validator.isEmpty(this.state.duration)){
-              isOk=false
-              auxFields.errorDuration= true
-            }
-        break
+          if (validator.isEmpty(this.state.duration)) {
+            isOk = false
+            auxFields.errorDuration = true
+          }
+          break
       }
     })
-    this.setState({fields: auxFields})
-     
-    if(isOk)
-    {
+    this.setState({ fields: auxFields })
+
+    if (isOk) {
       let entry = {
-        name : this.state.name,
-        surname : this.state.surname,
-        email : this.state.email,
-        phone : this.state.phone,
-        company : this.state.company,
-        signature : localStorage.getItem("savedDrawing"),
+        name: this.state.name,
+        surname: this.state.surname,
+        email: this.state.email,
+        phone: this.state.phone,
+        company: this.state.company,
+        signature: localStorage.getItem('savedDrawing'),
         series: this.state.series,
         number: this.state.number,
         duration: this.state.duration,
         observations: this.state.observations,
-        date: new Date()
+        date: new Date(),
       }
 
-      this.setState({ 
-        name : "" ,
-        surname : "",
-        email : "",
-        phone : "",
-        company : "",
-        series: "",
-        number: "",
-        duration: "",
-        observations: "",
-        show: false
-    })
-      axios.post("/tablet", {entry}).then(response => {
-        if(response.data.entry)
-          Notifications.success(RO.notifications.ENTRY_REGISTRATION)
-        else if(response.data.status.errors && response.data.code === StatusCodes.UNPROCESSABLE_ENTITY)
-          Notifications.error(RO.notifications.VALIDATION_ERROR)
+      this.setState({
+        name: '',
+        surname: '',
+        email: '',
+        phone: '',
+        company: '',
+        series: '',
+        number: '',
+        duration: '',
+        observations: '',
+        show: false,
       })
-      .catch(err => {
-        console.error(err)
-        Notifications.error(RO.notifications.SERVER_ERROR)
-      })
-    }
-    else {
+      axios
+        .post('/tablet', { entry })
+        .then((response) => {
+          if (response.data.entry)
+            Notifications.success(RO.notifications.ENTRY_REGISTRATION)
+          else if (
+            response.data.status.errors &&
+            response.data.code === StatusCodes.UNPROCESSABLE_ENTITY
+          )
+            Notifications.error(RO.notifications.VALIDATION_ERROR)
+        })
+        .catch((err) => {
+          console.error(err)
+          Notifications.error(RO.notifications.SERVER_ERROR)
+        })
+    } else {
       Notifications.error(RO.notifications.ADMIN_FAIL_REGISTRATION)
     }
   }
 
-  render(){
-    const {classes} = this.props
-    return(
-           <div className={classes.fullHeight}>
-             {this.props.user ?
-                <Navbar showTabletButton={true} showLogoutButton={true} path={this.props.location.pathname}/> :
-                <Header/>
-             }
-            
-          <div className={classes.tabletForm}>
-              
-              <TextField error={this.state.fields.errorName} margin="normal" required fullWidth id="name" label={RO.entries.name} name="name" autoComplete="name" autoFocus onChange={ this.onChange }  value={this.state.name}/>
-              <TextField error={this.state.fields.errorSurname} margin="normal" required fullWidth id="surname" label={RO.entries.surname} name="surname" autoComplete="surname"  onChange={ this.onChange }  value={this.state.surname}/>
-              
-              <div className={classes.flexContainer}>
-                <TextField className={classes.identityFields} error={this.state.fields.errorSeries} margin="normal" required fullWidth id="name" label={RO.entries.series} name="series" autoComplete="name" onChange={ this.onChange }  value={this.state.series}/>
-                <TextField error={this.state.fields.errorNumber} margin="normal" required fullWidth id="name" label={RO.entries.number} name="number" autoComplete="name" onChange={ this.onChange }  value={this.state.number}/>
-              </div>
-              
-              <FormControl fullWidth required margin="normal" error={this.state.fields.errorDuration}>
-                <InputLabel id="demo-simple-select-outlined-label">{RO.entries.duration}</InputLabel>
-                  <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.duration}
-                  onChange={this.onChange}
-                  name="duration"
-                  >
-              
-                  {CONSTANTS.DURATION_ARRAY.map((time, index) => {
-                      return (<MenuItem value={time}>{time}</MenuItem>)
-                      })
-                  }
+  render() {
+    const { classes } = this.props
+    return (
+      <div className={classes.fullHeight}>
+        {this.props.user ? (
+          <Navbar
+            showTabletButton={true}
+            showLogoutButton={true}
+            path={this.props.location.pathname}
+          />
+        ) : (
+          <Header />
+        )}
 
-                  </Select>
-              </FormControl>
-              
-              <FormControl fullWidth required margin="normal" error={this.state.fields.errorCompany}>
-                <InputLabel id="demo-simple-select-outlined-label">{RO.entries.company}</InputLabel>
-                  <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  value={this.state.company}
-                  onChange={this.onChange}
-                  name="company"
-                  >
-              
-                    {this.state.companies.length ? 
-                      this.state.companies.map((company, index) => {
-                        return (<MenuItem className={classes.menuItem} value={company.name}>{company.name}</MenuItem>)
-                      })
-                      : null
-                    }
+        <div className={classes.tabletForm}>
+          <TextField
+            error={this.state.fields.errorName}
+            margin="normal"
+            required
+            fullWidth
+            id="name"
+            label={RO.entries.name}
+            name="name"
+            autoComplete="name"
+            autoFocus
+            onChange={this.onChange}
+            value={this.state.name}
+          />
+          <TextField
+            error={this.state.fields.errorSurname}
+            margin="normal"
+            required
+            fullWidth
+            id="surname"
+            label={RO.entries.surname}
+            name="surname"
+            autoComplete="surname"
+            onChange={this.onChange}
+            value={this.state.surname}
+          />
 
-                  </Select>
-              </FormControl>
-              
-            <div className={this.state.show ? classes.gridContainer : null}>
-              <TextField className={classes.email} error={this.state.fields.errorEmail} margin="normal" fullWidth required id="email" label={RO.entries.email} name="email" autoComplete="email"  onChange={ this.onChange }  value={this.state.email}/>
-        
-              {this.state.show ?
-                    <CanvasDraw
-                    canvasHeight={CONSTANTS.CANVAS.HEIGHT}
-                    canvasWidth={CONSTANTS.CANVAS.WIDTH}
-                    disabled={true}
-                    hideGrid={true}
-                    ref={canvasDraw => (this.loadableCanvas = canvasDraw)}
-                    saveData={localStorage.getItem("savedDrawing")}
-                    loadTimeOffset={2}
-                    className={classes.sign}
-                  />
-                  : null
-                } 
-            
-              <TextField className={classes.phone} error={this.state.fields.errorPhone} fullWidth margin="normal" required id="phone" label={RO.entries.phone} name="phone" autoComplete="phone"  onChange={ this.onChange }  value={this.state.phone}/>
-            </div>
+          <div className={classes.flexContainer}>
+            <TextField
+              className={classes.identityFields}
+              error={this.state.fields.errorSeries}
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label={RO.entries.series}
+              name="series"
+              autoComplete="name"
+              onChange={this.onChange}
+              value={this.state.series}
+            />
+            <TextField
+              error={this.state.fields.errorNumber}
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label={RO.entries.number}
+              name="number"
+              autoComplete="name"
+              onChange={this.onChange}
+              value={this.state.number}
+            />
+          </div>
 
-            <TextField margin="normal" fullWidth id="name" label={RO.entries.observations} name="observations" autoComplete="name" onChange={ this.onChange }  value={this.state.observations}/>
-           
+          <FormControl
+            fullWidth
+            required
+            margin="normal"
+            error={this.state.fields.errorDuration}
+          >
+            <InputLabel id="demo-simple-select-outlined-label">
+              {RO.entries.duration}
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={this.state.duration}
+              onChange={this.onChange}
+              name="duration"
+            >
+              {CONSTANTS.DURATION_ARRAY.map((time, index) => {
+                return <MenuItem value={time}>{time}</MenuItem>
+              })}
+            </Select>
+          </FormControl>
 
+          <FormControl
+            fullWidth
+            required
+            margin="normal"
+            error={this.state.fields.errorCompany}
+          >
+            <InputLabel id="demo-simple-select-outlined-label">
+              {RO.entries.company}
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={this.state.company}
+              onChange={this.onChange}
+              name="company"
+            >
+              {this.state.companies.length
+                ? this.state.companies.map((company, index) => {
+                    return (
+                      <MenuItem
+                        className={classes.menuItem}
+                        value={company.name}
+                      >
+                        {company.name}
+                      </MenuItem>
+                    )
+                  })
+                : null}
+            </Select>
+          </FormControl>
+
+          <div className={this.state.show ? classes.gridContainer : null}>
+            <TextField
+              className={classes.email}
+              error={this.state.fields.errorEmail}
+              margin="normal"
+              fullWidth
+              required
+              id="email"
+              label={RO.entries.email}
+              name="email"
+              autoComplete="email"
+              onChange={this.onChange}
+              value={this.state.email}
+            />
+
+            {this.state.show ? (
+              <CanvasDraw
+                canvasHeight={CONSTANTS.CANVAS.HEIGHT}
+                canvasWidth={CONSTANTS.CANVAS.WIDTH}
+                disabled={true}
+                hideGrid={true}
+                ref={(canvasDraw) => (this.loadableCanvas = canvasDraw)}
+                saveData={localStorage.getItem('savedDrawing')}
+                loadTimeOffset={2}
+                className={classes.sign}
+              />
+            ) : null}
+
+            <TextField
+              className={classes.phone}
+              error={this.state.fields.errorPhone}
+              fullWidth
+              margin="normal"
+              required
+              id="phone"
+              label={RO.entries.phone}
+              name="phone"
+              autoComplete="phone"
+              onChange={this.onChange}
+              value={this.state.phone}
+            />
+          </div>
+
+          <TextField
+            margin="normal"
+            fullWidth
+            id="name"
+            label={RO.entries.observations}
+            name="observations"
+            autoComplete="name"
+            onChange={this.onChange}
+            value={this.state.observations}
+          />
         </div>
         <div className={classes.buttonsContainer}>
-            <div className={classes.buttons}>
-              <Modal showDrawing={ this.showDrawing } error={this.state.fields.errorSignature}/>  
-              <Button className={classes.nextButton} onClick={() => {this.handleEntries()}}  >
-                {RO.next}
-              </Button> 
-            </div>
+          <div className={classes.buttons}>
+            <Modal
+              showDrawing={this.showDrawing}
+              error={this.state.fields.errorSignature}
+            />
+            <Button
+              className={classes.nextButton}
+              onClick={() => {
+                this.handleEntries()
+              }}
+            >
+              {RO.next}
+            </Button>
+          </div>
         </div>
-
-        </div>
-      
-      )
+      </div>
+    )
   }
 }
 
-const mapStateToProps = state => {
-  return {user: state.user}
+const mapStateToProps = (state) => {
+  return { user: state.user }
 }
 
 export default connect(mapStateToProps)(withStyles(styles)(UserView))
