@@ -61,11 +61,13 @@ function EditDialog(props) {
     setData(props.data)
   }, [props.data])
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (event) => {
+    event.stopPropagation()
     setOpen(true)
   }
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    event.stopPropagation()
     setOpen(false)
     setData(props.data)
   }

@@ -66,11 +66,13 @@ const useStyles = makeStyles((theme) => ({
 function ConfirmDialog(props) {
   const [open, setOpen] = React.useState(false)
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (event) => {
+    event.stopPropagation()
     setOpen(true)
   }
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    event.stopPropagation()
     setOpen(false)
   }
 
@@ -185,25 +187,18 @@ function ConfirmDialog(props) {
               </DialogContentText>
             </DialogContent>
             <DialogActions className={classes.actionsContainer}>
-              <Button
-                color="default"
-                variant="contained"
-                onClick={handleClose}
-                autoFocus
-              >
-                {RO.no}
-              </Button>
-              <Button
-                onClick={() => {
-                  handleClose()
-                  props.onLogOutButton()
-                }}
-              >
-                {RO.yes}
-              </Button>
-            </DialogActions>
-          </div>
-        ) : null}
+                <Button color="default" variant="contained" onClick={handleClose} autoFocus>
+                  {RO.no}
+                </Button>
+                <Button onClick={(event) => {handleClose(event); props.onLogOutButton()}}>
+                  {RO.yes}
+                </Button>
+              </DialogActions>
+          </div> 
+          : null
+
+        }
+        
       </Dialog>
     </div>
   )

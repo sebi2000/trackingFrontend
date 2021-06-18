@@ -7,7 +7,6 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import axios from '../../utils/Axios'
 import Moment from 'react-moment'
-import CanvasDraw from 'react-canvas-draw'
 import 'react-datepicker/dist/react-datepicker.css'
 import Button from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
@@ -30,6 +29,7 @@ import {
 } from '@material-ui/pickers'
 import { connect } from 'react-redux'
 import { createLog } from '../../redux/actions/tracking'
+import InfoModal from './InfoModal'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -91,6 +91,9 @@ const styles = (theme) => ({
     width: '1.5rem',
     minWidth: '1rem',
   },
+  selectableRows: {
+    cursor: 'pointer',
+  },
 })
 
 const columns = [
@@ -122,6 +125,8 @@ class EntriesList extends React.Component {
     count: 0,
     csvData: [],
     showFilterIcon: false,
+    openModal: false,
+    currentRow: {},
   }
 
   componentDidMount() {
@@ -250,13 +255,16 @@ class EntriesList extends React.Component {
     })
   }
 
+  onCloseModal = () => {
+    this.setState({ currentRow: {}, openModal: false })
+  }
+
   render() {
     const { classes } = this.props
 
     return (
       <div>
         <Navbar path={this.props.location.pathname} />
-
         <div className={classes.root}>
           <div className={classes.dateSelector}>
             <Button className={classes.arrowButton}>
@@ -360,6 +368,14 @@ class EntriesList extends React.Component {
           <ConfirmDialog type="export" data={this.state.csvData} />
         </div>
 
+        {Object.keys(this.state.currentRow).length !== 0 ? (
+          <InfoModal
+            row={this.state.currentRow}
+            open={this.state.openModal}
+            onCloseModal={this.onCloseModal}
+          />
+        ) : null}
+
         <div className={classes.table}>
           <TableContainer>
             <Table entriesList>
@@ -379,7 +395,13 @@ class EntriesList extends React.Component {
               </TableHead>
               <TableBody>
                 {this.state.entries.map((entry, index) => (
-                  <TableRow>
+                  <TableRow
+                    hover={true}
+                    className={classes.selectableRows}
+                    onClick={() => {
+                      this.setState({ currentRow: entry, openModal: true })
+                    }}
+                  >
                     <TableCell size={'small'}>
                       {this.state.page * this.state.rowsPerPage + index + 1}
                     </TableCell>
@@ -392,21 +414,6 @@ class EntriesList extends React.Component {
                       </Moment>
                     </TableCell>
                     <TableCell size={'small'}>{entry.company}</TableCell>
-                    <TableCell size={'small'}>{entry.phone}</TableCell>
-                    <TableCell size={'small'}>{entry.series}</TableCell>
-                    <TableCell size={'small'}>{entry.number}</TableCell>
-                    <TableCell size={'small'}>{entry.duration}</TableCell>
-                    <TableCell size={'small'}>{entry.observations}</TableCell>
-                    <TableCell size={'small'} align="center">
-                      <CanvasDraw
-                        canvasHeight={50}
-                        canvasWidth={50}
-                        disabled={true}
-                        hideGrid={true}
-                        saveData={entry.signature}
-                        loadTimeOffset={1}
-                      />
-                    </TableCell>
                     <TableCell size={'small'}>
                       <div className={classes.actions}>
                         <EditDialog
