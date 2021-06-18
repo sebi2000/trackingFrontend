@@ -15,6 +15,8 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import CloseIcon from '@material-ui/icons/Close'
+import { connect } from 'react-redux'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -125,6 +127,7 @@ class Register extends React.Component {
         .then((response) => {
           if (response.data.user) {
             Notifications.success(RO.notifications.ADMIN_REGISTRATION)
+            this.props.getUsers()
             this.setState({
               name: '',
               surname: '',
@@ -133,7 +136,12 @@ class Register extends React.Component {
               password: '',
               role: '',
             })
-            this.handleClose()
+            this.props.createLog(
+              this.props.user.name,
+              this.props.user.surname,
+              RO.tracking.add,
+              RO.tracking.usersTable
+            )
           } else if (response.data.keyPattern.email)
             Notifications.error(RO.notifications.EMAIL_ALREADY_EXIST)
           else if (response.data.keyPattern.phone)
@@ -165,6 +173,7 @@ class Register extends React.Component {
 
   render() {
     const { classes } = this.props
+
     return (
       <div>
         <div className={classes.createButton}>
@@ -278,4 +287,18 @@ class Register extends React.Component {
   }
 }
 
-export default withStyles(styles)(Register)
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Register))

@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import Notifications from '../../utils/Notifications'
 import CloseIcon from '@material-ui/icons/Close'
 import validator from 'validator'
+import { connect } from 'react-redux'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -118,6 +120,12 @@ function AddCompanyDialog(props) {
             Notifications.success(RO.notifications.SUCCESS_ADD_COMPANY)
             props.getCompanies()
             handleClose()
+            props.createLog(
+              props.user.name,
+              props.user.surname,
+              RO.tracking.add,
+              RO.tracking.companiesTable
+            )
           } else if (response.data.keyPattern.name)
             Notifications.error(RO.notifications.COMPANY_ALREADY_EXISTS)
         })
@@ -192,4 +200,15 @@ function AddCompanyDialog(props) {
   )
 }
 
-export default AddCompanyDialog
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddCompanyDialog)

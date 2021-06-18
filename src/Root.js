@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import axios from './utils/Axios'
 import Companies from './components/companies/Companies'
 import Tracking from './components/tracking/Tracking'
+import Users from './components/users/Users'
 
 function Root(props) {
   const [isLogged, setIsLogged] = React.useState(false)
@@ -38,6 +39,7 @@ function Root(props) {
             <Route exact path="/companies" component={Companies} />
             <Route exact path="/reset/:TOKEN/:ID" component={ResetPass} />
             <Route exact path="/tracking" component={Tracking} />
+            <Route exact path="/users" component={Users} />
             <Redirect to="/tracking" />
           </Switch>
         ) : (

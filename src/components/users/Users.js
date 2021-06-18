@@ -12,6 +12,11 @@ import CONSTANTS from '../../utils/Constants'
 import Notifications from '../../utils/Notifications'
 import axios from '../../utils/Axios'
 import Moment from 'react-moment'
+import AddUserDialog from './AddUserDialog'
+import EditDialog from '../common/DialogEdit'
+import ConfirmDialog from '../common/ConfirmDialog'
+import { connect } from 'react-redux'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -33,8 +38,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function Tracking(props) {
-  const [tracking, setTracking] = React.useState([])
+function Users(props) {
+  const [users, setUsers] = React.useState([])
   const [page, setPage] = React.useState(0)
   const [rows, setRows] = React.useState(CONSTANTS.INITIAL_ROWS_PER_PAGE)
   const [count, setCount] = React.useState(0)
@@ -42,23 +47,25 @@ function Tracking(props) {
   const classes = useStyles()
 
   const columns = [
-    { label: RO.tracking.index, minWidth: 20 },
-    { label: RO.tracking.name, minWidth: 20 },
-    { label: RO.tracking.surname, minWidth: 20 },
-    { label: RO.tracking.action, minWidth: 20 },
-    { label: RO.tracking.date, minWidth: 20 },
-    { label: RO.tracking.table, minWidth: 20 },
+    { label: RO.entries.index, minWidth: 20 },
+    { label: RO.entries.name, minWidth: 20 },
+    { label: RO.entries.surname, minWidth: 20 },
+    { label: RO.entries.email, minWidth: 20 },
+    { label: RO.entries.date, minWidth: 20 },
+    { label: RO.entries.phone, minWidth: 20 },
+    { label: RO.entries.role, minWidth: 20 },
+    { label: RO.entries.actions, minWidth: 20 },
   ]
 
   useEffect(() => {
-    getTracking()
+    getUsers()
   }, [page, rows, count])
 
-  const getTracking = () => {
+  const getUsers = () => {
     axios
-      .get(`/tracking/?page=${page}&rows=${rows}`)
+      .get(`/users/?page=${page}&rows=${rows}`)
       .then((resp) => {
-        setTracking(resp.data[0])
+        setUsers(resp.data[0])
         setCount(resp.data[1])
       })
       .catch((err) => {
@@ -75,10 +82,29 @@ function Tracking(props) {
     setRows(parseInt(event.target.value, CONSTANTS.PARSE_INT_RADIX))
   }
 
+  const onDeleteButton = (id) => {
+    axios
+      .delete(`/users/${id}`)
+      .then((resp) => {
+        Notifications.success(RO.notifications.SUCCESS_EDIT)
+        getUsers()
+        props.createLog(
+          props.user.name,
+          props.user.surname,
+          RO.tracking.delete,
+          RO.tracking.usersTable
+        )
+      })
+      .catch((err) => {
+        Notifications.error(RO.notifications.SERVER_ERROR)
+        console.error(err)
+      })
+  }
 
   return (
     <div>
       <Navbar path={props.location.pathname} />
+      <AddUserDialog getUsers={getUsers} />
       <div className={classes.table}>
         <TableContainer>
           <Table>
@@ -96,19 +122,33 @@ function Tracking(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tracking
-                ? tracking.map((tracking, index) => (
+              {users
+                ? users.map((user, index) => (
                     <TableRow>
                       <TableCell>{page * rows + index + 1}</TableCell>
-                      <TableCell>{tracking.name}</TableCell>
-                      <TableCell>{tracking.surname}</TableCell>
-                      <TableCell>{tracking.action}</TableCell>
+                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{user.surname}</TableCell>
+                      <TableCell>{user.email}</TableCell>
                       <TableCell>
                         <Moment format={CONSTANTS.DATE_FORMAT}>
-                          {tracking.date}
+                          {user.date}
                         </Moment>
                       </TableCell>
-                      <TableCell>{tracking.table}</TableCell>
+                      <TableCell>{user.phone}</TableCell>
+                      <TableCell>{user.role}</TableCell>
+                      <TableCell>
+                        <div className={classes.actions}>
+                          <EditDialog
+                            type={'user'}
+                            data={user}
+                            getUsers={() => getUsers()}
+                          />
+                          <ConfirmDialog
+                            type={'delete'}
+                            onDeleteButton={() => onDeleteButton(user._id)}
+                          />
+                        </div>
+                      </TableCell>
                     </TableRow>
                   ))
                 : null}
@@ -129,4 +169,15 @@ function Tracking(props) {
   )
 }
 
-export default Tracking
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users)

@@ -28,6 +28,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers'
+import { connect } from 'react-redux'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -192,6 +194,7 @@ class EntriesList extends React.Component {
       .then((resp) => {
         Notifications.success(RO.notifications.SUCCESS_EDIT)
         this.getEntries()
+        this.props.createLog(this.props.user.name, this.props.user.surname, RO.tracking.delete, RO.tracking.entriesTable)
       })
       .catch((err) => {
         Notifications.error(RO.notifications.SERVER_ERROR)
@@ -437,4 +440,16 @@ class EntriesList extends React.Component {
   }
 }
 
-export default withStyles(styles)(EntriesList)
+const mapStateToProps = (state) => {
+  return { user: state.user }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EntriesList))

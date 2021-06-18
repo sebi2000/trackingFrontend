@@ -34,6 +34,25 @@
   "add": "Adaugă",
   "trackingNav": "Tracking",
   "addUser": "Adaugă un utilizator",
+  "usersNav": "Utilizatori",
+  "tracking": {
+    "index": "Index",
+    "name": "Prenume",
+    "surname": "Nume",
+    "action": "Acțiune",
+    "date": "Dată",
+    "table": "Tabel",
+    "actions": "Acțiuni",
+    "edit": "Editare",
+    "delete": "Ștergere",
+    "add": "Adăugare",
+    "export": "Exportare",
+    "entriesTable": "Tabel intrări",
+    "companiesTable": "Tabel companii",
+    "usersTable": "Tabel utilizatori",
+    "login": "Logare",
+    "logout": "Delogare"
+  },
   "companies": {
     "index": "#",
     "name": "Nume",
@@ -85,6 +104,7 @@
     "PHONE_ALREADY_EXIST": "Numărul de telefon există deja",
     "SUCCESS_ADD_COMPANY": "Ai adăugat compania cu succes",
     "COMPANY_ALREADY_EXISTS": "Compania deja există",
-    "SIGNATURE_ERROR": "Semnătura nu poate fi lăsată goală"
+    "SIGNATURE_ERROR": "Semnătura nu poate fi lăsată goală",
+    "LOG_ERROR_CREATION": "Log-ul nu a putut fi creat"
   }
 }

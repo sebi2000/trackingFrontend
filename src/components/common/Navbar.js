@@ -8,10 +8,12 @@ import ListAltIcon from '@material-ui/icons/ListAlt'
 import { useHistory } from 'react-router'
 import Header from '../common/Header'
 import { connect } from 'react-redux'
-import { logout } from '../../redux/actions/index'
+import { logout } from '../../redux/actions/auth'
 import ConfirmationDialog from '../common/ConfirmDialog'
 import BusinessIcon from '@material-ui/icons/Business'
 import TrendingUpIcon from '@material-ui/icons/TrendingUp'
+import PeopleIcon from '@material-ui/icons/People'
+import { createLog } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -135,11 +137,31 @@ function Navbar(props) {
                 <BusinessIcon className={classes.companyIcon} />
                 {RO.companiesNav}
               </Button>
+              <Button
+                className={
+                  props.path === '/users'
+                    ? classes.selectedButton
+                    : classes.button
+                }
+                onClick={() => history.push('/users')}
+                color="inherit"
+              >
+                <PeopleIcon className={classes.companyIcon} />
+                {RO.usersNav}
+              </Button>
             </div>
           ) : null}
           <ConfirmationDialog
             type="logout"
-            onLogOutButton={() => props.logout()}
+            onLogOutButton={() => {
+              props.logout()
+              props.createLog(
+                props.user.name,
+                props.user.surname,
+                RO.tracking.logout,
+                RO.tracking.usersTable
+              )
+            }}
           />
         </Toolbar>
       </AppBar>
@@ -150,6 +172,8 @@ function Navbar(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => dispatch(logout()),
+    createLog: (name, surname, action, table) =>
+      dispatch(createLog(name, surname, action, table)),
   }
 }
 const mapStateToProps = (state) => {
