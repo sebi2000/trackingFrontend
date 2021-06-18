@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sign: {
     gridArea: 'sign',
-    marginTop: '1em',
+    marginTop: '2em',
   },
 }))
 
@@ -136,7 +136,7 @@ export default function FormDialog(props) {
           <CanvasDraw
             className={classes.sign}
             canvasHeight={100}
-            canvasWidth={100}
+            canvasWidth={70}
             disabled={true}
             hideGrid={true}
             saveData={props.row.signature}
