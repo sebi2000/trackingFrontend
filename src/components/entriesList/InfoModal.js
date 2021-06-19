@@ -46,8 +46,8 @@ export default function FormDialog(props) {
   const classes = useStyles()
 
   useEffect(() => {
-    setOpen(props.open)
-  }, [props.row, props.open])
+    setOpen(true)
+  }, [props.row])
 
   const handleClose = () => {
     setOpen(false)
@@ -55,7 +55,7 @@ export default function FormDialog(props) {
   }
 
   return (
-    <Dialog open={open} aria-labelledby="form-dialog-title">
+    <Dialog open={open} aria-labelledby="form-dialog-title" >
       <DialogTitle id="form-dialog-title">{RO.details}</DialogTitle>
       <DialogContent>
         <TextField
