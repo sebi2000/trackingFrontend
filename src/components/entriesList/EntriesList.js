@@ -11,7 +11,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import Button from '@material-ui/core/Button'
 import CONSTANTS from '../../utils/Constants'
 import TablePagination from '@material-ui/core/TablePagination'
-import EditDialog from '../common/DialogEdit'
+import EditDialog from '../common/EditDialog'
 import { withStyles } from '@material-ui/core/styles'
 import Navbar from '../common/Navbar'
 import Notifications from '../../utils/Notifications'
@@ -100,15 +100,9 @@ const columns = [
   { label: RO.entries.index, minWidth: 20 },
   { label: RO.entries.name, minWidth: 20 },
   { label: RO.entries.surname, minWidth: 20 },
-  { label: RO.entries.series, minWidth: 10 },
-  { label: RO.entries.number, minWidth: 10 },
   { label: RO.entries.email, minWidth: 20 },
   { label: RO.entries.date, minWidth: 20 },
   { label: RO.entries.company, minWidth: 20 },
-  { label: RO.entries.phone, minWidth: 20 },
-  { label: RO.entries.duration, minWidth: 20 },
-  { label: RO.entries.observations, minWidth: 20 },
-  { label: RO.entries.signature, minWidth: 20 },
   { label: RO.entries.actions, minWidth: 10 },
 ]
 
@@ -125,7 +119,6 @@ class EntriesList extends React.Component {
     count: 0,
     csvData: [],
     showFilterIcon: false,
-    openModal: false,
     currentRow: {},
   }
 
@@ -199,7 +192,12 @@ class EntriesList extends React.Component {
       .then((resp) => {
         Notifications.success(RO.notifications.SUCCESS_EDIT)
         this.getEntries()
-        this.props.createLog(this.props.user.name, this.props.user.surname, RO.tracking.delete, RO.tracking.entriesTable)
+        this.props.createLog(
+          this.props.user.name,
+          this.props.user.surname,
+          RO.tracking.delete,
+          RO.tracking.entriesTable
+        )
       })
       .catch((err) => {
         Notifications.error(RO.notifications.SERVER_ERROR)
@@ -256,7 +254,7 @@ class EntriesList extends React.Component {
   }
 
   onCloseModal = () => {
-    this.setState({ currentRow: {}, openModal: false })
+    this.setState({ currentRow: {} })
   }
 
   render() {
@@ -371,7 +369,6 @@ class EntriesList extends React.Component {
         {Object.keys(this.state.currentRow).length !== 0 ? (
           <InfoModal
             row={this.state.currentRow}
-            open={this.state.openModal}
             onCloseModal={this.onCloseModal}
           />
         ) : null}
@@ -398,8 +395,9 @@ class EntriesList extends React.Component {
                   <TableRow
                     hover={true}
                     className={classes.selectableRows}
-                    onClick={() => {
-                      this.setState({ currentRow: entry, openModal: true })
+                    onClick={(event) => {
+                      if (event.target.tagName.toLowerCase() === 'td')
+                        this.setState({ currentRow: entry })
                     }}
                   >
                     <TableCell size={'small'}>
@@ -458,5 +456,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EntriesList))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(EntriesList))

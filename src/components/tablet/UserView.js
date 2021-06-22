@@ -2,7 +2,7 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Header from '../common/Header'
-import Modal from '../common/Modal'
+import Modal from './SignatureModal'
 import CanvasDraw from 'react-canvas-draw'
 import axios from '../../utils/Axios'
 import validator from 'validator'
@@ -197,7 +197,7 @@ class UserView extends React.Component {
         case 'errorNumber':
           if (
             !validator.isNumeric(this.state.number) ||
-            this.state.number.length != 6
+            this.state.number.length !== 6
           ) {
             isOk = false
             auxFields.errorNumber = true

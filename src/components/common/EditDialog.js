@@ -61,13 +61,11 @@ function EditDialog(props) {
     setData(props.data)
   }, [props.data])
 
-  const handleClickOpen = (event) => {
-    event.stopPropagation()
+  const handleClickOpen = () => {
     setOpen(true)
   }
 
   const handleClose = (event) => {
-    event.stopPropagation()
     setOpen(false)
     setData(props.data)
   }
@@ -171,7 +169,10 @@ function EditDialog(props) {
       <Button className={classes.editButton} onClick={handleClickOpen}>
         <EditIcon />
       </Button>
-      <Dialog open={open} aria-labelledby="form-dialog-title">
+      <Dialog
+        open={open}
+        aria-labelledby="form-dialog-title"
+      >
         <div className={classes.buttonContainer}>
           <DialogTitle id="form-dialog-title">{RO.edit}</DialogTitle>
           <Button onClick={handleClose} className={classes.closeIcon}>
