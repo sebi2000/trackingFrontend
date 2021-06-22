@@ -17,6 +17,7 @@ import EditDialog from '../common/EditDialog'
 import ConfirmDialog from '../common/ConfirmDialog'
 import { connect } from 'react-redux'
 import { createLog } from '../../redux/actions/tracking'
+import { getUsers, deleteUser } from '../../redux/actions/users'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -62,16 +63,10 @@ function Users(props) {
   }, [page, rows, count])
 
   const getUsers = () => {
-    axios
-      .get(`/users/?page=${page}&rows=${rows}`)
-      .then((resp) => {
-        setUsers(resp.data[0])
-        setCount(resp.data[1])
-      })
-      .catch((err) => {
-        Notifications.error(RO.notifications.SERVER_ERROR)
-        console.error(err)
-      })
+    props.getUsers(page, rows).then((resp) => {
+      setUsers(resp[0])
+      setCount(resp[1])
+    })
   }
 
   const handleChangePage = (event, newPage) => {
@@ -83,22 +78,16 @@ function Users(props) {
   }
 
   const onDeleteButton = (id) => {
-    axios
-      .delete(`/users/${id}`)
-      .then((resp) => {
-        Notifications.success(RO.notifications.SUCCESS_EDIT)
-        getUsers()
-        props.createLog(
-          props.user.name,
-          props.user.surname,
-          RO.tracking.delete,
-          RO.tracking.usersTable
-        )
-      })
-      .catch((err) => {
-        Notifications.error(RO.notifications.SERVER_ERROR)
-        console.error(err)
-      })
+    props.deleteUser(id).then((resp) => {
+      Notifications.success(RO.notifications.SUCCESS_EDIT)
+      getUsers()
+      props.createLog(
+        props.user.name,
+        props.user.surname,
+        RO.tracking.delete,
+        RO.tracking.usersTable
+      )
+    })
   }
 
   return (
@@ -177,6 +166,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createLog: (name, surname, action, table) =>
       dispatch(createLog(name, surname, action, table)),
+    getUsers: (page, rows) => dispatch(getUsers(page, rows)),
+    deleteUser: (id) => dispatch(deleteUser(id)),
   }
 }
 

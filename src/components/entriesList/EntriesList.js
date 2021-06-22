@@ -5,7 +5,6 @@ import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import axios from '../../utils/Axios'
 import Moment from 'react-moment'
 import 'react-datepicker/dist/react-datepicker.css'
 import Button from '@material-ui/core/Button'
@@ -30,6 +29,8 @@ import {
 import { connect } from 'react-redux'
 import { createLog } from '../../redux/actions/tracking'
 import InfoModal from './InfoModal'
+import { deleteEntry } from '../../redux/actions/entries'
+import { getEntries } from '../../redux/actions/entries'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -128,20 +129,16 @@ class EntriesList extends React.Component {
   }
 
   getEntries = () => {
-    axios
-      .get(
-        '/entries/?page=' +
-          this.state.page +
-          '&rows=' +
-          this.state.rowsPerPage +
-          '&start=' +
-          this.state.startDate +
-          '&end=' +
-          this.state.endDate
+    this.props
+      .getEntries(
+        this.state.page,
+        this.state.rowsPerPage,
+        this.state.startDate,
+        this.state.endDate
       )
       .then((response) => {
         let aux = []
-        response.data[0].map((entry, index) => {
+        response[0].map((entry, index) => {
           aux[index] = {
             [RO.entries.surname]: entry.surname,
             [RO.entries.name]: entry.name,
@@ -153,14 +150,10 @@ class EntriesList extends React.Component {
         })
 
         this.setState({
-          entries: response.data[0],
-          count: response.data[1],
+          entries: response[0],
+          count: response[1],
           csvData: aux,
         })
-      })
-      .catch((err) => {
-        Notifications.error(RO.notifications.SERVER_ERROR)
-        console.error(err)
       })
   }
 
@@ -187,22 +180,16 @@ class EntriesList extends React.Component {
   }
 
   onDeleteButton = (id) => {
-    axios
-      .delete(`/entries/${id}`)
-      .then((resp) => {
-        Notifications.success(RO.notifications.SUCCESS_EDIT)
-        this.getEntries()
-        this.props.createLog(
-          this.props.user.name,
-          this.props.user.surname,
-          RO.tracking.delete,
-          RO.tracking.entriesTable
-        )
-      })
-      .catch((err) => {
-        Notifications.error(RO.notifications.SERVER_ERROR)
-        console.error(err)
-      })
+    this.props.deleteEntry(id).then((resp) => {
+      Notifications.success(RO.notifications.SUCCESS_EDIT)
+      this.getEntries()
+      this.props.createLog(
+        this.props.user.name,
+        this.props.user.surname,
+        RO.tracking.delete,
+        RO.tracking.entriesTable
+      )
+    })
   }
 
   onCloseFilter = (event) => {
@@ -453,6 +440,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createLog: (name, surname, action, table) =>
       dispatch(createLog(name, surname, action, table)),
+    deleteEntry: (id) => dispatch(deleteEntry(id)),
+    getEntries: (page, rows, startDate, endDate) =>
+      dispatch(getEntries(page, rows, startDate, endDate)),
   }
 }
 

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import Navbar from '../common/Navbar'
-import axios from '../../utils/Axios'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -14,8 +13,9 @@ import EditDialog from '../common/EditDialog'
 import ConfirmDialog from '../common/ConfirmDialog'
 import Notifications from '../../utils/Notifications'
 import AddCompanyDialog from './AddCompanyDialog'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { createLog } from '../../redux/actions/tracking'
+import { getCompanies, deleteCompany } from '../../redux/actions/companies'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -59,16 +59,10 @@ function Companies(props) {
   }, [page, rows, count])
 
   const getCompanies = () => {
-    axios
-      .get(`/companies/?page=${page}&rows=${rows}`)
-      .then((resp) => {
-        setCompanies(resp.data[0])
-        setCount(resp.data[1])
-      })
-      .catch((err) => {
-        Notifications.error(RO.notifications.SERVER_ERROR)
-        console.error(err)
-      })
+    props.getCompanies(page, rows).then((resp) => {
+      setCompanies(resp[0])
+      setCount(resp[1])
+    })
   }
 
   const handleChangePage = (event, newPage) => {
@@ -80,17 +74,16 @@ function Companies(props) {
   }
 
   const onDeleteButton = (id) => {
-    axios
-      .delete(`/companies/${id}`)
-      .then((resp) => {
-        Notifications.success(RO.notifications.SUCCESS_EDIT)
-        getCompanies()
-        props.createLog(props.user.name, props.user.surname, RO.tracking.delete, RO.tracking.companiesTable)
-      })
-      .catch((err) => {
-        Notifications.error(RO.notifications.SERVER_ERROR)
-        console.error(err)
-      })
+    props.deleteCompany(id).then((resp) => {
+      Notifications.success(RO.notifications.SUCCESS_EDIT)
+      getCompanies()
+      props.createLog(
+        props.user.name,
+        props.user.surname,
+        RO.tracking.delete,
+        RO.tracking.companiesTable
+      )
+    })
   }
 
   return (
@@ -151,14 +144,16 @@ function Companies(props) {
   )
 }
 
-const mapStateToProps = state => {
-  return {user: state.user}
+const mapStateToProps = (state) => {
+  return { user: state.user }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     createLog: (name, surname, action, table) =>
       dispatch(createLog(name, surname, action, table)),
+    getCompanies: (page, rows) => dispatch(getCompanies(page, rows)),
+    deleteCompany: (id) => dispatch(deleteCompany(id)),
   }
 }
 

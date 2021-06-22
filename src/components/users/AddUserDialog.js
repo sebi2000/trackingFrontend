@@ -17,6 +17,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import CloseIcon from '@material-ui/icons/Close'
 import { connect } from 'react-redux'
 import { createLog } from '../../redux/actions/tracking'
+import { createUser } from '../../redux/actions/users'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -122,10 +123,9 @@ class Register extends React.Component {
         role: this.state.role,
         password: this.state.password,
       }
-      axios
-        .post('/users', { user })
+      this.props.createUser(user)
         .then((response) => {
-          if (response.data.user) {
+          if (response.user) {
             Notifications.success(RO.notifications.ADMIN_REGISTRATION)
             this.props.getUsers()
             this.setState({
@@ -142,19 +142,11 @@ class Register extends React.Component {
               RO.tracking.add,
               RO.tracking.usersTable
             )
-          } else if (response.data.keyPattern.email)
+            this.handleClose()
+          } else if (response.keyPattern.email)
             Notifications.error(RO.notifications.EMAIL_ALREADY_EXIST)
-          else if (response.data.keyPattern.phone)
+          else if (response.keyPattern.phone)
             Notifications.error(RO.notifications.PHONE_ALREADY_EXIST)
-          else if (
-            response.data.status.errors &&
-            response.data.code === StatusCodes.UNPROCESSABLE_ENTITY
-          )
-            Notifications.error(RO.notifications.VALIDATION_ERROR)
-        })
-        .catch((err) => {
-          console.error(err)
-          Notifications.error(RO.notifications.SERVER_ERROR)
         })
     } else Notifications.error(RO.notifications.ADMIN_FAIL_REGISTRATION)
   }
@@ -295,6 +287,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createLog: (name, surname, action, table) =>
       dispatch(createLog(name, surname, action, table)),
+    createUser: (user) => dispatch(createUser(user))
   }
 }
 

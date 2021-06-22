@@ -7,11 +7,12 @@ import DialogContent from '@material-ui/core/DialogContent'
 import Link from '@material-ui/core/Link'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import axios from '../../utils/Axios'
 import { StatusCodes } from 'http-status-codes'
 import { makeStyles } from '@material-ui/core/styles'
 import Notifications from '../../utils/Notifications'
 import CloseIcon from '@material-ui/icons/Close'
+import { connect } from 'react-redux'
+import { sendEmail } from '../../redux/actions/reset'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -65,24 +66,19 @@ function ResetDialog(props) {
   }
 
   const handleEmail = () => {
-    axios
-      .post('/reset', { email })
-      .then((resp) => {
-        const { status, code } = resp.data
-        if (
-          status === RO.notifications.USER_NOT_FOUND &&
-          code === StatusCodes.FORBIDDEN
-        )
-          Notifications.error(RO.notifications.USER_NOT_FOUND)
-        else if (
-          status === RO.notifications.AUTH_SUCCESS &&
-          code === StatusCodes.OK
-        )
-          Notifications.success(RO.notifications.EMAIL_SENT)
-      })
-      .catch((err) => {
-        Notifications.error(RO.notifications.SERVER_ERROR)
-      })
+    props.sendEmail(email).then((resp) => {
+      const { status, code } = resp
+      if (
+        status === RO.notifications.USER_NOT_FOUND &&
+        code === StatusCodes.FORBIDDEN
+      )
+        Notifications.error(RO.notifications.USER_NOT_FOUND)
+      else if (
+        status === RO.notifications.AUTH_SUCCESS &&
+        code === StatusCodes.OK
+      )
+        Notifications.success(RO.notifications.EMAIL_SENT)
+    })
   }
 
   return (
@@ -134,4 +130,10 @@ function ResetDialog(props) {
   )
 }
 
-export default ResetDialog
+const mapDispatchToProps = (dispatch) => {
+  return {
+    sendEmail: (email) => dispatch(sendEmail(email)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(ResetDialog)

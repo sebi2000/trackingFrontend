@@ -9,9 +9,9 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TablePagination from '@material-ui/core/TablePagination'
 import CONSTANTS from '../../utils/Constants'
-import Notifications from '../../utils/Notifications'
-import axios from '../../utils/Axios'
 import Moment from 'react-moment'
+import { connect } from 'react-redux'
+import { getLogs } from '../../redux/actions/tracking'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -51,21 +51,11 @@ function Tracking(props) {
   ]
 
   useEffect(() => {
-    getTracking()
+    props.getLogs(page, rows).then(resp => {
+      setTracking(resp[0])
+      setCount(resp[1])
+    })
   }, [page, rows, count])
-
-  const getTracking = () => {
-    axios
-      .get(`/tracking/?page=${page}&rows=${rows}`)
-      .then((resp) => {
-        setTracking(resp.data[0])
-        setCount(resp.data[1])
-      })
-      .catch((err) => {
-        Notifications.error(RO.notifications.SERVER_ERROR)
-        console.error(err)
-      })
-  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -74,7 +64,6 @@ function Tracking(props) {
   const handleChangeRowsPerPage = (event) => {
     setRows(parseInt(event.target.value, CONSTANTS.PARSE_INT_RADIX))
   }
-
 
   return (
     <div>
@@ -129,4 +118,10 @@ function Tracking(props) {
   )
 }
 
-export default Tracking
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getLogs: (page, rows) => dispatch(getLogs(page, rows)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Tracking)

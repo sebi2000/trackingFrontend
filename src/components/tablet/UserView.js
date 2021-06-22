@@ -16,6 +16,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import CONSTANTS from '../../utils/Constants'
+import { createUser } from '../../redux/actions/tablet'
+import { getCompanies } from '../../redux/actions/companies'
 const RO = require('../../utils/language/RO.json')
 
 const styles = (theme) => ({
@@ -109,15 +111,9 @@ class UserView extends React.Component {
   }
 
   componentDidMount() {
-    axios
-      .get('/companies')
-      .then((resp) => {
-        this.setState({ companies: resp.data[0] })
-      })
-      .catch((err) => {
-        console.error(err)
-        Notifications.error(RO.notifications.SERVER_ERROR)
-      })
+    this.props.getCompanies().then((resp) => {
+      this.setState({ companies: resp[0] })
+    })
   }
 
   showDrawing = () => {
@@ -240,21 +236,9 @@ class UserView extends React.Component {
         observations: '',
         show: false,
       })
-      axios
-        .post('/tablet', { entry })
-        .then((response) => {
-          if (response.data.entry)
-            Notifications.success(RO.notifications.ENTRY_REGISTRATION)
-          else if (
-            response.data.status.errors &&
-            response.data.code === StatusCodes.UNPROCESSABLE_ENTITY
-          )
-            Notifications.error(RO.notifications.VALIDATION_ERROR)
-        })
-        .catch((err) => {
-          console.error(err)
-          Notifications.error(RO.notifications.SERVER_ERROR)
-        })
+      this.props.createUser(entry).then((response) => {
+        Notifications.success(RO.notifications.ENTRY_REGISTRATION)
+      })
     } else {
       Notifications.error(RO.notifications.ADMIN_FAIL_REGISTRATION)
     }
@@ -461,4 +445,14 @@ const mapStateToProps = (state) => {
   return { user: state.user }
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(UserView))
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getCompanies: () => dispatch(getCompanies()),
+    createUser: (entry) => dispatch(createUser(entry)),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(UserView))

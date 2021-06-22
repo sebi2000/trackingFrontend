@@ -21,3 +21,12 @@ export const createLog = (name, surname, action, table) => (dispatch) => {
       Notifications.error(RO.notifications.SERVER_ERROR)
     })
 }
+
+export const getLogs = (page, rows) => (dispatch) =>
+  axios
+    .get(`/tracking/?page=${page}&rows=${rows}`)
+    .then((resp) => ({ ...resp.data }))
+    .catch((err) => {
+      Notifications.error(RO.notifications.SERVER_ERROR)
+      console.error(err)
+    })

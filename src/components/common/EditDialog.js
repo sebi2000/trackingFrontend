@@ -5,7 +5,6 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import axios from '../../utils/Axios'
 import Notifications from '../../utils/Notifications'
 import validator from 'validator'
 import EditIcon from '@material-ui/icons/Edit'
@@ -17,6 +16,9 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { createLog } from '../../redux/actions/tracking'
+import { editCompany } from '../../redux/actions/companies'
+import { editEntry } from '../../redux/actions/entries'
+import { editUser } from '../../redux/actions/users'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -88,23 +90,17 @@ function EditDialog(props) {
       )
         return Notifications.error(RO.notifications.DATA_ERROR)
       else if (JSON.stringify(props.data) !== JSON.stringify(data)) {
-        axios
-          .put(`/entries/${props.data._id}`, data)
-          .then((resp) => {
-            props.getEntries()
-            props.createLog(
-              props.user.name,
-              props.user.surname,
-              RO.tracking.edit,
-              RO.tracking.entriesTable
-            )
-          })
-          .catch((err) => {
-            console.error(err)
-            Notifications.error(RO.notifications.SERVER_ERROR)
-          })
-        Notifications.success(RO.notifications.SUCCESS_EDIT)
-        handleClose()
+        props.editEntry(props.data._id, data).then((resp) => {
+          props.getEntries()
+          props.createLog(
+            props.user.name,
+            props.user.surname,
+            RO.tracking.edit,
+            RO.tracking.entriesTable
+          )
+          Notifications.success(RO.notifications.SUCCESS_EDIT)
+          handleClose()
+        })
       } else handleClose()
     } else if (props.type === 'company') {
       if (
@@ -115,23 +111,17 @@ function EditDialog(props) {
       )
         return Notifications.error(RO.notifications.DATA_ERROR)
       else if (JSON.stringify(props.data) !== JSON.stringify(data)) {
-        axios
-          .put(`/companies/${props.data._id}`, data)
-          .then((resp) => {
-            props.getCompanies()
-            props.createLog(
-              props.user.name,
-              props.user.surname,
-              RO.tracking.edit,
-              RO.tracking.companiesTable
-            )
-          })
-          .catch((err) => {
-            console.error(err)
-            Notifications.error(RO.notifications.SERVER_ERROR)
-          })
-        Notifications.success(RO.notifications.SUCCESS_EDIT)
-        handleClose()
+        props.editCompany(props.data._id, data).then((resp) => {
+          props.getCompanies()
+          props.createLog(
+            props.user.name,
+            props.user.surname,
+            RO.tracking.edit,
+            RO.tracking.companiesTable
+          )
+          Notifications.success(RO.notifications.SUCCESS_EDIT)
+          handleClose()
+        })
       } else handleClose()
     } else if (props.type === 'user') {
       if (
@@ -143,23 +133,17 @@ function EditDialog(props) {
       )
         return Notifications.error(RO.notifications.DATA_ERROR)
       else if (JSON.stringify(props.data) !== JSON.stringify(data)) {
-        axios
-          .put(`/users/${props.data._id}`, data)
-          .then((resp) => {
-            props.getUsers()
-            props.createLog(
-              props.user.name,
-              props.user.surname,
-              RO.tracking.edit,
-              RO.tracking.usersTable
-            )
-          })
-          .catch((err) => {
-            console.error(err)
-            Notifications.error(RO.notifications.SERVER_ERROR)
-          })
-        Notifications.success(RO.notifications.SUCCESS_EDIT)
-        handleClose()
+        props.editUser(props.data._id, data).then((resp) => {
+          props.getUsers()
+          props.createLog(
+            props.user.name,
+            props.user.surname,
+            RO.tracking.edit,
+            RO.tracking.usersTable
+          )
+          Notifications.success(RO.notifications.SUCCESS_EDIT)
+          handleClose()
+        })
       } else handleClose()
     }
   }
@@ -169,10 +153,7 @@ function EditDialog(props) {
       <Button className={classes.editButton} onClick={handleClickOpen}>
         <EditIcon />
       </Button>
-      <Dialog
-        open={open}
-        aria-labelledby="form-dialog-title"
-      >
+      <Dialog open={open} aria-labelledby="form-dialog-title">
         <div className={classes.buttonContainer}>
           <DialogTitle id="form-dialog-title">{RO.edit}</DialogTitle>
           <Button onClick={handleClose} className={classes.closeIcon}>
@@ -346,6 +327,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createLog: (name, surname, action, table) =>
       dispatch(createLog(name, surname, action, table)),
+    editCompany: (id, company) => dispatch(editCompany(id, company)),
+    editEntry: (id, entry) => dispatch(editEntry(id, entry)),
+    editUser: (id, user) => dispatch(editUser(id, user)),
   }
 }
 
