@@ -6,14 +6,15 @@ import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Button from '@material-ui/core/Button'
-import axios from '../../utils/Axios'
 import { StatusCodes } from 'http-status-codes'
 import { useHistory } from 'react-router'
 import Notifications from '../../utils/Notifications'
 import validator from 'validator'
+import { connect } from 'react-redux'
+import { checkToken, updatePassword } from '../../redux/actions/reset'
 const RO = require('../../utils/language/RO.json')
 
-function ResetPass() {
+function ResetPass(props) {
   let { TOKEN, ID } = useParams()
   const [expired, setExpired] = useState(false)
   const [firstPass, setFirstPass] = useState('')
@@ -25,8 +26,8 @@ function ResetPass() {
   }, [TOKEN])
 
   const checkToken = () => {
-    axios.get(`reset/${TOKEN}`).then((resp) => {
-      if (resp.data !== StatusCodes.OK) {
+    props.checkToken(TOKEN).then((resp) => {
+      if (resp !== StatusCodes.OK) {
         setExpired(true)
       }
     })
@@ -43,16 +44,11 @@ function ResetPass() {
     else if (firstPass !== secondPass)
       Notifications.error(RO.notifications.IDENTICAL_PASS)
     else {
-      Notifications.success(RO.notifications.SUCCESS_PASS)
       let password = firstPass
-      axios
-        .put(`/users/${ID}`, { password })
-        .then((resp) => {
-          history.push('/')
-        })
-        .catch((err) => {
-          Notifications.error(RO.notifications.SERVER_ERROR)
-        })
+      props.updatePassword(ID, password).then((resp) => {
+        history.push('/')
+        Notifications.success(RO.notifications.SUCCESS_PASS)
+      })
     }
   }
 
@@ -111,4 +107,11 @@ function ResetPass() {
   )
 }
 
-export default ResetPass
+const mapDispatchToProps = (dispatch) => {
+  return {
+    checkToken: (TOKEN) => dispatch(checkToken(TOKEN)),
+    updatePassword: (ID, password) => dispatch(updatePassword(ID, password)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(ResetPass)

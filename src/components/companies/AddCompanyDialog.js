@@ -5,13 +5,13 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import axios from '../../utils/Axios'
 import { makeStyles } from '@material-ui/core/styles'
 import Notifications from '../../utils/Notifications'
 import CloseIcon from '@material-ui/icons/Close'
 import validator from 'validator'
 import { connect } from 'react-redux'
 import { createLog } from '../../redux/actions/tracking'
+import { createCompany } from '../../redux/actions/companies'
 const RO = require('../../utils/language/RO.json')
 
 const useStyles = makeStyles((theme) => ({
@@ -113,26 +113,20 @@ function AddCompanyDialog(props) {
         phone: company.phone.value,
         email: company.email.value,
       }
-      axios
-        .post('/companies', { newCompany })
-        .then((response) => {
-          if (response.data.company) {
-            Notifications.success(RO.notifications.SUCCESS_ADD_COMPANY)
-            props.getCompanies()
-            handleClose()
-            props.createLog(
-              props.user.name,
-              props.user.surname,
-              RO.tracking.add,
-              RO.tracking.companiesTable
-            )
-          } else if (response.data.keyPattern.name)
-            Notifications.error(RO.notifications.COMPANY_ALREADY_EXISTS)
-        })
-        .catch((err) => {
-          Notifications.error(RO.notifications.SERVER_ERROR)
-          console.error(err)
-        })
+      props.createCompany(newCompany).then(resp =>{
+        if (resp.company) {
+          Notifications.success(RO.notifications.SUCCESS_ADD_COMPANY)
+          props.getCompanies()
+          handleClose()
+          props.createLog(
+            props.user.name,
+            props.user.surname,
+            RO.tracking.add,
+            RO.tracking.companiesTable
+          )
+        } else if (resp.keyPattern.name)
+          Notifications.error(RO.notifications.COMPANY_ALREADY_EXISTS)
+      })      
     } else {
       Notifications.error(RO.notifications.DATA_ERROR)
     }
@@ -208,6 +202,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createLog: (name, surname, action, table) =>
       dispatch(createLog(name, surname, action, table)),
+    createCompany: (newCompany) => dispatch(createCompany(newCompany))
   }
 }
 
